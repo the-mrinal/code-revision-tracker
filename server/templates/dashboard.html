@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Revision Tracker — Dashboard</title>
+<style>
+  :root { --bg: #0a0a0a; --card: #111; --border: #222; --accent: #5b6abf; --text: #ddd; --muted: #777; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; padding: 24px 32px; }
+  h1 { font-size: 22px; margin-bottom: 4px; }
+  .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
+
+  .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .stat-card .value { font-size: 28px; font-weight: 700; color: #fff; }
+  .stat-card .label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+
+  .section { margin-bottom: 28px; }
+  .section h2 { font-size: 16px; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+  .section h2 .badge { background: #e74c3c; color: #fff; font-size: 11px; padding: 2px 8px; border-radius: 10px; }
+
+  .toolbar { display: flex; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
+  .toolbar select, .toolbar input { background: var(--card); border: 1px solid var(--border); border-radius: 6px; padding: 6px 10px; color: var(--text); font-size: 12px; outline: none; }
+  .toolbar button { background: var(--accent); color: #fff; border: none; border-radius: 6px; padding: 6px 14px; font-size: 12px; cursor: pointer; }
+  .toolbar button:hover { opacity: 0.85; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { text-align: left; padding: 8px 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); cursor: pointer; user-select: none; }
+  th:hover { color: var(--text); }
+  td { padding: 10px; border-bottom: 1px solid #1a1a1a; }
+  tr:hover td { background: #161616; }
+  a { color: #7c9cff; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+
+  .tag { display: inline-block; font-size: 10px; padding: 2px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 600; }
+  .tag-easy { background: #064e3b; color: #6ee7b7; }
+  .tag-medium { background: #78350f; color: #fbbf24; }
+  .tag-hard { background: #4c1d1d; color: #fca5a5; }
+  .tag-platform { background: #1e1b4b; color: #a5b4fc; }
+
+  .stars { color: #f4c542; letter-spacing: 1px; }
+  .delete-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 14px; padding: 2px 6px; border-radius: 4px; }
+  .delete-btn:hover { background: #4c1d1d; color: #fca5a5; }
+
+  .revision-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 10px; }
+  .rev-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+  .rev-card .title { font-weight: 600; font-size: 13px; }
+  .rev-card .meta { font-size: 11px; color: var(--muted); display: flex; gap: 8px; }
+  .rev-card .actions { display: flex; gap: 6px; margin-top: 4px; }
+  .rev-card .actions button { font-size: 11px; padding: 4px 10px; border-radius: 4px; border: 1px solid var(--border); background: var(--card); color: var(--text); cursor: pointer; }
+  .rev-card .actions button:hover { border-color: var(--accent); }
+
+  .chart-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 28px; }
+  .chart-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
+  .chart-card h3 { font-size: 13px; margin-bottom: 12px; color: var(--muted); }
+  .bar-chart { display: flex; align-items: flex-end; gap: 8px; height: 100px; }
+  .bar { display: flex; flex-direction: column; align-items: center; flex: 1; }
+  .bar-fill { width: 100%; border-radius: 4px 4px 0 0; min-height: 2px; transition: height 0.3s; }
+  .bar-label { font-size: 10px; color: var(--muted); margin-top: 4px; text-transform: capitalize; }
+
+  .empty { color: var(--muted); text-align: center; padding: 32px; font-size: 14px; }
+
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 100; align-items: center; justify-content: center; }
+  .modal-overlay.open { display: flex; }
+  .modal { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 24px; width: 440px; max-width: 90vw; }
+  .modal h2 { font-size: 16px; margin-bottom: 16px; }
+  .modal .field { margin-bottom: 12px; }
+  .modal .field label { display: block; font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .modal .field input, .modal .field select, .modal .field textarea { width: 100%; padding: 8px 10px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 13px; outline: none; }
+  .modal .field input:focus, .modal .field select:focus, .modal .field textarea:focus { border-color: var(--accent); }
+  .modal .field textarea { height: 60px; resize: vertical; }
+  .modal .row { display: flex; gap: 10px; }
+  .modal .row .field { flex: 1; }
+  .modal-actions { display: flex; gap: 8px; justify-content: flex-end; margin-top: 16px; }
+  .modal-actions button { padding: 8px 16px; border-radius: 6px; font-size: 13px; cursor: pointer; border: none; }
+  .btn-cancel { background: var(--border); color: var(--text); }
+  .btn-save { background: var(--accent); color: #fff; font-weight: 600; }
+  .edit-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 13px; padding: 2px 6px; border-radius: 4px; }
+  .edit-btn:hover { background: #1e1b4b; color: #a5b4fc; }
+</style>
+</head>
+<body>
+
+<h1>Code Revision Tracker</h1>
+<p class="subtitle">Spaced repetition for coding problems</p>
+
+<div class="stats-grid" id="statsGrid"></div>
+
+<div class="chart-row" id="chartRow"></div>
+
+<div class="section">
+  <h2>Due for Revision <span class="badge" id="revBadge">0</span></h2>
+  <div class="revision-cards" id="revisionCards"><div class="empty">Loading...</div></div>
+</div>
+
+<div class="section">
+  <h2>All Questions</h2>
+  <div class="toolbar">
+    <select id="filterPlatform"><option value="">All Platforms</option></select>
+    <select id="filterDifficulty">
+      <option value="">All Difficulties</option>
+      <option value="easy">Easy</option>
+      <option value="medium">Medium</option>
+      <option value="hard">Hard</option>
+    </select>
+    <input type="text" id="searchBox" placeholder="Search...">
+    <button onclick="exportCSV()">Export CSV</button>
+  </div>
+  <table>
+    <thead>
+      <tr>
+        <th data-sort="title">Title</th>
+        <th data-sort="platform">Platform</th>
+        <th data-sort="difficulty">Difficulty</th>
+        <th data-sort="self_rating">Rating</th>
+        <th data-sort="time_taken">Time</th>
+        <th data-sort="solved_at">Solved</th>
+        <th data-sort="next_review">Next Review</th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody id="tableBody"><tr><td colspan="9" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
+
+<div class="modal-overlay" id="editModal">
+  <div class="modal">
+    <h2>Edit Question</h2>
+    <input type="hidden" id="editId">
+    <div class="field">
+      <label>Title</label>
+      <input type="text" id="editTitle">
+    </div>
+    <div class="field">
+      <label>URL</label>
+      <input type="text" id="editUrl">
+    </div>
+    <div class="row">
+      <div class="field">
+        <label>Difficulty</label>
+        <select id="editDifficulty">
+          <option value="">None</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Rating (1-5)</label>
+        <input type="number" id="editRating" min="1" max="5">
+      </div>
+      <div class="field">
+        <label>Time (min)</label>
+        <input type="number" id="editTime" min="0">
+      </div>
+    </div>
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="editNotes"></textarea>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
+      <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = "/api";
+let allQuestions = [];
+let sortKey = "solved_at", sortDir = -1;
+
+async function load() {
+  const [questions, stats, revisions] = await Promise.all([
+    fetch(`${API}/questions`).then(r => r.json()),
+    fetch(`${API}/stats`).then(r => r.json()),
+    fetch(`${API}/revisions/today`).then(r => r.json()),
+  ]);
+  allQuestions = questions;
+  renderStats(stats);
+  renderCharts(stats);
+  renderRevisions(revisions);
+  populateFilters();
+  renderTable();
+}
+
+function renderStats(s) {
+  document.getElementById("statsGrid").innerHTML = `
+    <div class="stat-card"><div class="value">${s.total}</div><div class="label">Total Solved</div></div>
+    <div class="stat-card"><div class="value">${s.due_today}</div><div class="label">Due Today</div></div>
+    <div class="stat-card"><div class="value">${s.avg_rating || '—'}</div><div class="label">Avg Rating</div></div>
+    <div class="stat-card"><div class="value">${Object.keys(s.by_platform).length}</div><div class="label">Platforms</div></div>
+  `;
+}
+
+function renderCharts(s) {
+  const colors = { easy: "#6ee7b7", medium: "#fbbf24", hard: "#fca5a5" };
+  const platformColors = ["#a5b4fc","#7c9cff","#c4b5fd","#93c5fd","#86efac","#fcd34d","#fca5a5","#f9a8d4"];
+
+  let diffBars = "", platBars = "";
+  const maxDiff = Math.max(...Object.values(s.by_difficulty || {}), 1);
+  for (const [k, v] of Object.entries(s.by_difficulty || {})) {
+    diffBars += `<div class="bar"><div class="bar-fill" style="height:${(v/maxDiff)*100}%;background:${colors[k]||'#888'}"></div><div class="bar-label">${k} (${v})</div></div>`;
+  }
+  const maxPlat = Math.max(...Object.values(s.by_platform || {}), 1);
+  let i = 0;
+  for (const [k, v] of Object.entries(s.by_platform || {})) {
+    platBars += `<div class="bar"><div class="bar-fill" style="height:${(v/maxPlat)*100}%;background:${platformColors[i++%platformColors.length]}"></div><div class="bar-label">${k} (${v})</div></div>`;
+  }
+
+  document.getElementById("chartRow").innerHTML = `
+    <div class="chart-card"><h3>By Difficulty</h3><div class="bar-chart">${diffBars || '<span class="empty">No data</span>'}</div></div>
+    <div class="chart-card"><h3>By Platform</h3><div class="bar-chart">${platBars || '<span class="empty">No data</span>'}</div></div>
+  `;
+}
+
+function renderRevisions(items) {
+  document.getElementById("revBadge").textContent = items.length;
+  const el = document.getElementById("revisionCards");
+  if (!items.length) { el.innerHTML = '<div class="empty">No revisions due today!</div>'; return; }
+  el.innerHTML = items.map(q => `
+    <div class="rev-card">
+      <a href="${esc(q.url)}" target="_blank" class="title">${esc(q.title || q.url)}</a>
+      <div class="meta">
+        <span class="tag tag-platform">${esc(q.platform||'')}</span>
+        ${q.difficulty ? `<span class="tag tag-${q.difficulty}">${q.difficulty}</span>` : ''}
+        <span>EF: ${q.easiness_factor}</span>
+      </div>
+      <div class="actions">
+        ${[1,2,3,4,5].map(r => `<button onclick="reviewQ(${q.id},${r})">${'★'.repeat(r)}</button>`).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+async function reviewQ(id, rating) {
+  await fetch(`${API}/questions/${id}/review`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({self_rating: rating}) });
+  load();
+}
+
+function populateFilters() {
+  const platforms = [...new Set(allQuestions.map(q => q.platform).filter(Boolean))];
+  const sel = document.getElementById("filterPlatform");
+  sel.innerHTML = '<option value="">All Platforms</option>' + platforms.map(p => `<option value="${p}">${p}</option>`).join('');
+}
+
+function renderTable() {
+  const pf = document.getElementById("filterPlatform").value;
+  const df = document.getElementById("filterDifficulty").value;
+  const search = document.getElementById("searchBox").value.toLowerCase();
+
+  let filtered = allQuestions.filter(q => {
+    if (pf && q.platform !== pf) return false;
+    if (df && q.difficulty !== df) return false;
+    if (search && !(q.title||'').toLowerCase().includes(search) && !q.url.toLowerCase().includes(search)) return false;
+    return true;
+  });
+
+  filtered.sort((a, b) => {
+    let va = a[sortKey] ?? '', vb = b[sortKey] ?? '';
+    if (typeof va === 'number') return (va - vb) * sortDir;
+    return String(va).localeCompare(String(vb)) * sortDir;
+  });
+
+  const tbody = document.getElementById("tableBody");
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="9" class="empty">No questions found</td></tr>'; return; }
+
+  tbody.innerHTML = filtered.map(q => `<tr>
+    <td><a href="${esc(q.url)}" target="_blank">${esc(q.title || q.url)}</a></td>
+    <td><span class="tag tag-platform">${esc(q.platform||'—')}</span></td>
+    <td>${q.difficulty ? `<span class="tag tag-${q.difficulty}">${q.difficulty}</span>` : '—'}</td>
+    <td><span class="stars">${'★'.repeat(q.self_rating||0)}${'☆'.repeat(5-(q.self_rating||0))}</span></td>
+    <td>${q.time_taken ? q.time_taken+'m' : '—'}</td>
+    <td>${q.solved_at ? new Date(q.solved_at).toLocaleDateString() : '—'}</td>
+    <td>${q.next_review || '—'}</td>
+    <td><button class="edit-btn" onclick="openEdit(${q.id})">Edit</button></td>
+    <td><button class="delete-btn" onclick="deleteQ(${q.id})">✕</button></td>
+  </tr>`).join('');
+}
+
+async function deleteQ(id) {
+  if (!confirm('Delete this question?')) return;
+  await fetch(`${API}/questions/${id}`, { method: 'DELETE' });
+  load();
+}
+
+function openEdit(id) {
+  const q = allQuestions.find(x => x.id === id);
+  if (!q) return;
+  document.getElementById('editId').value = q.id;
+  document.getElementById('editTitle').value = q.title || '';
+  document.getElementById('editUrl').value = q.url || '';
+  document.getElementById('editDifficulty').value = q.difficulty || '';
+  document.getElementById('editRating').value = q.self_rating || '';
+  document.getElementById('editTime').value = q.time_taken || '';
+  document.getElementById('editNotes').value = q.notes || '';
+  document.getElementById('editModal').classList.add('open');
+}
+
+function closeEdit() {
+  document.getElementById('editModal').classList.remove('open');
+}
+
+async function saveEdit() {
+  const id = document.getElementById('editId').value;
+  const payload = {};
+  const title = document.getElementById('editTitle').value.trim();
+  const url = document.getElementById('editUrl').value.trim();
+  const difficulty = document.getElementById('editDifficulty').value;
+  const rating = parseInt(document.getElementById('editRating').value);
+  const time = parseInt(document.getElementById('editTime').value);
+  const notes = document.getElementById('editNotes').value.trim();
+
+  if (title) payload.title = title;
+  if (url) payload.url = url;
+  if (difficulty) payload.difficulty = difficulty;
+  if (rating >= 1 && rating <= 5) payload.self_rating = rating;
+  if (time > 0) payload.time_taken = time;
+  if (notes) payload.notes = notes;
+
+  const r = await fetch(`${API}/questions/${id}`, {
+    method: 'PUT',
+    headers: {'Content-Type':'application/json'},
+    body: JSON.stringify(payload),
+  });
+  if (r.ok) {
+    closeEdit();
+    load();
+  } else {
+    alert('Failed to save changes');
+  }
+}
+
+// Close modal on overlay click
+document.getElementById('editModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('editModal')) closeEdit();
+});
+
+function exportCSV() {
+  const headers = ['title','url','platform','difficulty','self_rating','time_taken','notes','solved_at','next_review'];
+  const rows = allQuestions.map(q => headers.map(h => `"${String(q[h]||'').replace(/"/g,'""')}"`).join(','));
+  const csv = [headers.join(','), ...rows].join('\n');
+  const blob = new Blob([csv], {type: 'text/csv'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = 'revisions.csv'; a.click();
+}
+
+function esc(s) { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
+
+document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('click', () => {
+  const key = th.dataset.sort;
+  if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = 1; }
+  renderTable();
+}));
+
+document.getElementById("filterPlatform").addEventListener("change", renderTable);
+document.getElementById("filterDifficulty").addEventListener("change", renderTable);
+document.getElementById("searchBox").addEventListener("input", renderTable);
+
+load();
+</script>
+</body>
+</html>

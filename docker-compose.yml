@@ -1,0 +1,12 @@
+services:
+  server:
+    build: ./server
+    ports:
+      - "8765:8765"
+    volumes:
+      - revision-data:/app/data
+    environment:
+      - DB_PATH=/app/data/revisions.db
+
+volumes:
+  revision-data:

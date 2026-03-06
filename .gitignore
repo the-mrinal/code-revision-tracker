@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.env
+venv/
+
+# Database
+*.db
+data/
+
+# macOS
+.DS_Store
+
+# Xcode (Safari extension build)
+Code Revision Tracker/
+*.xcodeproj
+*.xcworkspace
+DerivedData/
+
+# IDE
+.vscode/
+.idea/
+
+# Claude
+.claude/

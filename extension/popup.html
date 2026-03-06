@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <div class="header">
+    <span class="logo">📝</span>
+    <h1>Code Revision Tracker</h1>
+  </div>
+
+  <div class="status" id="status">
+    <span class="dot" id="statusDot"></span>
+    <span id="statusText">Connecting...</span>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <div class="form-section">
+    <div class="field">
+      <label>URL</label>
+      <input type="text" id="url" readonly>
+    </div>
+
+    <div class="field">
+      <label>Title</label>
+      <input type="text" id="title" placeholder="Problem title (optional)">
+    </div>
+
+    <div class="row">
+      <div class="field">
+        <label>Difficulty</label>
+        <select id="difficulty">
+          <option value="">Select</option>
+          <option value="easy">Easy</option>
+          <option value="medium">Medium</option>
+          <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Time (min)</label>
+        <input type="number" id="timeTaken" min="1" placeholder="30">
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Self Rating</label>
+      <div class="stars" id="stars">
+        <button class="star" data-value="1">★</button>
+        <button class="star" data-value="2">★</button>
+        <button class="star" data-value="3">★</button>
+        <button class="star" data-value="4">★</button>
+        <button class="star" data-value="5">★</button>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Notes</label>
+      <textarea id="notes" placeholder="Key insights, patterns used..."></textarea>
+    </div>
+
+    <button class="btn btn-primary" id="submitBtn" disabled>Save Question</button>
+  </div>
+
+  <div class="revisions-section">
+    <h3>Due for Revision <span class="badge" id="revCount">0</span></h3>
+    <div class="revision-list" id="revisionList">
+      <div class="empty-state">Loading...</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <a href="http://localhost:8765/dashboard" target="_blank">Open Dashboard ↗</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
