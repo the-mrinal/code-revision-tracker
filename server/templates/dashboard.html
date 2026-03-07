@@ -168,6 +168,7 @@
 <div class="header-row">
   <h1>Revise</h1>
   <div style="display:flex;align-items:center;gap:8px;">
+    <a href="/flex" id="flexBtn" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;text-decoration:none;">Flex</a>
     <button class="settings-btn" id="settingsBtn" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Settings</button>
     <span class="user-email" id="userEmail" style="display:none"></span>
     <button class="sign-out-btn" id="signOutBtn" style="display:none">Sign Out</button>
@@ -828,9 +829,10 @@ async function mergeDuplicates() {
 
 document.getElementById('settingsBtn').addEventListener('click', openSettings);
 
-// Show settings button when logged in
+// Show settings + flex buttons when logged in
 function showSettingsBtn() {
   document.getElementById('settingsBtn').style.display = 'inline-block';
+  document.getElementById('flexBtn').style.display = 'inline-block';
 }
 
 // --- Patterns ---
