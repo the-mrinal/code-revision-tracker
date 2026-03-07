@@ -264,6 +264,110 @@
     color: var(--text);
   }
 
+  /* Install */
+  .install-section {
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .install-section h2 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .install-section .section-sub {
+    text-align: center;
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 40px;
+  }
+  .install-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+  .install-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+  }
+  .install-card h3 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .install-card ol {
+    list-style: none;
+    counter-reset: install-step;
+    padding: 0;
+  }
+  .install-card ol li {
+    counter-increment: install-step;
+    font-size: 14px;
+    color: var(--muted);
+    line-height: 1.7;
+    padding: 4px 0;
+    padding-left: 28px;
+    position: relative;
+  }
+  .install-card ol li::before {
+    content: counter(install-step);
+    position: absolute;
+    left: 0;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: rgba(91, 106, 191, 0.2);
+    color: var(--accent-light);
+    font-size: 11px;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 6px;
+  }
+  .install-card code {
+    background: rgba(255,255,255,0.06);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+    color: var(--green);
+    font-family: monospace;
+  }
+  .install-card a { color: var(--accent-light); text-decoration: none; }
+  .install-card a:hover { text-decoration: underline; }
+  .install-card .download-btn {
+    display: inline-block;
+    margin-top: 16px;
+    background: var(--accent);
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: opacity 0.2s;
+  }
+  .install-card .download-btn:hover { opacity: 0.85; text-decoration: none; }
+  .safari-note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 12px;
+    line-height: 1.6;
+  }
+  .safari-note a { color: var(--accent-light); }
+
+  @media (max-width: 768px) {
+    .install-cards { grid-template-columns: 1fr; }
+  }
+
   /* CTA */
   .cta-section {
     text-align: center;
@@ -303,6 +407,7 @@
   <a href="/" class="nav-brand">Code Revision Tracker</a>
   <div class="nav-links">
     <a href="#features">Features</a>
+    <a href="#install">Install</a>
     <a href="#how-it-works">How it works</a>
     <a href="/dashboard" class="nav-cta">Open Dashboard</a>
   </div>
@@ -417,6 +522,28 @@
     <div class="platform-tag">NeetCode</div>
     <div class="platform-tag">AlgoMonster</div>
     <div class="platform-tag">DesignGurus</div>
+  </div>
+</section>
+
+<section class="install-section" id="install">
+  <h2>Install the Extension</h2>
+  <p class="section-sub">Get the browser extension to track problems with one click.</p>
+  <div class="install-cards">
+    <div class="install-card">
+      <h3>&#x1f30d; Chrome</h3>
+      <ol>
+        <li>Download the extension: <a href="https://github.com/the-mrinal/code-revision-tracker/raw/main/extension.zip" class="download-btn">Download extension.zip</a></li>
+        <li>Unzip the downloaded file</li>
+        <li>Open <code>chrome://extensions</code> in Chrome</li>
+        <li>Enable <strong>Developer mode</strong> (top right toggle)</li>
+        <li>Click <strong>Load unpacked</strong> and select the unzipped folder</li>
+        <li>Pin the extension from the puzzle icon in the toolbar</li>
+      </ol>
+    </div>
+    <div class="install-card">
+      <h3>&#x1f9ed; Safari</h3>
+      <p class="safari-note">Safari extension is available on request. It requires a macOS/iOS native app wrapper built with Xcode.<br><br>Interested? Reach out at <a href="mailto:dmrinal626@gmail.com">dmrinal626@gmail.com</a> and I'll send you the build.</p>
+    </div>
   </div>
 </section>
 

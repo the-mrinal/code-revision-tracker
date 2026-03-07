@@ -83,22 +83,16 @@ SUPABASE_JWT_SECRET=your-jwt-secret
 docker compose up -d
 ```
 
-### 4. Load the browser extension
+### 4. Install the Chrome extension
 
-**Chrome:**
-1. Go to `chrome://extensions`
-2. Enable "Developer mode"
-3. Click "Load unpacked" → select the `extension/` folder
+1. Download [`extension.zip`](https://github.com/the-mrinal/code-revision-tracker/raw/main/extension.zip)
+2. Unzip the downloaded file
+3. Go to `chrome://extensions` in Chrome
+4. Enable **Developer mode** (top right toggle)
+5. Click **Load unpacked** → select the unzipped folder
+6. Pin the extension from the puzzle icon in the toolbar
 
-**Safari:**
-1. Convert to Safari extension:
-   ```bash
-   xcrun safari-web-extension-converter extension/
-   ```
-2. Build & Run in Xcode (Cmd+R)
-3. Safari → Settings → Advanced → check "Show features for web developers"
-4. Develop → Allow Unsigned Extensions
-5. Safari → Settings → Extensions → enable Code Revision Tracker
+**Safari:** Available on request — contact dmrinal626@gmail.com for a build.
 
 ### 5. Use it
 
