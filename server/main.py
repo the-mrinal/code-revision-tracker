@@ -104,15 +104,23 @@ def auth_magic_link(req: MagicLinkRequest):
 
 @app.get("/api/auth/callback")
 def auth_callback(
-    token_hash: str = Query(...),
-    type: str = Query(...),
+    token_hash: str = Query(None),
+    type: str = Query(None),
 ):
-    tokens = exchange_code_for_session(token_hash, type)
-    redirect_url = (
-        f"/dashboard#access_token={tokens['access_token']}"
-        f"&refresh_token={tokens['refresh_token']}"
+    # PKCE flow: Supabase sends token_hash & type as query params
+    if token_hash and type:
+        tokens = exchange_code_for_session(token_hash, type)
+        redirect_url = (
+            f"/dashboard#access_token={tokens['access_token']}"
+            f"&refresh_token={tokens['refresh_token']}"
+        )
+        return RedirectResponse(url=redirect_url)
+
+    # Implicit flow: Supabase sends tokens in the URL fragment (#access_token=...)
+    # Fragments aren't sent to the server, so serve a page that forwards them.
+    return HTMLResponse(
+        "<script>location.replace('/dashboard' + location.hash)</script>"
     )
-    return RedirectResponse(url=redirect_url)
 
 
 @app.post("/api/auth/refresh")
