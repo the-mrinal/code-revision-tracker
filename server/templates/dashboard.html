@@ -11,6 +11,10 @@
   h1 { font-size: 22px; margin-bottom: 4px; }
   .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
 
+  .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .sign-out-btn { background: none; border: 1px solid #4c1d1d; color: #fca5a5; padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
+  .sign-out-btn:hover { background: #4c1d1d; }
+
   .stats-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
   .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 16px; }
   .stat-card .value { font-size: 28px; font-weight: 700; color: #fff; }
@@ -78,16 +82,80 @@
   .btn-save { background: var(--accent); color: #fff; font-weight: 600; }
   .edit-btn { background: none; border: none; color: #666; cursor: pointer; font-size: 13px; padding: 2px 6px; border-radius: 4px; }
   .edit-btn:hover { background: #1e1b4b; color: #a5b4fc; }
+
+  .tag-new { background: #064e3b; color: #6ee7b7; }
+  .tag-revision { background: #1e1b4b; color: #c4b5fd; }
+
+  .activity-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  .activity-table th { text-align: left; padding: 8px 10px; color: var(--muted); font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; border-bottom: 1px solid var(--border); }
+  .activity-table td { padding: 10px; border-bottom: 1px solid #1a1a1a; }
+  .activity-table tr:hover td { background: #161616; }
+
+  .activity-filter { display: flex; gap: 6px; }
+  .activity-filter button { padding: 4px 12px; border-radius: 4px; border: 1px solid var(--border); background: var(--card); color: var(--muted); font-size: 11px; cursor: pointer; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; }
+  .activity-filter button.active { border-color: var(--accent); color: var(--text); }
+  .activity-filter button:hover { border-color: var(--accent); }
+
+  /* Login overlay */
+  .login-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; align-items: center; justify-content: center; }
+  .login-overlay.open { display: flex; }
+  .login-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 380px; max-width: 90vw; text-align: center; }
+  .login-box h2 { font-size: 20px; margin-bottom: 8px; }
+  .login-box .login-subtitle { color: var(--muted); font-size: 13px; margin-bottom: 20px; }
+  .login-box input { width: 100%; padding: 10px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 6px; color: var(--text); font-size: 14px; outline: none; margin-bottom: 12px; }
+  .login-box input:focus { border-color: var(--accent); }
+  .login-box button { width: 100%; padding: 10px; background: var(--accent); color: #fff; border: none; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer; }
+  .login-box button:hover { opacity: 0.85; }
+  .login-box .login-status { font-size: 12px; color: var(--muted); margin-top: 12px; }
 </style>
 </head>
 <body>
 
-<h1>Code Revision Tracker</h1>
+<!-- Login overlay -->
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <h2>Code Revision Tracker</h2>
+    <p class="login-subtitle">Sign in with your email to continue</p>
+    <input type="email" id="loginEmail" placeholder="you@example.com">
+    <button id="loginBtn">Send Magic Link</button>
+    <p class="login-status" id="loginStatus"></p>
+  </div>
+</div>
+
+<div class="header-row">
+  <h1>Code Revision Tracker</h1>
+  <button class="sign-out-btn" id="signOutBtn" style="display:none">Sign Out</button>
+</div>
 <p class="subtitle">Spaced repetition for coding problems</p>
 
 <div class="stats-grid" id="statsGrid"></div>
 
 <div class="chart-row" id="chartRow"></div>
+
+<div class="section">
+  <h2>Today's Activity <span class="badge" id="activityBadge">0</span></h2>
+  <div class="toolbar">
+    <div class="activity-filter" id="activityFilter">
+      <button class="active" data-filter="all">All</button>
+      <button data-filter="NEW">New</button>
+      <button data-filter="REVISION">Revision</button>
+    </div>
+  </div>
+  <table class="activity-table">
+    <thead>
+      <tr>
+        <th>Type</th>
+        <th>Title</th>
+        <th>Platform</th>
+        <th>Difficulty</th>
+        <th>Rating</th>
+        <th>Attempts</th>
+        <th>Time</th>
+      </tr>
+    </thead>
+    <tbody id="activityBody"><tr><td colspan="7" class="empty">Loading...</td></tr></tbody>
+  </table>
+</div>
 
 <div class="section">
   <h2>Due for Revision <span class="badge" id="revBadge">0</span></h2>
@@ -114,6 +182,7 @@
         <th data-sort="platform">Platform</th>
         <th data-sort="difficulty">Difficulty</th>
         <th data-sort="self_rating">Rating</th>
+        <th data-sort="attempts">Attempts</th>
         <th data-sort="time_taken">Time</th>
         <th data-sort="solved_at">Solved</th>
         <th data-sort="next_review">Next Review</th>
@@ -121,7 +190,7 @@
         <th></th>
       </tr>
     </thead>
-    <tbody id="tableBody"><tr><td colspan="9" class="empty">Loading...</td></tr></tbody>
+    <tbody id="tableBody"><tr><td colspan="10" class="empty">Loading...</td></tr></tbody>
   </table>
 </div>
 
@@ -170,17 +239,150 @@
 <script>
 const API = "/api";
 let allQuestions = [];
+let todayActivity = [];
+let activityFilterValue = "all";
 let sortKey = "solved_at", sortDir = -1;
 
+// --- Auth helpers ---
+function getAuth() {
+  const raw = localStorage.getItem("auth");
+  return raw ? JSON.parse(raw) : null;
+}
+
+function setAuthTokens(tokens) {
+  localStorage.setItem("auth", JSON.stringify(tokens));
+}
+
+function clearAuthTokens() {
+  localStorage.removeItem("auth");
+}
+
+async function apiFetch(path, options = {}) {
+  const auth = getAuth();
+  if (!auth || !auth.access_token) throw new Error("Not authenticated");
+
+  const headers = { ...options.headers, Authorization: `Bearer ${auth.access_token}` };
+  let r = await fetch(`${API}${path}`, { ...options, headers });
+
+  if (r.status === 401 && auth.refresh_token) {
+    try {
+      const refreshResp = await fetch(`${API}/auth/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: auth.refresh_token }),
+      });
+      if (refreshResp.ok) {
+        const tokens = await refreshResp.json();
+        setAuthTokens(tokens);
+        headers.Authorization = `Bearer ${tokens.access_token}`;
+        r = await fetch(`${API}${path}`, { ...options, headers });
+      } else {
+        clearAuthTokens();
+        showLogin();
+        throw new Error("Session expired");
+      }
+    } catch (e) {
+      clearAuthTokens();
+      showLogin();
+      throw e;
+    }
+  }
+  return r;
+}
+
+// --- Token capture from URL hash ---
+function captureTokensFromHash() {
+  const hash = window.location.hash;
+  if (hash && hash.includes("access_token=")) {
+    const params = new URLSearchParams(hash.substring(1));
+    const access_token = params.get("access_token");
+    const refresh_token = params.get("refresh_token");
+    if (access_token && refresh_token) {
+      setAuthTokens({ access_token, refresh_token });
+      // Clean the URL
+      history.replaceState(null, "", window.location.pathname);
+    }
+  }
+}
+
+// --- Login overlay ---
+function showLogin() {
+  document.getElementById("loginOverlay").classList.add("open");
+  document.getElementById("signOutBtn").style.display = "none";
+}
+
+function hideLogin() {
+  document.getElementById("loginOverlay").classList.remove("open");
+  document.getElementById("signOutBtn").style.display = "inline-block";
+}
+
+// Send magic link
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value.trim();
+  if (!email) return;
+  const btn = document.getElementById("loginBtn");
+  const status = document.getElementById("loginStatus");
+  btn.disabled = true;
+  btn.textContent = "Sending...";
+  try {
+    const r = await fetch(`${API}/auth/magic-link`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email }),
+    });
+    if (r.ok) {
+      status.textContent = "Check your email for the magic link!";
+      status.style.color = "#6ee7b7";
+    } else {
+      const err = await r.json();
+      status.textContent = err.detail || "Failed to send link";
+      status.style.color = "#fca5a5";
+    }
+  } catch {
+    status.textContent = "Server offline";
+    status.style.color = "#fca5a5";
+  }
+  btn.disabled = false;
+  btn.textContent = "Send Magic Link";
+});
+
+// Sign out
+document.getElementById("signOutBtn").addEventListener("click", () => {
+  clearAuthTokens();
+  showLogin();
+});
+
+// --- Init auth ---
+async function initAuth() {
+  captureTokensFromHash();
+  const auth = getAuth();
+  if (!auth || !auth.access_token) {
+    showLogin();
+    return;
+  }
+  try {
+    const r = await apiFetch("/stats");
+    if (r.ok) {
+      hideLogin();
+      load();
+      return;
+    }
+  } catch {}
+  showLogin();
+}
+
 async function load() {
-  const [questions, stats, revisions] = await Promise.all([
-    fetch(`${API}/questions`).then(r => r.json()),
-    fetch(`${API}/stats`).then(r => r.json()),
-    fetch(`${API}/revisions/today`).then(r => r.json()),
+  const [questions, stats, revisions, activity] = await Promise.all([
+    apiFetch("/questions").then(r => r.json()),
+    apiFetch("/stats").then(r => r.json()),
+    apiFetch("/revisions/today").then(r => r.json()),
+    apiFetch("/activity/today").then(r => r.json()),
   ]);
   allQuestions = questions;
+  todayActivity = activity;
   renderStats(stats);
   renderCharts(stats);
+  renderActivity();
   renderRevisions(revisions);
   populateFilters();
   renderTable();
@@ -216,6 +418,40 @@ function renderCharts(s) {
   `;
 }
 
+function renderActivity() {
+  const filtered = activityFilterValue === 'all'
+    ? todayActivity
+    : todayActivity.filter(q => q.activity_type === activityFilterValue);
+
+  document.getElementById('activityBadge').textContent = todayActivity.length;
+
+  const tbody = document.getElementById('activityBody');
+  if (!filtered.length) {
+    tbody.innerHTML = `<tr><td colspan="7" class="empty">${todayActivity.length ? 'No matches for this filter' : 'No activity today yet'}</td></tr>`;
+    return;
+  }
+
+  tbody.innerHTML = filtered.map(q => `<tr>
+    <td><span class="tag tag-${q.activity_type.toLowerCase()}">${q.activity_type}</span></td>
+    <td><a href="${esc(q.url)}" target="_blank">${esc(q.title || q.url)}</a></td>
+    <td><span class="tag tag-platform">${esc(q.platform||'—')}</span></td>
+    <td>${q.difficulty ? `<span class="tag tag-${q.difficulty}">${q.difficulty}</span>` : '—'}</td>
+    <td><span class="stars">${'★'.repeat(q.self_rating||0)}${'☆'.repeat(5-(q.self_rating||0))}</span></td>
+    <td>${(q.attempts||1) > 1 ? '×'+q.attempts : ''}</td>
+    <td>${q.time_taken ? q.time_taken+'m' : '—'}</td>
+  </tr>`).join('');
+}
+
+// Activity filter buttons
+document.querySelectorAll('#activityFilter button').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('#activityFilter button').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activityFilterValue = btn.dataset.filter;
+    renderActivity();
+  });
+});
+
 function renderRevisions(items) {
   document.getElementById("revBadge").textContent = items.length;
   const el = document.getElementById("revisionCards");
@@ -236,7 +472,7 @@ function renderRevisions(items) {
 }
 
 async function reviewQ(id, rating) {
-  await fetch(`${API}/questions/${id}/review`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({self_rating: rating}) });
+  await apiFetch(`/questions/${id}/review`, { method: 'POST', headers: {'Content-Type':'application/json'}, body: JSON.stringify({self_rating: rating}) });
   load();
 }
 
@@ -265,13 +501,14 @@ function renderTable() {
   });
 
   const tbody = document.getElementById("tableBody");
-  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="9" class="empty">No questions found</td></tr>'; return; }
+  if (!filtered.length) { tbody.innerHTML = '<tr><td colspan="10" class="empty">No questions found</td></tr>'; return; }
 
   tbody.innerHTML = filtered.map(q => `<tr>
     <td><a href="${esc(q.url)}" target="_blank">${esc(q.title || q.url)}</a></td>
     <td><span class="tag tag-platform">${esc(q.platform||'—')}</span></td>
     <td>${q.difficulty ? `<span class="tag tag-${q.difficulty}">${q.difficulty}</span>` : '—'}</td>
     <td><span class="stars">${'★'.repeat(q.self_rating||0)}${'☆'.repeat(5-(q.self_rating||0))}</span></td>
+    <td>${(q.attempts||1) > 1 ? '×'+q.attempts : ''}</td>
     <td>${q.time_taken ? q.time_taken+'m' : '—'}</td>
     <td>${q.solved_at ? new Date(q.solved_at).toLocaleDateString() : '—'}</td>
     <td>${q.next_review || '—'}</td>
@@ -282,7 +519,7 @@ function renderTable() {
 
 async function deleteQ(id) {
   if (!confirm('Delete this question?')) return;
-  await fetch(`${API}/questions/${id}`, { method: 'DELETE' });
+  await apiFetch(`/questions/${id}`, { method: 'DELETE' });
   load();
 }
 
@@ -320,7 +557,7 @@ async function saveEdit() {
   if (time > 0) payload.time_taken = time;
   if (notes) payload.notes = notes;
 
-  const r = await fetch(`${API}/questions/${id}`, {
+  const r = await apiFetch(`/questions/${id}`, {
     method: 'PUT',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify(payload),
@@ -339,7 +576,7 @@ document.getElementById('editModal').addEventListener('click', (e) => {
 });
 
 function exportCSV() {
-  const headers = ['title','url','platform','difficulty','self_rating','time_taken','notes','solved_at','next_review'];
+  const headers = ['title','url','platform','difficulty','self_rating','attempts','time_taken','notes','solved_at','next_review'];
   const rows = allQuestions.map(q => headers.map(h => `"${String(q[h]||'').replace(/"/g,'""')}"`).join(','));
   const csv = [headers.join(','), ...rows].join('\n');
   const blob = new Blob([csv], {type: 'text/csv'});
@@ -358,7 +595,7 @@ document.getElementById("filterPlatform").addEventListener("change", renderTable
 document.getElementById("filterDifficulty").addEventListener("change", renderTable);
 document.getElementById("searchBox").addEventListener("input", renderTable);
 
-load();
+initAuth();
 </script>
 </body>
 </html>

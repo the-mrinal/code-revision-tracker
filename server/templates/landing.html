@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Code Revision Tracker — Never Forget a Solution Again</title>
+<style>
+  :root {
+    --bg: #0a0a0a;
+    --card: #111;
+    --border: #1a1a1a;
+    --accent: #5b6abf;
+    --accent-light: #7c8aef;
+    --text: #e0e0e0;
+    --muted: #777;
+    --green: #6ee7b7;
+    --yellow: #fbbf24;
+    --red: #fca5a5;
+    --purple: #c4b5fd;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* Nav */
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 48px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .nav-brand {
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .nav-links { display: flex; gap: 24px; align-items: center; }
+  .nav-links a { color: var(--muted); text-decoration: none; font-size: 14px; transition: color 0.2s; }
+  .nav-links a:hover { color: #fff; }
+  .nav-cta {
+    background: var(--accent);
+    color: #fff !important;
+    padding: 8px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: opacity 0.2s;
+  }
+  .nav-cta:hover { opacity: 0.85; }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    padding: 80px 24px 60px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  .hero-badge {
+    display: inline-block;
+    background: rgba(91, 106, 191, 0.15);
+    color: var(--accent-light);
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(91, 106, 191, 0.3);
+    margin-bottom: 24px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .hero h1 {
+    font-size: 52px;
+    font-weight: 800;
+    line-height: 1.15;
+    color: #fff;
+    margin-bottom: 20px;
+    letter-spacing: -1px;
+  }
+  .hero h1 .highlight {
+    background: linear-gradient(135deg, var(--accent-light), var(--purple));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: 18px;
+    color: var(--muted);
+    max-width: 560px;
+    margin: 0 auto 36px;
+    line-height: 1.7;
+  }
+  .hero-buttons { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: none;
+    cursor: pointer;
+  }
+  .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+  .btn-secondary {
+    background: transparent;
+    color: var(--text);
+    padding: 14px 32px;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    text-decoration: none;
+    border: 1px solid var(--border);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: #444; background: rgba(255,255,255,0.03); }
+
+  /* Stats banner */
+  .stats-banner {
+    display: flex;
+    justify-content: center;
+    gap: 48px;
+    padding: 40px 24px;
+    max-width: 700px;
+    margin: 0 auto;
+  }
+  .stats-banner .stat { text-align: center; }
+  .stats-banner .stat-value { font-size: 32px; font-weight: 800; color: #fff; }
+  .stats-banner .stat-label { font-size: 13px; color: var(--muted); margin-top: 4px; }
+
+  /* Features */
+  .features-section {
+    padding: 80px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .features-section h2 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 12px;
+  }
+  .features-section .section-sub {
+    text-align: center;
+    font-size: 16px;
+    color: var(--muted);
+    margin-bottom: 48px;
+  }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+  }
+  .feature-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 28px;
+    transition: border-color 0.2s;
+  }
+  .feature-card:hover { border-color: #333; }
+  .feature-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+    margin-bottom: 16px;
+  }
+  .feature-card h3 { font-size: 16px; font-weight: 600; color: #fff; margin-bottom: 8px; }
+  .feature-card p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  .icon-brain { background: rgba(196, 181, 253, 0.12); }
+  .icon-timer { background: rgba(110, 231, 183, 0.12); }
+  .icon-chart { background: rgba(251, 191, 36, 0.12); }
+  .icon-lock { background: rgba(91, 106, 191, 0.12); }
+  .icon-platforms { background: rgba(252, 165, 165, 0.12); }
+  .icon-extension { background: rgba(147, 197, 253, 0.12); }
+
+  /* How it works */
+  .how-section {
+    padding: 80px 24px;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+  .how-section h2 {
+    text-align: center;
+    font-size: 36px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 48px;
+  }
+  .steps {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    position: relative;
+  }
+  .step {
+    display: flex;
+    gap: 24px;
+    align-items: flex-start;
+    padding: 24px 0;
+  }
+  .step-number {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 16px;
+    flex-shrink: 0;
+  }
+  .step-content h3 { font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 6px; }
+  .step-content p { font-size: 14px; color: var(--muted); line-height: 1.6; }
+
+  /* Platforms */
+  .platforms-section {
+    padding: 60px 24px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .platforms-section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #fff;
+    margin-bottom: 24px;
+  }
+  .platform-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+  .platform-tag {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text);
+  }
+
+  /* CTA */
+  .cta-section {
+    text-align: center;
+    padding: 80px 24px;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  .cta-section h2 { font-size: 32px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .cta-section p { font-size: 16px; color: var(--muted); margin-bottom: 32px; }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 32px 24px;
+    color: var(--muted);
+    font-size: 13px;
+    border-top: 1px solid var(--border);
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  footer a { color: var(--accent-light); text-decoration: none; }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    nav { padding: 16px 20px; }
+    .hero h1 { font-size: 34px; }
+    .hero p { font-size: 16px; }
+    .features-grid { grid-template-columns: 1fr; }
+    .stats-banner { gap: 32px; }
+    .stats-banner .stat-value { font-size: 24px; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-brand">Code Revision Tracker</a>
+  <div class="nav-links">
+    <a href="#features">Features</a>
+    <a href="#how-it-works">How it works</a>
+    <a href="/dashboard" class="nav-cta">Open Dashboard</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-badge">Spaced Repetition for Coders</div>
+  <h1>Never Forget a <span class="highlight">Coding Solution</span> Again</h1>
+  <p>Track every problem you solve across 10+ platforms. Our SM-2 algorithm tells you exactly when to revise, so patterns stick for interviews and beyond.</p>
+  <div class="hero-buttons">
+    <a href="/dashboard" class="btn-primary">Get Started Free</a>
+    <a href="#how-it-works" class="btn-secondary">See How It Works</a>
+  </div>
+</section>
+
+<div class="stats-banner">
+  <div class="stat">
+    <div class="stat-value">10+</div>
+    <div class="stat-label">Platforms Supported</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">SM-2</div>
+    <div class="stat-label">Proven Algorithm</div>
+  </div>
+  <div class="stat">
+    <div class="stat-value">0</div>
+    <div class="stat-label">Passwords to Remember</div>
+  </div>
+</div>
+
+<section class="features-section" id="features">
+  <h2>Everything You Need</h2>
+  <p class="section-sub">Built for competitive programmers and interview preppers who solve a lot but forget even more.</p>
+  <div class="features-grid">
+    <div class="feature-card">
+      <div class="feature-icon icon-brain">&#x1f9e0;</div>
+      <h3>SM-2 Spaced Repetition</h3>
+      <p>The same algorithm behind Anki and SuperMemo. Rate your recall 1-5 stars, and the system schedules your next review at the optimal time.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-timer">&#x23f1;</div>
+      <h3>Built-in Timer</h3>
+      <p>Start a timer when you begin a problem. Pause, resume, and stop. Your solve time is recorded automatically — no manual entry needed.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-chart">&#x1f4ca;</div>
+      <h3>Analytics Dashboard</h3>
+      <p>See your progress at a glance: problems solved, difficulty breakdown, platform distribution, revision schedule, and daily activity.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-lock">&#x1f512;</div>
+      <h3>Magic Link Auth</h3>
+      <p>No passwords. Enter your email, click the link, you're in. Your data is isolated and secure with Row Level Security on Postgres.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-platforms">&#x1f310;</div>
+      <h3>10+ Platforms</h3>
+      <p>Auto-detects LeetCode, Codeforces, HackerRank, CodeChef, GeeksForGeeks, NeetCode, AlgoMonster, and more. Any URL works too.</p>
+    </div>
+    <div class="feature-card">
+      <div class="feature-icon icon-extension">&#x1f9e9;</div>
+      <h3>Browser Extension</h3>
+      <p>Chrome and Safari extensions. Captures the current problem URL with one click. Badge shows how many problems are due for revision today.</p>
+    </div>
+  </div>
+</section>
+
+<section class="how-section" id="how-it-works">
+  <h2>How It Works</h2>
+  <div class="steps">
+    <div class="step">
+      <div class="step-number">1</div>
+      <div class="step-content">
+        <h3>Sign in with your email</h3>
+        <p>Click "Send Magic Link" in the extension or dashboard. No password needed — just check your email and click the link.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">2</div>
+      <div class="step-content">
+        <h3>Solve a problem and track it</h3>
+        <p>Navigate to any coding problem, click the extension, and hit Start Timer. When you're done, stop the timer, rate your difficulty, and save.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">3</div>
+      <div class="step-content">
+        <h3>Get smart revision reminders</h3>
+        <p>The SM-2 algorithm calculates when you'll start forgetting. Problems you find easy appear less often. Tough ones come back sooner.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-number">4</div>
+      <div class="step-content">
+        <h3>Revise and level up</h3>
+        <p>Check your "Due for Revision" list daily. Rate your recall each time. Over time, every pattern becomes second nature.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="platforms-section">
+  <h2>Supported Platforms</h2>
+  <div class="platform-tags">
+    <div class="platform-tag">LeetCode</div>
+    <div class="platform-tag">Codeforces</div>
+    <div class="platform-tag">HackerRank</div>
+    <div class="platform-tag">CodeChef</div>
+    <div class="platform-tag">GeeksForGeeks</div>
+    <div class="platform-tag">InterviewBit</div>
+    <div class="platform-tag">AtCoder</div>
+    <div class="platform-tag">NeetCode</div>
+    <div class="platform-tag">AlgoMonster</div>
+    <div class="platform-tag">DesignGurus</div>
+  </div>
+</section>
+
+<section class="cta-section">
+  <h2>Ready to stop forgetting?</h2>
+  <p>Sign up in 10 seconds. No password, no credit card. Just your email.</p>
+  <a href="/dashboard" class="btn-primary">Open Dashboard</a>
+</section>
+
+<footer>
+  <p>Built by <a href="https://mrinal.dev">Mrinal Chandra</a> &middot; Code Revision Tracker</p>
+</footer>
+
+</body>
+</html>

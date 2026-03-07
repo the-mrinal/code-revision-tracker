@@ -17,15 +17,47 @@
 
   <div id="toast" class="toast"></div>
 
-  <div class="form-section">
+  <!-- Login View -->
+  <div class="form-section" id="loginView" style="display:none">
+    <div class="field">
+      <label>Email</label>
+      <input type="email" id="loginEmail" placeholder="you@example.com">
+    </div>
+    <button class="btn btn-primary" id="sendMagicLinkBtn">Send Magic Link</button>
+    <p id="loginStatus" style="font-size:12px;color:#888;margin-top:8px;text-align:center;"></p>
+  </div>
+
+  <!-- View 1: Start — capture URL and begin timer -->
+  <div class="form-section" id="startView" style="display:none">
     <div class="field">
       <label>URL</label>
       <input type="text" id="url" readonly>
     </div>
-
     <div class="field">
       <label>Title</label>
       <input type="text" id="title" placeholder="Problem title (optional)">
+    </div>
+    <button class="btn btn-timer" id="startTimerBtn">Start Timer</button>
+  </div>
+
+  <!-- View 2: Timer running — show elapsed time, pause/stop -->
+  <div class="timer-banner" id="timerView" style="display:none">
+    <div class="timer-info">
+      <span class="timer-label">Timer running</span>
+      <span class="timer-title" id="timerTitle"></span>
+    </div>
+    <div class="timer-display" id="timerDisplay">00:00:00</div>
+    <div class="timer-controls">
+      <button class="timer-btn pause" id="pauseBtn">Pause</button>
+      <button class="timer-btn stop" id="stopBtn">Stop</button>
+    </div>
+  </div>
+
+  <!-- View 3: Finish — fill in details after solving -->
+  <div class="form-section" id="finishView" style="display:none">
+    <div class="finish-header">
+      <span class="finish-title" id="finishTitle"></span>
+      <span class="finish-time" id="finishTime"></span>
     </div>
 
     <div class="row">
@@ -37,10 +69,6 @@
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
         </select>
-      </div>
-      <div class="field">
-        <label>Time (min)</label>
-        <input type="number" id="timeTaken" min="1" placeholder="30">
       </div>
     </div>
 
@@ -60,7 +88,7 @@
       <textarea id="notes" placeholder="Key insights, patterns used..."></textarea>
     </div>
 
-    <button class="btn btn-primary" id="submitBtn" disabled>Save Question</button>
+    <button class="btn btn-primary" id="finishBtn" disabled>Save & Finish</button>
   </div>
 
   <div class="revisions-section">
@@ -71,7 +99,8 @@
   </div>
 
   <div class="footer">
-    <a href="http://localhost:8765/dashboard" target="_blank">Open Dashboard ↗</a>
+    <a href="https://revise.mrinal.dev/dashboard" target="_blank">Open Dashboard ↗</a>
+    <a href="#" id="signOutLink" style="display:none;margin-left:12px;color:#e74c3c;">Sign Out</a>
   </div>
 
   <script src="popup.js"></script>

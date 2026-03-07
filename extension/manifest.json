@@ -3,7 +3,8 @@
   "name": "Code Revision Tracker",
   "version": "1.0.0",
   "description": "Track coding practice and get spaced repetition reminders for revision.",
-  "permissions": ["activeTab"],
+  "permissions": ["activeTab", "storage", "alarms", "tabs"],
+  "host_permissions": ["https://revise.mrinal.dev/*"],
   "action": {
     "default_popup": "popup.html",
     "default_icon": {

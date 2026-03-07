@@ -133,8 +133,13 @@ body {
   flex: 1;
 }
 
+.btn-row {
+  display: flex;
+  gap: 8px;
+}
+
 .btn {
-  width: 100%;
+  flex: 1;
   padding: 10px;
   border: none;
   border-radius: 6px;
@@ -153,9 +158,118 @@ body {
   color: #fff;
 }
 
+.btn-timer {
+  background: linear-gradient(135deg, #064e3b, #047857);
+  color: #6ee7b7;
+}
+
 .btn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
+}
+
+/* Timer banner */
+.timer-banner {
+  padding: 12px 16px;
+  background: linear-gradient(135deg, #1a2e1a, #0f2a1f);
+  border-bottom: 1px solid #2a4a2a;
+}
+
+.timer-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+
+.timer-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #6ee7b7;
+  font-weight: 600;
+}
+
+.timer-title {
+  font-size: 12px;
+  color: #aaa;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.timer-display {
+  font-size: 32px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #fff;
+  text-align: center;
+  margin-bottom: 10px;
+  letter-spacing: 2px;
+}
+
+.timer-controls {
+  display: flex;
+  gap: 8px;
+}
+
+.timer-btn {
+  flex: 1;
+  padding: 8px;
+  border: none;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.timer-btn:hover {
+  opacity: 0.85;
+}
+
+.timer-btn.pause {
+  background: #78350f;
+  color: #fbbf24;
+}
+
+.timer-btn.pause.paused {
+  background: #064e3b;
+  color: #6ee7b7;
+}
+
+.timer-btn.stop {
+  background: #4c1d1d;
+  color: #fca5a5;
+}
+
+/* Finish form header */
+.finish-header {
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.finish-title {
+  font-weight: 600;
+  font-size: 13px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 180px;
+}
+
+.finish-time {
+  font-variant-numeric: tabular-nums;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6ee7b7;
 }
 
 .toast {

@@ -1,154 +1,228 @@
-"""SQLite database setup and queries."""
+"""Supabase database queries for Code Revision Tracker."""
 
-import aiosqlite
 import os
-from datetime import date
+from datetime import date, datetime
 
-DB_PATH = os.environ.get("DB_PATH", "data/revisions.db")
+from supabase import create_client
 
-CREATE_TABLE = """
-CREATE TABLE IF NOT EXISTS questions (
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-    url TEXT NOT NULL,
-    title TEXT,
-    platform TEXT,
-    difficulty TEXT,
-    self_rating INTEGER,
-    time_taken INTEGER,
-    notes TEXT,
-    solved_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    easiness_factor REAL DEFAULT 2.5,
-    interval INTEGER DEFAULT 1,
-    repetitions INTEGER DEFAULT 0,
-    next_review DATE
-);
-"""
+SUPABASE_URL = os.environ["SUPABASE_URL"]
+SUPABASE_SERVICE_ROLE_KEY = os.environ["SUPABASE_SERVICE_ROLE_KEY"]
+
+_client = None
 
 
-async def get_db() -> aiosqlite.Connection:
-    os.makedirs(os.path.dirname(DB_PATH) or ".", exist_ok=True)
-    db = await aiosqlite.connect(DB_PATH)
-    db.row_factory = aiosqlite.Row
-    await db.execute(CREATE_TABLE)
-    await db.commit()
-    return db
+def get_client():
+    global _client
+    if _client is None:
+        _client = create_client(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY)
+    return _client
 
 
-async def insert_question(data: dict) -> dict:
-    db = await get_db()
-    try:
-        cursor = await db.execute(
-            """INSERT INTO questions (url, title, platform, difficulty, self_rating, time_taken, notes, next_review)
-               VALUES (:url, :title, :platform, :difficulty, :self_rating, :time_taken, :notes, :next_review)""",
-            data,
-        )
-        await db.commit()
-        row = await (await db.execute("SELECT * FROM questions WHERE id = ?", (cursor.lastrowid,))).fetchone()
-        return dict(row)
-    finally:
-        await db.close()
+COLUMNS = (
+    "id, user_id, url, title, platform, difficulty, self_rating, time_taken, "
+    "notes, solved_at, easiness_factor, interval, repetitions, next_review, "
+    "last_reviewed, attempts"
+)
 
 
-async def get_all_questions() -> list[dict]:
-    db = await get_db()
-    try:
-        rows = await (await db.execute("SELECT * FROM questions ORDER BY solved_at DESC")).fetchall()
-        return [dict(r) for r in rows]
-    finally:
-        await db.close()
+def insert_question(user_id: str, data: dict) -> dict:
+    client = get_client()
+    row = {**data, "user_id": user_id}
+    result = client.table("questions").insert(row).execute()
+    return result.data[0]
 
 
-async def get_question(qid: int) -> dict | None:
-    db = await get_db()
-    try:
-        row = await (await db.execute("SELECT * FROM questions WHERE id = ?", (qid,))).fetchone()
-        return dict(row) if row else None
-    finally:
-        await db.close()
+def get_all_questions(user_id: str) -> list[dict]:
+    client = get_client()
+    result = (
+        client.table("questions")
+        .select(COLUMNS)
+        .eq("user_id", user_id)
+        .order("solved_at", desc=True)
+        .execute()
+    )
+    return result.data
 
 
-async def update_question_sm2(qid: int, data: dict):
-    db = await get_db()
-    try:
-        await db.execute(
-            """UPDATE questions
-               SET easiness_factor = :easiness_factor,
-                   interval = :interval,
-                   repetitions = :repetitions,
-                   next_review = :next_review
-               WHERE id = :id""",
-            {**data, "id": qid},
-        )
-        await db.commit()
-    finally:
-        await db.close()
+def get_question(user_id: str, qid: int) -> dict | None:
+    client = get_client()
+    result = (
+        client.table("questions")
+        .select(COLUMNS)
+        .eq("user_id", user_id)
+        .eq("id", qid)
+        .execute()
+    )
+    return result.data[0] if result.data else None
 
 
-async def get_revisions_due(target_date: str | None = None) -> list[dict]:
+def update_question_sm2(user_id: str, qid: int, data: dict, set_reviewed: bool = False):
+    client = get_client()
+    update_data = {
+        "easiness_factor": data["easiness_factor"],
+        "interval": data["interval"],
+        "repetitions": data["repetitions"],
+        "next_review": data["next_review"],
+    }
+    if set_reviewed:
+        update_data["last_reviewed"] = datetime.utcnow().isoformat()
+    (
+        client.table("questions")
+        .update(update_data)
+        .eq("user_id", user_id)
+        .eq("id", qid)
+        .execute()
+    )
+
+
+def get_revisions_due(user_id: str, target_date: str | None = None) -> list[dict]:
     target = target_date or date.today().isoformat()
-    db = await get_db()
-    try:
-        rows = await (
-            await db.execute(
-                "SELECT * FROM questions WHERE next_review <= ? ORDER BY next_review ASC", (target,)
-            )
-        ).fetchall()
-        return [dict(r) for r in rows]
-    finally:
-        await db.close()
+    client = get_client()
+    result = (
+        client.table("questions")
+        .select(COLUMNS)
+        .eq("user_id", user_id)
+        .lte("next_review", target)
+        .order("next_review", desc=False)
+        .execute()
+    )
+    return result.data
 
 
-async def update_question(qid: int, data: dict) -> dict | None:
-    db = await get_db()
-    try:
-        sets = ", ".join(f"{k} = :{k}" for k in data)
-        await db.execute(f"UPDATE questions SET {sets} WHERE id = :id", {**data, "id": qid})
-        await db.commit()
-        row = await (await db.execute("SELECT * FROM questions WHERE id = ?", (qid,))).fetchone()
-        return dict(row) if row else None
-    finally:
-        await db.close()
+def update_question(user_id: str, qid: int, data: dict) -> dict | None:
+    client = get_client()
+    result = (
+        client.table("questions")
+        .update(data)
+        .eq("user_id", user_id)
+        .eq("id", qid)
+        .execute()
+    )
+    return result.data[0] if result.data else None
 
 
-async def delete_question(qid: int) -> bool:
-    db = await get_db()
-    try:
-        cursor = await db.execute("DELETE FROM questions WHERE id = ?", (qid,))
-        await db.commit()
-        return cursor.rowcount > 0
-    finally:
-        await db.close()
+def delete_question(user_id: str, qid: int) -> bool:
+    client = get_client()
+    result = (
+        client.table("questions")
+        .delete()
+        .eq("user_id", user_id)
+        .eq("id", qid)
+        .execute()
+    )
+    return len(result.data) > 0
 
 
-async def get_stats() -> dict:
-    db = await get_db()
-    try:
-        total = (await (await db.execute("SELECT COUNT(*) FROM questions")).fetchone())[0]
+def get_today_activity(user_id: str) -> list[dict]:
+    today = date.today().isoformat()
+    client = get_client()
+    # Fetch rows where solved_at or last_reviewed is today
+    result = (
+        client.table("questions")
+        .select(COLUMNS)
+        .eq("user_id", user_id)
+        .or_(f"solved_at.gte.{today}T00:00:00,last_reviewed.gte.{today}T00:00:00")
+        .execute()
+    )
+    # Compute activity_type in Python
+    rows = []
+    for r in result.data:
+        solved_date = (r.get("solved_at") or "")[:10]
+        activity_type = "NEW" if solved_date == today else "REVISION"
+        rows.append({**r, "activity_type": activity_type})
+    # Sort: most recent activity first
+    rows.sort(
+        key=lambda r: r.get("last_reviewed") or r.get("solved_at") or "",
+        reverse=True,
+    )
+    return rows
 
-        by_difficulty = {}
-        rows = await (await db.execute("SELECT difficulty, COUNT(*) as cnt FROM questions GROUP BY difficulty")).fetchall()
-        for r in rows:
-            by_difficulty[r["difficulty"] or "unknown"] = r["cnt"]
 
-        by_platform = {}
-        rows = await (await db.execute("SELECT platform, COUNT(*) as cnt FROM questions GROUP BY platform")).fetchall()
-        for r in rows:
-            by_platform[r["platform"] or "unknown"] = r["cnt"]
+def find_by_url(user_id: str, url: str) -> dict | None:
+    client = get_client()
+    result = (
+        client.table("questions")
+        .select(COLUMNS)
+        .eq("user_id", user_id)
+        .eq("url", url)
+        .execute()
+    )
+    return result.data[0] if result.data else None
 
-        due_today = (
-            await (
-                await db.execute("SELECT COUNT(*) FROM questions WHERE next_review <= ?", (date.today().isoformat(),))
-            ).fetchone()
-        )[0]
 
-        avg_rating = (await (await db.execute("SELECT AVG(self_rating) FROM questions")).fetchone())[0]
+def increment_attempts(user_id: str, qid: int, title: str | None = None) -> dict:
+    # Fetch current, increment, update
+    question = get_question(user_id, qid)
+    if not question:
+        raise ValueError(f"Question {qid} not found")
+    update_data = {"attempts": (question.get("attempts") or 1) + 1}
+    if title:
+        update_data["title"] = title
+    return update_question(user_id, qid, update_data)
 
-        return {
-            "total": total,
-            "by_difficulty": by_difficulty,
-            "by_platform": by_platform,
-            "due_today": due_today,
-            "avg_rating": round(avg_rating, 1) if avg_rating else 0,
+
+def merge_duplicates(user_id: str):
+    """Consolidate duplicate URL entries for a user."""
+    all_rows = get_all_questions(user_id)
+    # Group by URL
+    by_url: dict[str, list[dict]] = {}
+    for row in all_rows:
+        by_url.setdefault(row["url"], []).append(row)
+
+    client = get_client()
+    for url, rows in by_url.items():
+        if len(rows) < 2:
+            continue
+        # Keep the row with highest repetitions
+        rows.sort(key=lambda r: (r.get("repetitions") or 0, r.get("solved_at") or ""), reverse=True)
+        keep = rows[0]
+        others = rows[1:]
+
+        total_time = sum(r.get("time_taken") or 0 for r in rows)
+        most_recent = max(rows, key=lambda r: r.get("solved_at") or "")
+
+        update_data = {
+            "attempts": len(rows),
+            "time_taken": total_time if total_time > 0 else None,
+            "title": most_recent.get("title"),
+            "difficulty": most_recent.get("difficulty"),
+            "self_rating": most_recent.get("self_rating"),
+            "notes": most_recent.get("notes"),
         }
-    finally:
-        await db.close()
+        client.table("questions").update(update_data).eq("id", keep["id"]).execute()
+        for other in others:
+            client.table("questions").delete().eq("id", other["id"]).execute()
+
+
+def get_stats(user_id: str) -> dict:
+    all_rows = get_all_questions(user_id)
+    total = len(all_rows)
+
+    by_difficulty: dict[str, int] = {}
+    by_platform: dict[str, int] = {}
+    ratings = []
+    due_today = 0
+    today = date.today().isoformat()
+
+    for r in all_rows:
+        diff = r.get("difficulty") or "unknown"
+        by_difficulty[diff] = by_difficulty.get(diff, 0) + 1
+
+        plat = r.get("platform") or "unknown"
+        by_platform[plat] = by_platform.get(plat, 0) + 1
+
+        if r.get("self_rating"):
+            ratings.append(r["self_rating"])
+
+        if r.get("next_review") and r["next_review"] <= today:
+            due_today += 1
+
+    avg_rating = round(sum(ratings) / len(ratings), 1) if ratings else 0
+
+    return {
+        "total": total,
+        "by_difficulty": by_difficulty,
+        "by_platform": by_platform,
+        "due_today": due_today,
+        "avg_rating": avg_rating,
+    }

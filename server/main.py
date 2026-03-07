@@ -4,18 +4,26 @@ import re
 from datetime import date
 from typing import Optional
 
-from fastapi import FastAPI, HTTPException
+from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import HTMLResponse, RedirectResponse
 from pydantic import BaseModel, Field
 
+from auth import (
+    exchange_code_for_session,
+    get_current_user_id,
+    refresh_session,
+    send_magic_link,
+)
 from database import (
     delete_question,
+    find_by_url,
     get_all_questions,
     get_question,
     get_revisions_due,
     get_stats,
+    get_today_activity,
+    increment_attempts,
     insert_question,
     update_question,
     update_question_sm2,
@@ -52,6 +60,9 @@ def detect_platform(url: str) -> str:
     return "other"
 
 
+# --- Request models ---
+
+
 class QuestionIn(BaseModel):
     url: str
     title: Optional[str] = None
@@ -74,11 +85,51 @@ class ReviewIn(BaseModel):
     self_rating: int = Field(ge=1, le=5)
 
 
-# --- API Endpoints ---
+class MagicLinkRequest(BaseModel):
+    email: str
+
+
+class RefreshRequest(BaseModel):
+    refresh_token: str
+
+
+# --- Auth endpoints (no auth required) ---
+
+
+@app.post("/api/auth/magic-link")
+def auth_magic_link(req: MagicLinkRequest):
+    send_magic_link(req.email)
+    return {"message": "Magic link sent!"}
+
+
+@app.get("/api/auth/callback")
+def auth_callback(
+    token_hash: str = Query(...),
+    type: str = Query(...),
+):
+    tokens = exchange_code_for_session(token_hash, type)
+    redirect_url = (
+        f"/dashboard#access_token={tokens['access_token']}"
+        f"&refresh_token={tokens['refresh_token']}"
+    )
+    return RedirectResponse(url=redirect_url)
+
+
+@app.post("/api/auth/refresh")
+def auth_refresh(req: RefreshRequest):
+    tokens = refresh_session(req.refresh_token)
+    return tokens
+
+
+# --- Protected API endpoints ---
 
 
 @app.post("/api/questions")
-async def create_question(q: QuestionIn):
+def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
+    existing = find_by_url(user_id, q.url)
+    if existing:
+        return increment_attempts(user_id, existing["id"], q.title)
+
     platform = detect_platform(q.url)
     sm2_result = sm2(q.self_rating, 2.5, 1, 0)
     data = {
@@ -91,26 +142,25 @@ async def create_question(q: QuestionIn):
         "notes": q.notes,
         "next_review": sm2_result["next_review"],
     }
-    question = await insert_question(data)
-    # Apply SM-2 fields
-    await update_question_sm2(question["id"], sm2_result)
-    updated = await get_question(question["id"])
+    question = insert_question(user_id, data)
+    update_question_sm2(user_id, question["id"], sm2_result)
+    updated = get_question(user_id, question["id"])
     return updated
 
 
 @app.get("/api/questions")
-async def list_questions():
-    return await get_all_questions()
+def list_questions(user_id: str = Depends(get_current_user_id)):
+    return get_all_questions(user_id)
 
 
 @app.get("/api/revisions/today")
-async def revisions_today():
-    return await get_revisions_due(date.today().isoformat())
+def revisions_today(user_id: str = Depends(get_current_user_id)):
+    return get_revisions_due(user_id, date.today().isoformat())
 
 
 @app.post("/api/questions/{qid}/review")
-async def review_question(qid: int, review: ReviewIn):
-    question = await get_question(qid)
+def review_question(qid: int, review: ReviewIn, user_id: str = Depends(get_current_user_id)):
+    question = get_question(user_id, qid)
     if not question:
         raise HTTPException(404, "Question not found")
     result = sm2(
@@ -119,13 +169,13 @@ async def review_question(qid: int, review: ReviewIn):
         question["interval"],
         question["repetitions"],
     )
-    await update_question_sm2(qid, result)
-    return await get_question(qid)
+    update_question_sm2(user_id, qid, result, set_reviewed=True)
+    return get_question(user_id, qid)
 
 
 @app.put("/api/questions/{qid}")
-async def edit_question(qid: int, q: QuestionUpdate):
-    existing = await get_question(qid)
+def edit_question(qid: int, q: QuestionUpdate, user_id: str = Depends(get_current_user_id)):
+    existing = get_question(user_id, qid)
     if not existing:
         raise HTTPException(404, "Question not found")
     updates = {}
@@ -137,26 +187,37 @@ async def edit_question(qid: int, q: QuestionUpdate):
         updates["platform"] = detect_platform(updates["url"])
     if not updates:
         raise HTTPException(400, "No fields to update")
-    return await update_question(qid, updates)
+    return update_question(user_id, qid, updates)
+
+
+@app.get("/api/activity/today")
+def activity_today(user_id: str = Depends(get_current_user_id)):
+    return get_today_activity(user_id)
 
 
 @app.get("/api/stats")
-async def stats():
-    return await get_stats()
+def stats(user_id: str = Depends(get_current_user_id)):
+    return get_stats(user_id)
 
 
 @app.delete("/api/questions/{qid}")
-async def remove_question(qid: int):
-    deleted = await delete_question(qid)
+def remove_question(qid: int, user_id: str = Depends(get_current_user_id)):
+    deleted = delete_question(user_id, qid)
     if not deleted:
         raise HTTPException(404, "Question not found")
     return {"ok": True}
 
 
-# --- Dashboard ---
+# --- Pages ---
+
+
+@app.get("/", response_class=HTMLResponse)
+def landing():
+    with open("templates/landing.html") as f:
+        return f.read()
 
 
 @app.get("/dashboard", response_class=HTMLResponse)
-async def dashboard():
+def dashboard():
     with open("templates/dashboard.html") as f:
         return f.read()
