@@ -1,12 +1,21 @@
+<div align="center">
+
 # Code Revision Tracker
 
-**Spaced repetition for coders.** Track every problem you solve across 10+ platforms. The SM-2 algorithm tells you exactly when to revise, so patterns stick for interviews and beyond.
+**Never forget a coding solution again.**
 
-**Live at [revise.mrinal.dev](https://revise.mrinal.dev)**
+Track every problem you solve across 10+ platforms. The SM-2 algorithm tells you exactly when to revise, so patterns stick for interviews and beyond.
 
----
+[![Live Demo](https://img.shields.io/badge/Live-revise.mrinal.dev-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://revise.mrinal.dev)
+[![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
+[![Python](https://img.shields.io/badge/Python-FastAPI-3b82f6?style=for-the-badge&logo=python&logoColor=white)](https://fastapi.tiangolo.com)
+[![Supabase](https://img.shields.io/badge/Supabase-Postgres-3ecf8e?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+
+<br />
 
 ![Landing Page](docs/images/landing-hero.png)
+
+</div>
 
 ## What It Does
 
