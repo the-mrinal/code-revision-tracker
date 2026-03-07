@@ -208,8 +208,10 @@ const ROASTS = [
 
 function getToken() {
   try {
-    const raw = localStorage.getItem('sb-access-token') || localStorage.getItem('access_token');
-    return raw || null;
+    const raw = localStorage.getItem('auth');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed.access_token || null;
   } catch { return null; }
 }
 
