@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Code Revision Tracker — Dashboard</title>
+<title>Revise — Dashboard</title>
 <style>
   :root { --bg: #0a0a0a; --card: #111; --border: #222; --accent: #5b6abf; --text: #ddd; --muted: #777; }
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -115,7 +115,7 @@
 <!-- Login overlay -->
 <div class="login-overlay" id="loginOverlay">
   <div class="login-box">
-    <h2>Code Revision Tracker</h2>
+    <h2>Revise</h2>
     <p class="login-subtitle">Sign in with your email to continue</p>
     <input type="email" id="loginEmail" placeholder="you@example.com">
     <button id="loginBtn">Send Magic Link</button>
@@ -124,11 +124,14 @@
 </div>
 
 <div class="header-row">
-  <h1>Code Revision Tracker</h1>
-  <span class="user-email" id="userEmail" style="display:none"></span>
-  <button class="sign-out-btn" id="signOutBtn" style="display:none">Sign Out</button>
+  <h1>Revise</h1>
+  <div style="display:flex;align-items:center;gap:8px;">
+    <button class="settings-btn" id="settingsBtn" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Settings</button>
+    <span class="user-email" id="userEmail" style="display:none"></span>
+    <button class="sign-out-btn" id="signOutBtn" style="display:none">Sign Out</button>
+  </div>
 </div>
-<p class="subtitle">Spaced repetition for coding problems</p>
+<p class="subtitle">Spaced repetition for everything you learn</p>
 
 <div class="stats-grid" id="statsGrid"></div>
 
@@ -165,7 +168,7 @@
 </div>
 
 <div class="section">
-  <h2>All Questions</h2>
+  <h2>All Items</h2>
   <div class="toolbar">
     <select id="filterPlatform"><option value="">All Platforms</option></select>
     <select id="filterDifficulty">
@@ -198,7 +201,7 @@
 
 <div class="modal-overlay" id="editModal">
   <div class="modal">
-    <h2>Edit Question</h2>
+    <h2>Edit Item</h2>
     <input type="hidden" id="editId">
     <div class="field">
       <label>Title</label>
@@ -234,6 +237,32 @@
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
       <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal" style="width:520px;">
+    <h2>Manage Platforms</h2>
+    <p style="font-size:12px;color:var(--muted);margin-bottom:16px;">Built-in platforms are always active. Add your own to auto-detect any website.</p>
+    <div id="platformsList" style="max-height:240px;overflow-y:auto;margin-bottom:16px;"></div>
+    <div style="border-top:1px solid var(--border);padding-top:16px;">
+      <h3 style="font-size:13px;margin-bottom:8px;">Add Platform</h3>
+      <div class="row" style="display:flex;gap:8px;align-items:flex-end;">
+        <div class="field" style="flex:1;margin-bottom:0;">
+          <label>Name</label>
+          <input type="text" id="newPlatformName" placeholder="e.g. khanacademy">
+        </div>
+        <div class="field" style="flex:1;margin-bottom:0;">
+          <label>URL Pattern</label>
+          <input type="text" id="newPlatformPattern" placeholder="e.g. khanacademy.org">
+        </div>
+        <button class="btn-save" style="padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;border:none;height:35px;" onclick="addPlatform()">Add</button>
+      </div>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;">Enter a domain like <code style="background:rgba(255,255,255,0.06);padding:1px 4px;border-radius:3px;font-size:11px;">khanacademy.org</code> or a regex pattern.</p>
+    </div>
+    <div class="modal-actions">
+      <button class="btn-cancel" onclick="closeSettings()">Close</button>
     </div>
   </div>
 </div>
@@ -317,6 +346,7 @@ function showLogin() {
 function hideLogin() {
   document.getElementById("loginOverlay").classList.remove("open");
   document.getElementById("signOutBtn").style.display = "inline-block";
+  showSettingsBtn();
   // Show email from JWT
   const auth = getAuth();
   if (auth && auth.access_token) {
@@ -412,7 +442,7 @@ async function load() {
 
 function renderStats(s) {
   document.getElementById("statsGrid").innerHTML = `
-    <div class="stat-card"><div class="value">${s.total}</div><div class="label">Total Solved</div></div>
+    <div class="stat-card"><div class="value">${s.total}</div><div class="label">Total Tracked</div></div>
     <div class="stat-card"><div class="value">${s.due_today}</div><div class="label">Due Today</div></div>
     <div class="stat-card"><div class="value">${s.avg_rating || '—'}</div><div class="label">Avg Rating</div></div>
     <div class="stat-card"><div class="value">${Object.keys(s.by_platform).length}</div><div class="label">Platforms</div></div>
@@ -616,6 +646,63 @@ document.querySelectorAll('th[data-sort]').forEach(th => th.addEventListener('cl
 document.getElementById("filterPlatform").addEventListener("change", renderTable);
 document.getElementById("filterDifficulty").addEventListener("change", renderTable);
 document.getElementById("searchBox").addEventListener("input", renderTable);
+
+// --- Settings / Platforms ---
+async function openSettings() {
+  document.getElementById('settingsModal').classList.add('open');
+  await loadPlatforms();
+}
+
+function closeSettings() {
+  document.getElementById('settingsModal').classList.remove('open');
+}
+
+document.getElementById('settingsModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('settingsModal')) closeSettings();
+});
+
+async function loadPlatforms() {
+  const r = await apiFetch('/platforms');
+  const platforms = await r.json();
+  const el = document.getElementById('platformsList');
+  el.innerHTML = platforms.map(p => `
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:6px 0;border-bottom:1px solid #1a1a1a;">
+      <div>
+        <span style="font-size:13px;font-weight:500;">${esc(p.name)}</span>
+        <span style="font-size:11px;color:var(--muted);margin-left:8px;">${esc(p.url_pattern)}</span>
+        ${p.builtin ? '<span style="font-size:10px;background:#1e1b4b;color:#a5b4fc;padding:1px 6px;border-radius:3px;margin-left:6px;">DEFAULT</span>' : ''}
+      </div>
+      ${p.builtin ? '' : `<button class="delete-btn" onclick="deletePlatform(${p.id})">✕</button>`}
+    </div>
+  `).join('');
+}
+
+async function addPlatform() {
+  const name = document.getElementById('newPlatformName').value.trim();
+  const pattern = document.getElementById('newPlatformPattern').value.trim();
+  if (!name || !pattern) return;
+  await apiFetch('/platforms', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({name, url_pattern: pattern}),
+  });
+  document.getElementById('newPlatformName').value = '';
+  document.getElementById('newPlatformPattern').value = '';
+  await loadPlatforms();
+}
+
+async function deletePlatform(id) {
+  if (!confirm('Remove this custom platform?')) return;
+  await apiFetch(`/platforms/${id}`, { method: 'DELETE' });
+  await loadPlatforms();
+}
+
+document.getElementById('settingsBtn').addEventListener('click', openSettings);
+
+// Show settings button when logged in
+function showSettingsBtn() {
+  document.getElementById('settingsBtn').style.display = 'inline-block';
+}
 
 initAuth();
 </script>

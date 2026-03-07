@@ -1,4 +1,4 @@
-"""Supabase database queries for Code Revision Tracker."""
+"""Supabase database queries for Revise."""
 
 import os
 from datetime import date, datetime
@@ -192,6 +192,37 @@ def merge_duplicates(user_id: str):
         client.table("questions").update(update_data).eq("id", keep["id"]).execute()
         for other in others:
             client.table("questions").delete().eq("id", other["id"]).execute()
+
+
+def get_user_platforms(user_id: str) -> list[dict]:
+    client = get_client()
+    result = (
+        client.table("user_platforms")
+        .select("id, user_id, name, url_pattern, created_at")
+        .eq("user_id", user_id)
+        .order("created_at", desc=False)
+        .execute()
+    )
+    return result.data
+
+
+def insert_user_platform(user_id: str, data: dict) -> dict:
+    client = get_client()
+    row = {"user_id": user_id, "name": data["name"], "url_pattern": data["url_pattern"]}
+    result = client.table("user_platforms").insert(row).execute()
+    return result.data[0]
+
+
+def delete_user_platform(user_id: str, platform_id: int) -> bool:
+    client = get_client()
+    result = (
+        client.table("user_platforms")
+        .delete()
+        .eq("user_id", user_id)
+        .eq("id", platform_id)
+        .execute()
+    )
+    return len(result.data) > 0
 
 
 def get_stats(user_id: str) -> dict:

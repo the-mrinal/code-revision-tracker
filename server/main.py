@@ -1,4 +1,4 @@
-"""FastAPI server for Code Revision Tracker."""
+"""FastAPI server for Revise."""
 
 import re
 from datetime import date
@@ -17,20 +17,23 @@ from auth import (
 )
 from database import (
     delete_question,
+    delete_user_platform,
     find_by_url,
     get_all_questions,
     get_question,
     get_revisions_due,
     get_stats,
     get_today_activity,
+    get_user_platforms,
     increment_attempts,
     insert_question,
+    insert_user_platform,
     update_question,
     update_question_sm2,
 )
 from sm2 import sm2
 
-app = FastAPI(title="Code Revision Tracker")
+app = FastAPI(title="Revise")
 
 app.add_middleware(
     CORSMiddleware,
@@ -53,7 +56,11 @@ PLATFORM_PATTERNS = {
 }
 
 
-def detect_platform(url: str) -> str:
+def detect_platform(url: str, user_platforms: list[dict] | None = None) -> str:
+    if user_platforms:
+        for p in user_platforms:
+            if re.search(p["url_pattern"], url, re.IGNORECASE):
+                return p["name"]
     for platform, pattern in PLATFORM_PATTERNS.items():
         if re.search(pattern, url, re.IGNORECASE):
             return platform
@@ -87,6 +94,11 @@ class ReviewIn(BaseModel):
 
 class MagicLinkRequest(BaseModel):
     email: str
+
+
+class PlatformIn(BaseModel):
+    name: str
+    url_pattern: str
 
 
 class RefreshRequest(BaseModel):
@@ -138,7 +150,8 @@ def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
     if existing:
         return increment_attempts(user_id, existing["id"], q.title)
 
-    platform = detect_platform(q.url)
+    user_plats = get_user_platforms(user_id)
+    platform = detect_platform(q.url, user_plats)
     sm2_result = sm2(q.self_rating, 2.5, 1, 0)
     data = {
         "url": q.url,
@@ -192,7 +205,8 @@ def edit_question(qid: int, q: QuestionUpdate, user_id: str = Depends(get_curren
         if val is not None:
             updates[field] = val
     if "url" in updates:
-        updates["platform"] = detect_platform(updates["url"])
+        user_plats = get_user_platforms(user_id)
+        updates["platform"] = detect_platform(updates["url"], user_plats)
     if not updates:
         raise HTTPException(400, "No fields to update")
     return update_question(user_id, qid, updates)
@@ -206,6 +220,27 @@ def activity_today(user_id: str = Depends(get_current_user_id)):
 @app.get("/api/stats")
 def stats(user_id: str = Depends(get_current_user_id)):
     return get_stats(user_id)
+
+
+@app.get("/api/platforms")
+def list_platforms(user_id: str = Depends(get_current_user_id)):
+    user_plats = get_user_platforms(user_id)
+    builtin = [{"name": name, "url_pattern": pattern, "builtin": True} for name, pattern in PLATFORM_PATTERNS.items()]
+    custom = [{**p, "builtin": False} for p in user_plats]
+    return builtin + custom
+
+
+@app.post("/api/platforms")
+def add_platform(p: PlatformIn, user_id: str = Depends(get_current_user_id)):
+    return insert_user_platform(user_id, {"name": p.name, "url_pattern": p.url_pattern})
+
+
+@app.delete("/api/platforms/{platform_id}")
+def remove_platform(platform_id: int, user_id: str = Depends(get_current_user_id)):
+    deleted = delete_user_platform(user_id, platform_id)
+    if not deleted:
+        raise HTTPException(404, "Platform not found")
+    return {"ok": True}
 
 
 @app.delete("/api/questions/{qid}")

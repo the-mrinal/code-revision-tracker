@@ -1,10 +1,10 @@
 <div align="center">
 
-# Code Revision Tracker
+# Revise
 
-**Never forget a coding solution again.**
+**Never forget what you learn.**
 
-Track every problem you solve across 10+ platforms. The SM-2 algorithm tells you exactly when to revise, so patterns stick for interviews and beyond.
+Track everything you study — coding problems, math exercises, design tutorials, language lessons, and more. The SM-2 algorithm tells you exactly when to revise, so knowledge sticks for good.
 
 [![Live Demo](https://img.shields.io/badge/Live-revise.mrinal.dev-6366f1?style=for-the-badge&logo=vercel&logoColor=white)](https://revise.mrinal.dev)
 [![License](https://img.shields.io/badge/License-MIT-22c55e?style=for-the-badge)](LICENSE)
@@ -19,13 +19,14 @@ Track every problem you solve across 10+ platforms. The SM-2 algorithm tells you
 
 ## What It Does
 
-You solve coding problems. You forget them in a week. This fixes that.
+You learn something. You forget it in a week. This fixes that.
 
-Code Revision Tracker is a browser extension + web dashboard that:
-- **Auto-detects** the problem you're solving (LeetCode, Codeforces, HackerRank, etc.)
-- **Times your solve** with a built-in timer — no manual entry
+Revise is a browser extension + web dashboard that:
+- **Auto-detects** the platform you're using (LeetCode, Codeforces, HackerRank, Khan Academy, etc.)
+- **Lets you add custom platforms** — track any website you learn from
+- **Times your study** with a built-in timer — no manual entry
 - **Schedules revisions** using the SM-2 spaced repetition algorithm (same algorithm behind Anki and SuperMemo)
-- **Shows a dashboard** with stats, charts, activity feed, and a filterable table of everything you've solved
+- **Shows a dashboard** with stats, charts, activity feed, and a filterable table of everything you've tracked
 
 No passwords. Sign in with a magic link. Your data is yours.
 
@@ -35,13 +36,13 @@ No passwords. Sign in with a magic link. Your data is yours.
 
 ![Supported Platforms](docs/images/landing-platforms.png)
 
-> 10+ competitive programming and interview prep platforms supported out of the box.
+> 10+ platforms supported out of the box, plus add your own.
 
 ### Dashboard
 
 ![Dashboard](docs/images/dashboard.png)
 
-> Full analytics: problems solved, difficulty breakdown, platform distribution, revision schedule, and daily activity — all in one view.
+> Full analytics: items tracked, difficulty breakdown, platform distribution, revision schedule, and daily activity — all in one view.
 
 ### Magic Link Login
 
@@ -56,14 +57,14 @@ No passwords. Sign in with a magic link. Your data is yours.
   <img src="docs/images/extension-capture.png" width="280" alt="Extension - Capture Problem" />
 </p>
 
-> The extension auto-detects the problem URL and title. Navigate to any supported platform and it picks it up instantly.
+> The extension auto-detects the URL and title. Navigate to any supported platform and it picks it up instantly.
 
 <p>
   <img src="docs/images/extension-timer.png" width="280" alt="Extension - Timer Running" />
   <img src="docs/images/extension-save.png" width="280" alt="Extension - Save Question" />
 </p>
 
-> Start a timer when you begin solving. When you're done, rate your recall (1-5 stars), add notes, and save. The SM-2 algorithm handles the rest.
+> Start a timer when you begin studying. When you're done, rate your recall (1-5 stars), add notes, and save. The SM-2 algorithm handles the rest.
 
 ## How It Works
 
@@ -78,11 +79,11 @@ Browser Extension (Chrome / Safari)
    Web Dashboard (revise.mrinal.dev/dashboard)
 ```
 
-1. **Solve a problem** on any supported platform
+1. **Study something** on any supported platform (or add your own)
 2. **Click the extension** — it auto-detects the URL and title
-3. **Start the timer**, solve, stop when done
+3. **Start the timer**, study, stop when done
 4. **Rate your recall** (1-5 stars) and save
-5. **SM-2 schedules your next review** — problems you found hard come back sooner, easy ones later
+5. **SM-2 schedules your next review** — things you found hard come back sooner, easy ones later
 6. **Check the dashboard** for what's due today, your stats, and your full history
 
 ## Supported Platforms
@@ -99,19 +100,21 @@ Browser Extension (Chrome / Safari)
 | NeetCode | Yes |
 | AlgoMonster | Yes |
 | DesignGurus.io | Yes |
+| **Custom Platforms** | **User-defined** |
 
-Any other URL works too — it's tagged as "other".
+Any other URL works too — it's tagged as "other". You can add custom platforms from the dashboard settings to auto-detect any website.
 
 ## Features
 
 - **SM-2 Spaced Repetition** — the same algorithm behind Anki and SuperMemo. Rate your recall 1-5 stars, and the system schedules your next review at the optimal time.
-- **Built-in Timer** — start when you begin a problem, pause/resume, stop when done. Solve time is recorded automatically.
-- **Analytics Dashboard** — problems solved, difficulty breakdown, platform distribution, revision schedule, daily activity feed.
+- **Built-in Timer** — start when you begin studying, pause/resume, stop when done. Time is recorded automatically.
+- **Custom Platforms** — add any website from the dashboard settings. Define a name and URL pattern, and it auto-detects just like the built-in platforms.
+- **Analytics Dashboard** — items tracked, difficulty breakdown, platform distribution, revision schedule, daily activity feed.
 - **Magic Link Auth** — no passwords. Enter your email, click the link in your inbox, done. Powered by Supabase Auth.
 - **10+ Platforms** — auto-detects LeetCode, Codeforces, HackerRank, CodeChef, GeeksForGeeks, InterviewBit, AtCoder, NeetCode, AlgoMonster, DesignGurus.
-- **Browser Extension** — Chrome and Safari. Captures the current problem URL with one click.
-- **Due for Revision** — the extension and dashboard both show which problems are due today, so you always know what to revise.
-- **CSV Export** — download your entire question history as a CSV.
+- **Browser Extension** — Chrome and Safari. Captures the current URL with one click.
+- **Due for Revision** — the extension and dashboard both show which items are due today, so you always know what to revise.
+- **CSV Export** — download your entire history as a CSV.
 - **Per-user Data Isolation** — Row Level Security on Supabase. Each user only sees their own data.
 
 ## Getting Started
@@ -123,7 +126,7 @@ Any other URL works too — it's tagged as "other".
 3. Enter your email and click **Send Magic Link**
 4. Check your inbox, click the link — you're logged in
 5. Install the browser extension (see below)
-6. Start solving problems!
+6. Start learning!
 
 ### Install the Chrome Extension
 
@@ -171,6 +174,24 @@ create policy "Users delete own questions" on public.questions for delete using 
 
 create index idx_questions_user_url on public.questions(user_id, url);
 create index idx_questions_next_review on public.questions(user_id, next_review);
+
+-- Custom platforms (for user-defined URL patterns)
+create table public.user_platforms (
+  id bigint generated always as identity primary key,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  name text not null,
+  url_pattern text not null,
+  created_at timestamptz default now()
+);
+
+alter table public.user_platforms enable row level security;
+
+create policy "Users see own platforms" on public.user_platforms for select using (auth.uid() = user_id);
+create policy "Users insert own platforms" on public.user_platforms for insert with check (auth.uid() = user_id);
+create policy "Users update own platforms" on public.user_platforms for update using (auth.uid() = user_id);
+create policy "Users delete own platforms" on public.user_platforms for delete using (auth.uid() = user_id);
+
+create unique index idx_user_platforms_unique on public.user_platforms(user_id, name);
 ```
 
 Configure Auth redirect URLs in Supabase Dashboard:
@@ -210,14 +231,17 @@ All endpoints except auth require an `Authorization: Bearer <token>` header.
 | `POST` | `/api/auth/magic-link` | Send magic link email |
 | `GET` | `/api/auth/callback` | Handle auth callback (PKCE + implicit flow) |
 | `POST` | `/api/auth/refresh` | Refresh access token |
-| `POST` | `/api/questions` | Save a new question |
-| `GET` | `/api/questions` | List all questions |
-| `PUT` | `/api/questions/{id}` | Edit a question |
-| `DELETE` | `/api/questions/{id}` | Delete a question |
+| `POST` | `/api/questions` | Save a new item |
+| `GET` | `/api/questions` | List all items |
+| `PUT` | `/api/questions/{id}` | Edit an item |
+| `DELETE` | `/api/questions/{id}` | Delete an item |
 | `POST` | `/api/questions/{id}/review` | Submit a review rating (triggers SM-2) |
-| `GET` | `/api/revisions/today` | Get questions due for revision today |
-| `GET` | `/api/activity/today` | Today's new + revised questions |
+| `GET` | `/api/revisions/today` | Get items due for revision today |
+| `GET` | `/api/activity/today` | Today's new + revised items |
 | `GET` | `/api/stats` | Summary statistics |
+| `GET` | `/api/platforms` | List built-in + custom platforms |
+| `POST` | `/api/platforms` | Add a custom platform |
+| `DELETE` | `/api/platforms/{id}` | Delete a custom platform |
 
 ## SM-2 Algorithm
 
@@ -230,7 +254,7 @@ The revision schedule uses the [SM-2 algorithm](https://en.wikipedia.org/wiki/Su
 | 4 | Good recall | Moderate interval |
 | 5 | Easy recall | Long interval |
 
-The easiness factor adjusts over time. Problems you consistently nail appear less frequently. Problems you struggle with keep coming back until they stick.
+The easiness factor adjusts over time. Things you consistently nail appear less frequently. Things you struggle with keep coming back until they stick.
 
 ## Tech Stack
 

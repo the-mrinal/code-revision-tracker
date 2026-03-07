@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "Code Revision Tracker",
-  "version": "1.0.0",
-  "description": "Track coding practice and get spaced repetition reminders for revision.",
+  "name": "Revise",
+  "version": "1.1.0",
+  "description": "Track what you learn and get spaced repetition reminders for revision.",
   "permissions": ["activeTab", "storage", "alarms", "tabs"],
   "host_permissions": ["https://revise.mrinal.dev/*"],
   "action": {
@@ -16,6 +16,13 @@
   "background": {
     "service_worker": "background.js"
   },
+  "content_scripts": [
+    {
+      "matches": ["https://revise.mrinal.dev/*"],
+      "js": ["capture-tokens.js"],
+      "run_at": "document_start"
+    }
+  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",
