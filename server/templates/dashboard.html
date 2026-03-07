@@ -12,6 +12,7 @@
   .subtitle { color: var(--muted); font-size: 13px; margin-bottom: 24px; }
 
   .header-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+  .user-email { color: #9ca3af; font-size: 12px; margin-right: 8px; }
   .sign-out-btn { background: none; border: 1px solid #4c1d1d; color: #fca5a5; padding: 4px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
   .sign-out-btn:hover { background: #4c1d1d; }
 
@@ -124,6 +125,7 @@
 
 <div class="header-row">
   <h1>Code Revision Tracker</h1>
+  <span class="user-email" id="userEmail" style="display:none"></span>
   <button class="sign-out-btn" id="signOutBtn" style="display:none">Sign Out</button>
 </div>
 <p class="subtitle">Spaced repetition for coding problems</p>
@@ -309,11 +311,24 @@ function captureTokensFromHash() {
 function showLogin() {
   document.getElementById("loginOverlay").classList.add("open");
   document.getElementById("signOutBtn").style.display = "none";
+  document.getElementById("userEmail").style.display = "none";
 }
 
 function hideLogin() {
   document.getElementById("loginOverlay").classList.remove("open");
   document.getElementById("signOutBtn").style.display = "inline-block";
+  // Show email from JWT
+  const auth = getAuth();
+  if (auth && auth.access_token) {
+    try {
+      const payload = JSON.parse(atob(auth.access_token.split(".")[1]));
+      if (payload.email) {
+        const el = document.getElementById("userEmail");
+        el.textContent = payload.email;
+        el.style.display = "inline";
+      }
+    } catch {}
+  }
 }
 
 // Send magic link
