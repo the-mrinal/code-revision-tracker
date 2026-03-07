@@ -60,6 +60,59 @@
     transition: opacity 0.2s;
   }
   .nav-cta:hover { opacity: 0.85; }
+  .nav-hamburger {
+    display: none;
+    background: none;
+    border: none;
+    color: #fff;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 4px;
+  }
+
+  /* Mobile modal */
+  .mobile-modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(0,0,0,0.75);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    backdrop-filter: blur(4px);
+  }
+  .mobile-modal-overlay.active { display: flex; }
+  .mobile-modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 36px 28px;
+    max-width: 380px;
+    width: 100%;
+    text-align: center;
+    animation: modalPop 0.3s ease;
+  }
+  @keyframes modalPop {
+    from { transform: scale(0.9); opacity: 0; }
+    to { transform: scale(1); opacity: 1; }
+  }
+  .mobile-modal .modal-emoji { font-size: 48px; margin-bottom: 16px; }
+  .mobile-modal h3 { font-size: 20px; font-weight: 700; color: #fff; margin-bottom: 12px; }
+  .mobile-modal p { font-size: 14px; color: var(--muted); line-height: 1.7; margin-bottom: 8px; }
+  .mobile-modal .modal-close {
+    margin-top: 20px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+  }
+  .mobile-modal .modal-close:hover { opacity: 0.85; }
 
   /* Hero */
   .hero {
@@ -393,11 +446,44 @@
   /* Responsive */
   @media (max-width: 768px) {
     nav { padding: 16px 20px; }
-    .hero h1 { font-size: 34px; }
-    .hero p { font-size: 16px; }
+    .nav-hamburger { display: block; }
+    .nav-links {
+      display: none;
+      position: absolute;
+      top: 60px;
+      left: 0;
+      right: 0;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+      flex-direction: column;
+      padding: 16px 20px;
+      gap: 16px;
+      z-index: 100;
+    }
+    .nav-links.open { display: flex; }
+    .nav-links .nav-cta { text-align: center; }
+    nav { position: relative; }
+    .hero { padding: 60px 20px 40px; }
+    .hero h1 { font-size: 30px; letter-spacing: -0.5px; }
+    .hero p { font-size: 15px; }
+    .hero-buttons { flex-direction: column; align-items: center; }
+    .hero-buttons a { width: 100%; max-width: 280px; text-align: center; }
+    .features-section { padding: 48px 20px; }
+    .features-section h2 { font-size: 28px; }
     .features-grid { grid-template-columns: 1fr; }
-    .stats-banner { gap: 32px; }
+    .feature-card { padding: 22px; }
+    .stats-banner { gap: 24px; flex-wrap: wrap; }
     .stats-banner .stat-value { font-size: 24px; }
+    .how-section { padding: 48px 20px; }
+    .how-section h2 { font-size: 28px; }
+    .step { gap: 16px; }
+    .platforms-section { padding: 40px 20px; }
+    .platforms-section h2 { font-size: 20px; }
+    .platform-tag { padding: 8px 14px; font-size: 13px; }
+    .install-section { padding: 48px 20px; }
+    .install-section h2 { font-size: 28px; }
+    .cta-section { padding: 48px 20px; }
+    .cta-section h2 { font-size: 24px; }
   }
 </style>
 </head>
@@ -405,10 +491,11 @@
 
 <nav>
   <a href="/" class="nav-brand">Revise</a>
+  <button class="nav-hamburger" onclick="document.querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">&#9776;</button>
   <div class="nav-links">
-    <a href="#features">Features</a>
-    <a href="#install">Install</a>
-    <a href="#how-it-works">How it works</a>
+    <a href="#features" onclick="this.parentElement.classList.remove('open')">Features</a>
+    <a href="#install" onclick="this.parentElement.classList.remove('open')">Install</a>
+    <a href="#how-it-works" onclick="this.parentElement.classList.remove('open')">How it works</a>
     <a href="https://github.com/the-mrinal/code-revision-tracker" target="_blank" style="display:flex;align-items:center;gap:6px;">
       <img src="https://img.shields.io/github/stars/the-mrinal/code-revision-tracker?style=social" alt="GitHub stars" style="height:20px;">
     </a>
@@ -561,5 +648,35 @@
   <p>Built by <a href="https://mrinal.dev">Mrinal</a> &middot; powered by mass caffeine &amp; Claude (who wrote most of it, let's be honest) &middot; Revise</p>
 </footer>
 
+<!-- Mobile login modal -->
+<div class="mobile-modal-overlay" id="mobileModal">
+  <div class="mobile-modal">
+    <div class="modal-emoji">&#x1F4BB;</div>
+    <h3>Whoa there, tiny screen!</h3>
+    <p>Revise is a desktop-only experience for now. We tried shrinking the dashboard to fit your phone, but it filed a restraining order.</p>
+    <p style="color:var(--accent-light);">Hop on a laptop or desktop and we'll roll out the red carpet for you.</p>
+    <button class="modal-close" onclick="document.getElementById('mobileModal').classList.remove('active')">Got it, I'll grab my laptop</button>
+  </div>
+</div>
+
+<script>
+(function() {
+  function isMobile() {
+    return window.innerWidth <= 768;
+  }
+  document.addEventListener('click', function(e) {
+    var link = e.target.closest('a');
+    if (!link) return;
+    var href = link.getAttribute('href');
+    if (href === '/dashboard' && isMobile()) {
+      e.preventDefault();
+      document.getElementById('mobileModal').classList.add('active');
+    }
+  });
+  document.getElementById('mobileModal').addEventListener('click', function(e) {
+    if (e.target === this) this.classList.remove('active');
+  });
+})();
+</script>
 </body>
 </html>
