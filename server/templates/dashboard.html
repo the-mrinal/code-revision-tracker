@@ -97,6 +97,40 @@
   .activity-filter button.active { border-color: var(--accent); color: var(--text); }
   .activity-filter button:hover { border-color: var(--accent); }
 
+  /* Patterns section */
+  .patterns-overview { display: flex; align-items: center; gap: 16px; margin-bottom: 16px; }
+  .patterns-overview .progress-bar { flex: 1; height: 8px; background: #1a1a1a; border-radius: 4px; overflow: hidden; }
+  .patterns-overview .progress-fill { height: 100%; background: var(--accent); border-radius: 4px; transition: width 0.3s; }
+  .patterns-overview .progress-text { font-size: 13px; color: var(--muted); white-space: nowrap; }
+
+  .pattern-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; margin-bottom: 16px; }
+  .pattern-cat-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 14px; cursor: pointer; transition: border-color 0.2s; }
+  .pattern-cat-card:hover { border-color: var(--accent); }
+  .pattern-cat-card.expanded { border-color: var(--accent); }
+  .pattern-cat-card .cat-name { font-size: 13px; font-weight: 600; margin-bottom: 6px; }
+  .pattern-cat-card .cat-progress { display: flex; align-items: center; gap: 8px; }
+  .pattern-cat-card .cat-progress .progress-bar { flex: 1; height: 4px; background: #1a1a1a; border-radius: 2px; overflow: hidden; }
+  .pattern-cat-card .cat-progress .progress-fill { height: 100%; background: #6ee7b7; border-radius: 2px; }
+  .pattern-cat-card .cat-stats { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .pattern-details { display: none; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 16px; margin-bottom: 16px; }
+  .pattern-details.open { display: block; }
+  .pattern-details h3 { font-size: 14px; margin-bottom: 12px; }
+  .pattern-group { margin-bottom: 12px; }
+  .pattern-group .pat-name { font-size: 12px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .pattern-group .problem-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .problem-chip { display: inline-block; font-size: 11px; padding: 3px 8px; border-radius: 4px; text-decoration: none; font-weight: 500; transition: opacity 0.2s; }
+  .problem-chip:hover { opacity: 0.8; text-decoration: none; }
+  .problem-chip.tracked { background: #064e3b; color: #6ee7b7; }
+  .problem-chip.due { background: #78350f; color: #fbbf24; }
+  .problem-chip.untracked { background: #1a1a1a; color: #666; }
+
+  .recommend-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 10px; }
+  .recommend-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+  .recommend-card .rec-title { font-size: 13px; font-weight: 600; margin-bottom: 4px; }
+  .recommend-card .rec-title a { color: #7c9cff; }
+  .recommend-card .rec-pattern { font-size: 11px; color: var(--muted); }
+
   /* Login overlay */
   .login-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; align-items: center; justify-content: center; }
   .login-overlay.open { display: flex; }
@@ -136,6 +170,15 @@
 <div class="stats-grid" id="statsGrid"></div>
 
 <div class="chart-row" id="chartRow"></div>
+
+<div class="section" id="patternsSection" style="display:none;">
+  <h2>DSA Patterns <span class="badge" id="patternsBadge">0/0</span></h2>
+  <div class="patterns-overview" id="patternsOverview"></div>
+  <div class="pattern-grid" id="patternGrid"></div>
+  <div class="pattern-details" id="patternDetails"></div>
+  <h3 style="font-size:14px;margin:16px 0 10px;color:var(--muted);">Suggested Next</h3>
+  <div class="recommend-cards" id="recommendCards"><div class="empty">Loading...</div></div>
+</div>
 
 <div class="section">
   <h2>Today's Activity <span class="badge" id="activityBadge">0</span></h2>
@@ -231,6 +274,10 @@
       </div>
     </div>
     <div class="field">
+      <label>Pattern</label>
+      <select id="editPattern"><option value="">None</option></select>
+    </div>
+    <div class="field">
       <label>Notes</label>
       <textarea id="editNotes"></textarea>
     </div>
@@ -277,6 +324,8 @@
 const API = "/api";
 let allQuestions = [];
 let todayActivity = [];
+let patternsData = null;
+let patternLabels = [];
 let activityFilterValue = "all";
 let sortKey = "solved_at", sortDir = -1;
 
@@ -430,19 +479,26 @@ async function initAuth() {
 }
 
 async function load() {
-  const [questions, stats, revisions, activity] = await Promise.all([
+  const [questions, stats, revisions, activity, patterns, pLabels, recommendations] = await Promise.all([
     apiFetch("/questions").then(r => r.json()),
     apiFetch("/stats").then(r => r.json()),
     apiFetch("/revisions/today").then(r => r.json()),
     apiFetch("/activity/today").then(r => r.json()),
+    apiFetch("/patterns").then(r => r.json()),
+    apiFetch("/patterns/list").then(r => r.json()),
+    apiFetch("/patterns/recommend").then(r => r.json()),
   ]);
   allQuestions = questions;
   todayActivity = activity;
+  patternsData = patterns;
+  patternLabels = pLabels;
   renderStats(stats);
   renderCharts(stats);
+  renderPatterns(patterns, recommendations);
   renderActivity();
   renderRevisions(revisions);
   populateFilters();
+  populatePatternDropdown();
   renderTable();
 }
 
@@ -591,6 +647,7 @@ function openEdit(id) {
   document.getElementById('editRating').value = q.self_rating || '';
   document.getElementById('editTime').value = q.time_taken || '';
   document.getElementById('editNotes').value = q.notes || '';
+  document.getElementById('editPattern').value = q.pattern || '';
   document.getElementById('editModal').classList.add('open');
 }
 
@@ -608,12 +665,15 @@ async function saveEdit() {
   const time = parseInt(document.getElementById('editTime').value);
   const notes = document.getElementById('editNotes').value.trim();
 
+  const pattern = document.getElementById('editPattern').value;
+
   if (title) payload.title = title;
   if (url) payload.url = url;
   if (difficulty) payload.difficulty = difficulty;
   if (rating >= 1 && rating <= 5) payload.self_rating = rating;
   if (time > 0) payload.time_taken = time;
   if (notes) payload.notes = notes;
+  if (pattern) payload.pattern = pattern;
 
   const r = await apiFetch(`/questions/${id}`, {
     method: 'PUT',
@@ -725,6 +785,106 @@ document.getElementById('settingsBtn').addEventListener('click', openSettings);
 // Show settings button when logged in
 function showSettingsBtn() {
   document.getElementById('settingsBtn').style.display = 'inline-block';
+}
+
+// --- Patterns ---
+let expandedCategory = null;
+
+function renderPatterns(data, recommendations) {
+  const section = document.getElementById('patternsSection');
+  section.style.display = 'block';
+
+  const {categories, overall} = data;
+  document.getElementById('patternsBadge').textContent = `${overall.solved}/${overall.total}`;
+
+  // Overall progress bar
+  const pct = overall.total ? Math.round((overall.solved / overall.total) * 100) : 0;
+  document.getElementById('patternsOverview').innerHTML = `
+    <span class="progress-text">${overall.solved}/${overall.total} problems tracked</span>
+    <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    <span class="progress-text">${pct}%</span>
+  `;
+
+  // Category grid
+  document.getElementById('patternGrid').innerHTML = categories.map((cat, i) => {
+    const catPct = cat.total_count ? Math.round((cat.solved_count / cat.total_count) * 100) : 0;
+    const startedPatterns = cat.patterns.filter(p => p.solved_count > 0).length;
+    return `<div class="pattern-cat-card${expandedCategory === i ? ' expanded' : ''}" onclick="toggleCategory(${i})">
+      <div class="cat-name">${esc(cat.name)}</div>
+      <div class="cat-progress">
+        <div class="progress-bar"><div class="progress-fill" style="width:${catPct}%"></div></div>
+        <span style="font-size:11px;color:var(--muted);white-space:nowrap;">${cat.solved_count}/${cat.total_count}</span>
+      </div>
+      <div class="cat-stats">${startedPatterns}/${cat.patterns.length} patterns started</div>
+    </div>`;
+  }).join('');
+
+  // Expand details if a category is selected
+  renderPatternDetails(categories);
+
+  // Recommendations
+  const recEl = document.getElementById('recommendCards');
+  if (!recommendations.length) {
+    recEl.innerHTML = '<div class="empty">All patterns covered!</div>';
+  } else {
+    recEl.innerHTML = recommendations.map(r => `
+      <div class="recommend-card">
+        <div class="rec-title"><a href="${esc(r.url)}" target="_blank">${r.number}. ${esc(r.title)}</a></div>
+        <div class="rec-pattern">${esc(r.pattern)}</div>
+      </div>
+    `).join('');
+  }
+}
+
+function toggleCategory(idx) {
+  expandedCategory = expandedCategory === idx ? null : idx;
+  if (patternsData) {
+    // Re-render grid to update expanded state
+    const categories = patternsData.categories;
+    document.getElementById('patternGrid').innerHTML = categories.map((cat, i) => {
+      const catPct = cat.total_count ? Math.round((cat.solved_count / cat.total_count) * 100) : 0;
+      const startedPatterns = cat.patterns.filter(p => p.solved_count > 0).length;
+      return `<div class="pattern-cat-card${expandedCategory === i ? ' expanded' : ''}" onclick="toggleCategory(${i})">
+        <div class="cat-name">${esc(cat.name)}</div>
+        <div class="cat-progress">
+          <div class="progress-bar"><div class="progress-fill" style="width:${catPct}%"></div></div>
+          <span style="font-size:11px;color:var(--muted);white-space:nowrap;">${cat.solved_count}/${cat.total_count}</span>
+        </div>
+        <div class="cat-stats">${startedPatterns}/${cat.patterns.length} patterns started</div>
+      </div>`;
+    }).join('');
+    renderPatternDetails(categories);
+  }
+}
+
+function renderPatternDetails(categories) {
+  const el = document.getElementById('patternDetails');
+  if (expandedCategory === null || !categories[expandedCategory]) {
+    el.classList.remove('open');
+    return;
+  }
+  const cat = categories[expandedCategory];
+  const today = new Date().toISOString().slice(0, 10);
+  el.classList.add('open');
+  el.innerHTML = `<h3>${esc(cat.name)}</h3>` + cat.patterns.map(pat => `
+    <div class="pattern-group">
+      <div class="pat-name">${esc(pat.name)} (${pat.solved_count}/${pat.total_count})</div>
+      <div class="problem-chips">
+        ${pat.problems.map(p => {
+          let cls = 'untracked';
+          if (p.tracked) {
+            cls = (p.next_review && p.next_review <= today) ? 'due' : 'tracked';
+          }
+          return `<a class="problem-chip ${cls}" href="${p.url || '#'}" target="_blank" title="${esc(p.title)}">${p.number}</a>`;
+        }).join('')}
+      </div>
+    </div>
+  `).join('');
+}
+
+function populatePatternDropdown() {
+  const sel = document.getElementById('editPattern');
+  sel.innerHTML = '<option value="">None</option>' + patternLabels.map(l => `<option value="${esc(l)}">${esc(l)}</option>`).join('');
 }
 
 initAuth();

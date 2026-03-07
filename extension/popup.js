@@ -152,6 +152,14 @@ document.querySelectorAll("#stars .star").forEach((btn) => {
   });
 });
 
+// --- Populate pattern dropdown ---
+function populatePatternSelect() {
+  const sel = document.getElementById("patternSelect");
+  sel.innerHTML = '<option value="">None</option>' +
+    PATTERN_LABELS.map(l => `<option value="${l}">${l}</option>`).join('');
+}
+populatePatternSelect();
+
 // --- Auto-fill URL from active tab ---
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   if (tabs[0]?.url) {
@@ -160,6 +168,14 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       document.getElementById("title").value = tabs[0].title;
     }
     document.getElementById("startTimerBtn").disabled = false;
+
+    // Detect and show pattern for LeetCode pages
+    const pattern = detectPattern(tabs[0].url);
+    if (pattern) {
+      document.getElementById("patternTag").style.display = "block";
+      document.getElementById("patternLabel").textContent = pattern;
+      document.getElementById("patternSelect").value = pattern;
+    }
   }
 });
 
@@ -372,9 +388,30 @@ document.getElementById("finishBtn").addEventListener("click", async () => {
     difficulty: document.getElementById("difficulty").value || null,
     time_taken: finishTimerData.totalMinutes,
     notes: document.getElementById("notes").value || null,
+    pattern: document.getElementById("patternSelect").value || null,
   };
 
   try {
+    // First: run SM2 review to update next_review and last_reviewed
+    const reviewRes = await apiFetch(
+      `/questions/${finishTimerData.questionId}/review`,
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ self_rating: selectedRating }),
+      }
+    );
+
+    if (!reviewRes.ok) {
+      let msg = "Failed to save review";
+      try { const err = await reviewRes.json(); msg = err.detail || msg; } catch {}
+      showToast(msg, "error");
+      btn.disabled = false;
+      btn.textContent = "Save";
+      return;
+    }
+
+    // Then: update extra metadata (difficulty, time, notes)
     const r = await apiFetch(
       `/questions/${finishTimerData.questionId}`,
       {
@@ -384,7 +421,7 @@ document.getElementById("finishBtn").addEventListener("click", async () => {
       }
     );
 
-    if (r.ok) {
+    if (r.ok || reviewRes.ok) {
       showToast(
         `Saved! ${finishTimerData.totalMinutes} min recorded.`,
         "success"
@@ -399,6 +436,7 @@ document.getElementById("finishBtn").addEventListener("click", async () => {
       );
       document.getElementById("difficulty").value = "";
       document.getElementById("notes").value = "";
+      document.getElementById("patternSelect").value = "";
       showView(startView);
       loadRevisions();
     } else {

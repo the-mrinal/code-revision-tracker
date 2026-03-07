@@ -37,6 +37,10 @@
       <label>Title</label>
       <input type="text" id="title" placeholder="Problem title (optional)">
     </div>
+    <div id="patternTag" style="display:none;margin-bottom:8px;">
+      <span style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.5px;">Pattern</span>
+      <span id="patternLabel" style="display:inline-block;font-size:11px;background:#1e1b4b;color:#a5b4fc;padding:2px 8px;border-radius:4px;margin-left:4px;"></span>
+    </div>
     <button class="btn btn-timer" id="startTimerBtn">Start Timer</button>
   </div>
 
@@ -68,6 +72,12 @@
           <option value="easy">Easy</option>
           <option value="medium">Medium</option>
           <option value="hard">Hard</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Pattern</label>
+        <select id="patternSelect" style="font-size:11px;">
+          <option value="">None</option>
         </select>
       </div>
     </div>
@@ -103,6 +113,7 @@
     <a href="#" id="signOutLink" style="display:none;margin-left:12px;color:#e74c3c;">Sign Out</a>
   </div>
 
+  <script src="patterns.js"></script>
   <script src="popup.js"></script>
 </body>
 </html>

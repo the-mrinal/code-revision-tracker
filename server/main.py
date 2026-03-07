@@ -33,6 +33,14 @@ from database import (
     update_question,
     update_question_sm2,
 )
+from patterns import (
+    PATTERNS,
+    PROBLEM_SLUGS,
+    PROBLEM_TO_PATTERN,
+    extract_leetcode_number,
+    get_all_pattern_labels,
+    get_pattern_for_url,
+)
 from sm2 import sm2
 
 app = FastAPI(title="Revise")
@@ -99,6 +107,7 @@ class QuestionUpdate(BaseModel):
     self_rating: Optional[int] = Field(default=None, ge=1, le=5)
     time_taken: Optional[int] = None
     notes: Optional[str] = None
+    pattern: Optional[str] = None
 
 
 class ReviewIn(BaseModel):
@@ -167,6 +176,10 @@ def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
     user_plats = get_user_platforms(user_id)
     platform = detect_platform(url, user_plats)
     sm2_result = sm2(q.self_rating, 2.5, 1, 0)
+
+    # Auto-detect DSA pattern for LeetCode problems
+    pattern_label = get_pattern_for_url(url) if platform == "leetcode" else None
+
     data = {
         "url": url,
         "title": q.title,
@@ -176,6 +189,7 @@ def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
         "time_taken": q.time_taken,
         "notes": q.notes,
         "next_review": sm2_result["next_review"],
+        "pattern": pattern_label,
     }
     question = insert_question(user_id, data)
     update_question_sm2(user_id, question["id"], sm2_result)
@@ -214,7 +228,7 @@ def edit_question(qid: int, q: QuestionUpdate, user_id: str = Depends(get_curren
     if not existing:
         raise HTTPException(404, "Question not found")
     updates = {}
-    for field in ["url", "title", "difficulty", "self_rating", "time_taken", "notes"]:
+    for field in ["url", "title", "difficulty", "self_rating", "time_taken", "notes", "pattern"]:
         val = getattr(q, field)
         if val is not None:
             updates[field] = val
@@ -269,6 +283,129 @@ def remove_question(qid: int, user_id: str = Depends(get_current_user_id)):
 def merge_dupes(user_id: str = Depends(get_current_user_id)):
     merge_duplicates(user_id)
     return {"ok": True}
+
+
+# --- Pattern endpoints ---
+
+
+@app.get("/api/patterns")
+def patterns_overview(user_id: str = Depends(get_current_user_id)):
+    """Full patterns data with user's progress overlaid."""
+    questions = get_all_questions(user_id)
+
+    # Build set of tracked problem numbers and their data
+    tracked: dict[int, dict] = {}
+    for q in questions:
+        if q.get("platform") != "leetcode":
+            continue
+        num = extract_leetcode_number(q["url"])
+        if num is not None:
+            tracked[num] = q
+
+    categories = []
+    overall_solved = 0
+    overall_total = 0
+
+    for cat_name, cat_patterns in PATTERNS.items():
+        cat_solved = 0
+        cat_total = 0
+        patterns_list = []
+
+        for pat_name, problem_nums in cat_patterns.items():
+            problems = []
+            pat_solved = 0
+            for num in problem_nums:
+                slug = PROBLEM_SLUGS.get(num)
+                problem_data = {
+                    "number": num,
+                    "slug": slug,
+                    "title": slug.replace("-", " ").title() if slug else f"Problem {num}",
+                    "url": f"https://leetcode.com/problems/{slug}/" if slug else None,
+                    "tracked": num in tracked,
+                }
+                if num in tracked:
+                    problem_data["next_review"] = tracked[num].get("next_review")
+                    problem_data["self_rating"] = tracked[num].get("self_rating")
+                    pat_solved += 1
+                problems.append(problem_data)
+
+            cat_solved += pat_solved
+            cat_total += len(problem_nums)
+            patterns_list.append({
+                "name": pat_name,
+                "problems": problems,
+                "solved_count": pat_solved,
+                "total_count": len(problem_nums),
+            })
+
+        overall_solved += cat_solved
+        overall_total += cat_total
+        categories.append({
+            "name": cat_name,
+            "patterns": patterns_list,
+            "solved_count": cat_solved,
+            "total_count": cat_total,
+        })
+
+    return {
+        "categories": categories,
+        "overall": {"solved": overall_solved, "total": overall_total},
+    }
+
+
+@app.get("/api/patterns/recommend")
+def patterns_recommend(user_id: str = Depends(get_current_user_id)):
+    """Recommend next 5 problems to solve based on pattern coverage."""
+    questions = get_all_questions(user_id)
+    tracked_nums: set[int] = set()
+    for q in questions:
+        if q.get("platform") != "leetcode":
+            continue
+        num = extract_leetcode_number(q["url"])
+        if num is not None:
+            tracked_nums.add(num)
+
+    # Categorize patterns: partially done (priority 1) and untouched (priority 2)
+    partial = []  # (category, pattern, unsolved_nums)
+    untouched = []
+
+    for cat_name, cat_patterns in PATTERNS.items():
+        for pat_name, problem_nums in cat_patterns.items():
+            solved_in_pattern = [n for n in problem_nums if n in tracked_nums]
+            unsolved = [n for n in problem_nums if n not in tracked_nums]
+            if not unsolved:
+                continue
+            if solved_in_pattern:
+                partial.append((cat_name, pat_name, unsolved))
+            else:
+                untouched.append((cat_name, pat_name, unsolved))
+
+    recommendations = []
+    for source in [partial, untouched]:
+        for cat_name, pat_name, unsolved in source:
+            for num in unsolved:
+                if len(recommendations) >= 5:
+                    break
+                slug = PROBLEM_SLUGS.get(num)
+                recommendations.append({
+                    "number": num,
+                    "slug": slug,
+                    "title": slug.replace("-", " ").title() if slug else f"Problem {num}",
+                    "url": f"https://leetcode.com/problems/{slug}/" if slug else None,
+                    "pattern": f"{cat_name} > {pat_name}",
+                })
+            if len(recommendations) >= 5:
+                break
+        if len(recommendations) >= 5:
+            break
+
+    return recommendations
+
+
+@app.get("/api/patterns/list")
+def patterns_list():
+    """Flat list of all pattern labels for dropdown menus."""
+    return get_all_pattern_labels()
 
 
 # --- Pages ---

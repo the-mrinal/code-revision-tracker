@@ -23,7 +23,7 @@ def get_client():
 COLUMNS = (
     "id, user_id, url, title, platform, difficulty, self_rating, time_taken, "
     "notes, solved_at, easiness_factor, interval, repetitions, next_review, "
-    "last_reviewed, attempts"
+    "last_reviewed, attempts, pattern"
 )
 
 
@@ -130,7 +130,14 @@ def get_today_activity(user_id: str) -> list[dict]:
     rows = []
     for r in result.data:
         solved_date = (r.get("solved_at") or "")[:10]
-        activity_type = "NEW" if solved_date == today else "REVISION"
+        reviewed_date = (r.get("last_reviewed") or "")[:10]
+        # If both new and reviewed today, treat as REVISION
+        if reviewed_date == today:
+            activity_type = "REVISION"
+        elif solved_date == today:
+            activity_type = "NEW"
+        else:
+            activity_type = "REVISION"
         rows.append({**r, "activity_type": activity_type})
     # Sort: most recent activity first
     rows.sort(
