@@ -2,6 +2,7 @@
 
 import os
 
+import httpx
 from fastapi import HTTPException, Security
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 from jose import JWTError, jwt
@@ -17,6 +18,7 @@ security = HTTPBearer()
 
 _anon_client = None
 _service_client = None
+_jwks = None
 
 
 def get_anon_client():
@@ -33,9 +35,30 @@ def get_service_client():
     return _service_client
 
 
+def get_jwks():
+    global _jwks
+    if _jwks is None:
+        resp = httpx.get(f"{SUPABASE_URL}/auth/v1/.well-known/jwks.json")
+        resp.raise_for_status()
+        _jwks = resp.json()
+    return _jwks
+
+
 def verify_token(token: str) -> dict:
     """Decode and verify a Supabase JWT. Returns the payload."""
     try:
+        # Try ES256 first (newer Supabase projects)
+        header = jwt.get_unverified_header(token)
+        if header.get("alg") == "ES256":
+            jwks = get_jwks()
+            payload = jwt.decode(
+                token,
+                jwks,
+                algorithms=["ES256"],
+                audience="authenticated",
+            )
+            return payload
+        # Fall back to HS256 (older Supabase projects)
         payload = jwt.decode(
             token,
             SUPABASE_JWT_SECRET,
