@@ -21,6 +21,7 @@ from database import (
     delete_user_platform,
     find_by_url,
     get_all_questions,
+    get_flex_stats,
     get_question,
     get_revisions_due,
     get_stats,
@@ -421,3 +422,24 @@ def landing():
 def dashboard():
     with open("templates/dashboard.html") as f:
         return f.read()
+
+
+@app.get("/flex", response_class=HTMLResponse)
+def flex_page():
+    with open("templates/flex.html") as f:
+        return f.read()
+
+
+@app.get("/flex/{user_id}", response_class=HTMLResponse)
+def flex_page_user(user_id: str):
+    with open("templates/flex.html") as f:
+        return f.read()
+
+
+@app.get("/api/flex/{user_id}")
+def flex_stats(user_id: str):
+    stats = get_flex_stats(user_id)
+    if stats is None or stats.get("total_solved", 0) == 0:
+        # Still return the empty stats so the frontend can show the roast
+        return stats or {"total_solved": 0}
+    return stats

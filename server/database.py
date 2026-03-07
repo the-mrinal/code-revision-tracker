@@ -2,7 +2,8 @@
 
 import os
 import re
-from datetime import date, datetime
+from collections import defaultdict
+from datetime import date, datetime, timedelta
 from urllib.parse import urlparse, urlunparse
 
 from supabase import create_client
@@ -277,4 +278,137 @@ def get_stats(user_id: str) -> dict:
         "by_platform": by_platform,
         "due_today": due_today,
         "avg_rating": avg_rating,
+    }
+
+
+def get_flex_stats(user_id: str) -> dict | None:
+    """Compute public-safe stats for the flex/show-off page. Returns None if no questions."""
+    from patterns import PATTERNS, extract_leetcode_number
+
+    all_rows = get_all_questions(user_id)
+    total = len(all_rows)
+    if total == 0:
+        return {"total_solved": 0}
+
+    by_difficulty: dict[str, int] = {}
+    by_platform: dict[str, int] = {}
+    ratings = []
+    total_time_mins = 0
+    total_reviews = 0
+    activity_dates: set[str] = set()
+
+    for r in all_rows:
+        diff = r.get("difficulty") or "unknown"
+        by_difficulty[diff] = by_difficulty.get(diff, 0) + 1
+
+        plat = r.get("platform") or "unknown"
+        by_platform[plat] = by_platform.get(plat, 0) + 1
+
+        if r.get("self_rating"):
+            ratings.append(r["self_rating"])
+
+        if r.get("time_taken"):
+            total_time_mins += r["time_taken"]
+
+        total_reviews += (r.get("attempts") or 1)
+
+        # Collect activity dates for streak calculation
+        if r.get("solved_at"):
+            activity_dates.add(r["solved_at"][:10])
+        if r.get("last_reviewed"):
+            activity_dates.add(r["last_reviewed"][:10])
+
+    avg_rating = round(sum(ratings) / len(ratings), 1) if ratings else 0
+    total_time_hours = round(total_time_mins / 60, 1)
+
+    # Streak calculation
+    current_streak = 0
+    longest_streak = 0
+    if activity_dates:
+        sorted_dates = sorted(set(date.fromisoformat(d) for d in activity_dates))
+        # Longest streak
+        streak = 1
+        for i in range(1, len(sorted_dates)):
+            if sorted_dates[i] - sorted_dates[i - 1] == timedelta(days=1):
+                streak += 1
+            else:
+                longest_streak = max(longest_streak, streak)
+                streak = 1
+        longest_streak = max(longest_streak, streak)
+
+        # Current streak (consecutive days ending today or yesterday)
+        today = date.today()
+        if sorted_dates[-1] >= today - timedelta(days=1):
+            current_streak = 1
+            for i in range(len(sorted_dates) - 2, -1, -1):
+                if sorted_dates[i + 1] - sorted_dates[i] == timedelta(days=1):
+                    current_streak += 1
+                else:
+                    break
+
+    # Pattern stats
+    tracked_nums: set[int] = set()
+    for q in all_rows:
+        if q.get("platform") != "leetcode":
+            continue
+        num = extract_leetcode_number(q["url"])
+        if num is not None:
+            tracked_nums.add(num)
+
+    total_categories = len(PATTERNS)
+    mastered = 0
+    started = 0
+    cat_progress: list[tuple[str, float]] = []
+
+    for cat_name, cat_patterns in PATTERNS.items():
+        cat_total = sum(len(nums) for nums in cat_patterns.values())
+        cat_solved = sum(1 for nums in cat_patterns.values() for n in nums if n in tracked_nums)
+        pct = cat_solved / cat_total if cat_total > 0 else 0
+        if pct >= 1.0:
+            mastered += 1
+        if pct > 0:
+            started += 1
+        cat_progress.append((cat_name, pct))
+
+    cat_progress.sort(key=lambda x: x[1], reverse=True)
+    top_patterns = [{"name": name, "pct": round(pct * 100)} for name, pct in cat_progress[:3] if pct > 0]
+
+    # Fun title
+    if mastered >= 12:
+        title = "Pattern Grandmaster"
+    elif total >= 200:
+        title = "Grind Lord"
+    elif mastered >= 8:
+        title = "Pattern Crusher"
+    elif current_streak >= 30:
+        title = "Streak Machine"
+    elif total >= 100:
+        title = "Centurion"
+    elif mastered >= 4:
+        title = "Pattern Apprentice"
+    elif total >= 50:
+        title = "Half-Century Hero"
+    elif current_streak >= 7:
+        title = "Consistency King"
+    elif total >= 20:
+        title = "Getting Dangerous"
+    elif total >= 10:
+        title = "Warming Up"
+    else:
+        title = "Fresh Recruit"
+
+    return {
+        "total_solved": total,
+        "by_difficulty": by_difficulty,
+        "by_platform": by_platform,
+        "avg_rating": avg_rating,
+        "total_time_hours": total_time_hours,
+        "total_reviews": total_reviews,
+        "current_streak": current_streak,
+        "longest_streak": longest_streak,
+        "patterns_mastered": mastered,
+        "patterns_started": started,
+        "total_categories": total_categories,
+        "top_patterns": top_patterns,
+        "title": title,
     }

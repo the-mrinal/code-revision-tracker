@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revise — Flex</title>
+<style>
+  :root { --bg: #0a0a0a; --card: #111; --border: #222; --accent: #5b6abf; --text: #ddd; --muted: #777; --green: #6ee7b7; --yellow: #fbbf24; --red: #fca5a5; }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: var(--bg); color: var(--text); font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; min-height: 100vh; }
+
+  .container { max-width: 640px; margin: 0 auto; padding: 32px 20px 64px; }
+
+  /* Loading */
+  .loading { text-align: center; padding: 120px 20px; color: var(--muted); font-size: 15px; }
+
+  /* Title card */
+  .title-card { text-align: center; padding: 48px 20px 36px; }
+  .fun-title { font-size: 36px; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #6ee7b7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; }
+  .fun-subtitle { color: var(--muted); font-size: 14px; margin-top: 8px; }
+
+  /* Stats row */
+  .stats-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
+  .stat-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px 12px; text-align: center; }
+  .stat-card .value { font-size: 32px; font-weight: 800; color: #fff; line-height: 1; }
+  .stat-card .label { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; }
+
+  /* Difficulty bar */
+  .diff-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .diff-section h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .diff-bar { display: flex; height: 28px; border-radius: 6px; overflow: hidden; }
+  .diff-bar .seg { display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 700; color: #000; min-width: 28px; transition: width 0.4s; }
+  .seg-easy { background: #34d399; }
+  .seg-medium { background: #fbbf24; }
+  .seg-hard { background: #f87171; }
+  .diff-legend { display: flex; gap: 16px; margin-top: 8px; font-size: 11px; color: var(--muted); }
+  .diff-legend span::before { content: ""; display: inline-block; width: 8px; height: 8px; border-radius: 2px; margin-right: 4px; vertical-align: middle; }
+  .diff-legend .leg-easy::before { background: #34d399; }
+  .diff-legend .leg-medium::before { background: #fbbf24; }
+  .diff-legend .leg-hard::before { background: #f87171; }
+
+  /* Platform pills */
+  .platform-section { margin-bottom: 20px; }
+  .platform-section h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .pill { background: #1e1b4b; color: #a5b4fc; padding: 6px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; text-transform: capitalize; }
+  .pill .count { color: #c4b5fd; margin-left: 4px; }
+
+  /* Patterns */
+  .patterns-section { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin-bottom: 20px; }
+  .patterns-section h3 { font-size: 12px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 10px; }
+  .patterns-header { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; }
+  .patterns-header .big-num { font-size: 40px; font-weight: 800; color: #fff; line-height: 1; }
+  .patterns-header .big-label { font-size: 13px; color: var(--muted); }
+  .pattern-bar { height: 8px; background: #1a1a1a; border-radius: 4px; overflow: hidden; margin-bottom: 12px; }
+  .pattern-bar .fill { height: 100%; background: linear-gradient(90deg, #6ee7b7, #a78bfa); border-radius: 4px; transition: width 0.4s; }
+  .top-patterns { display: flex; flex-direction: column; gap: 6px; }
+  .top-pat { display: flex; justify-content: space-between; font-size: 13px; }
+  .top-pat .name { color: var(--text); }
+  .top-pat .pct { color: var(--muted); font-weight: 600; }
+
+  /* Streak */
+  .streak-section { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+  .streak-card { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 20px; text-align: center; }
+  .streak-card .flame { font-size: 28px; margin-bottom: 4px; }
+  .streak-card .streak-num { font-size: 40px; font-weight: 800; color: #fff; line-height: 1; }
+  .streak-card .streak-label { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 6px; }
+
+  /* Share bar */
+  .share-bar { text-align: center; padding: 16px; }
+  .share-btn { background: var(--accent); color: #fff; border: none; padding: 10px 28px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; transition: opacity 0.2s; }
+  .share-btn:hover { opacity: 0.85; }
+  .share-btn.copied { background: #065f46; }
+
+  /* Empty/roast state */
+  .empty-state { text-align: center; padding: 100px 20px; }
+  .empty-state .roast { font-size: 28px; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 12px; }
+  .empty-state .roast-sub { color: var(--muted); font-size: 14px; margin-bottom: 32px; }
+  .cta-btn { background: var(--accent); color: #fff; border: none; padding: 12px 32px; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; }
+  .cta-btn:hover { opacity: 0.85; }
+
+  /* Not found */
+  .not-found { text-align: center; padding: 120px 20px; }
+  .not-found h2 { font-size: 24px; color: #fff; margin-bottom: 8px; }
+  .not-found p { color: var(--muted); font-size: 14px; }
+
+  /* Branding */
+  .branding { text-align: center; padding: 24px; }
+  .branding a { color: var(--muted); font-size: 12px; text-decoration: none; }
+  .branding a:hover { color: var(--text); }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .stat-card .value { font-size: 28px; }
+    .fun-title { font-size: 28px; }
+    .container { padding: 20px 16px 48px; }
+  }
+
+  .hidden { display: none; }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div id="loading" class="loading">Loading...</div>
+
+  <div id="content" class="hidden">
+    <!-- Title -->
+    <div class="title-card">
+      <div class="fun-title" id="funTitle"></div>
+      <div class="fun-subtitle" id="funSubtitle"></div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="stats-row">
+      <div class="stat-card"><div class="value" id="statTotal">—</div><div class="label">Solved</div></div>
+      <div class="stat-card"><div class="value" id="statTime">—</div><div class="label">Hours</div></div>
+      <div class="stat-card"><div class="value" id="statRating">—</div><div class="label">Avg Rating</div></div>
+      <div class="stat-card"><div class="value" id="statReviews">—</div><div class="label">Reviews</div></div>
+    </div>
+
+    <!-- Difficulty bar -->
+    <div class="diff-section" id="diffSection">
+      <h3>Difficulty Breakdown</h3>
+      <div class="diff-bar" id="diffBar"></div>
+      <div class="diff-legend">
+        <span class="leg-easy" id="legEasy"></span>
+        <span class="leg-medium" id="legMedium"></span>
+        <span class="leg-hard" id="legHard"></span>
+      </div>
+    </div>
+
+    <!-- Platform pills -->
+    <div class="platform-section" id="platformSection">
+      <h3>Platforms</h3>
+      <div class="pills" id="pills"></div>
+    </div>
+
+    <!-- Patterns -->
+    <div class="patterns-section" id="patternsSection">
+      <h3>DSA Patterns</h3>
+      <div class="patterns-header">
+        <div class="big-num" id="patMastered">0</div>
+        <div>
+          <div class="big-label"><span id="patTotal">15</span> categories mastered</div>
+          <div class="big-label" style="margin-top:2px"><span id="patStarted">0</span> started</div>
+        </div>
+      </div>
+      <div class="pattern-bar"><div class="fill" id="patFill"></div></div>
+      <div class="top-patterns" id="topPatterns"></div>
+    </div>
+
+    <!-- Streaks -->
+    <div class="streak-section">
+      <div class="streak-card">
+        <div class="flame">&#128293;</div>
+        <div class="streak-num" id="currentStreak">0</div>
+        <div class="streak-label">Current Streak</div>
+      </div>
+      <div class="streak-card">
+        <div class="flame">&#127942;</div>
+        <div class="streak-num" id="longestStreak">0</div>
+        <div class="streak-label">Longest Streak</div>
+      </div>
+    </div>
+
+    <!-- Share (owner only) -->
+    <div class="share-bar hidden" id="shareBar">
+      <button class="share-btn" id="shareBtn">Copy Flex Link</button>
+    </div>
+  </div>
+
+  <!-- Empty state -->
+  <div id="emptyState" class="empty-state hidden">
+    <div class="roast" id="roastMsg"></div>
+    <div class="roast-sub">Time to start grinding.</div>
+    <a href="/dashboard" class="cta-btn">Start Tracking</a>
+  </div>
+
+  <!-- Not found -->
+  <div id="notFound" class="not-found hidden">
+    <h2>Page Not Found</h2>
+    <p>This flex page doesn't exist. Maybe they're still grinding?</p>
+  </div>
+
+  <!-- Sign up CTA -->
+  <div id="signupCta" class="empty-state hidden">
+    <div class="roast" style="background:linear-gradient(135deg,#a78bfa,#6ee7b7);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">Show off your grind</div>
+    <div class="roast-sub">Sign up to create your own flex page.</div>
+    <a href="/" class="cta-btn">Get Started</a>
+  </div>
+
+  <div class="branding"><a href="/">revise.mrinal.dev</a></div>
+</div>
+
+<script>
+const ROASTS = [
+  "Error 404: Effort Not Found",
+  "This flex page is emptier than a LeetCode contest after the first Hard drops",
+  "All grind, zero receipts",
+  "Submitted: 0. Excuses: infinite.",
+  "This page has more CSS than solutions",
+  "The only thing solved here is the mystery of where the motivation went",
+  "LeetCode called. They don't remember you either.",
+  "Achievement unlocked: Professional Procrastinator",
+];
+
+function getToken() {
+  try {
+    const raw = localStorage.getItem('sb-access-token') || localStorage.getItem('access_token');
+    return raw || null;
+  } catch { return null; }
+}
+
+function getUserIdFromToken(token) {
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    return payload.sub || null;
+  } catch { return null; }
+}
+
+async function init() {
+  const path = window.location.pathname;
+  const match = path.match(/^\/flex\/([0-9a-f-]{36})$/i);
+  let userId = match ? match[1] : null;
+  let isOwner = false;
+
+  if (!userId) {
+    // /flex with no UUID — check if logged in
+    const token = getToken();
+    if (token) {
+      userId = getUserIdFromToken(token);
+      if (userId) {
+        // Redirect to /flex/<uuid>
+        history.replaceState(null, '', '/flex/' + userId);
+        isOwner = true;
+      }
+    }
+    if (!userId) {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('signupCta').classList.remove('hidden');
+      return;
+    }
+  }
+
+  // Check if viewing own page
+  if (!isOwner) {
+    const token = getToken();
+    if (token) {
+      const myId = getUserIdFromToken(token);
+      if (myId === userId) isOwner = true;
+    }
+  }
+
+  try {
+    const resp = await fetch('/api/flex/' + userId);
+    if (!resp.ok) {
+      document.getElementById('loading').classList.add('hidden');
+      document.getElementById('notFound').classList.remove('hidden');
+      return;
+    }
+
+    const data = await resp.json();
+    document.getElementById('loading').classList.add('hidden');
+
+    if (!data || data.total_solved === 0) {
+      const roast = ROASTS[Math.floor(Math.random() * ROASTS.length)];
+      document.getElementById('roastMsg').textContent = roast;
+      document.getElementById('emptyState').classList.remove('hidden');
+      if (isOwner) {
+        // Still show share for the lols
+      }
+      return;
+    }
+
+    render(data, isOwner);
+  } catch (err) {
+    document.getElementById('loading').classList.add('hidden');
+    document.getElementById('notFound').classList.remove('hidden');
+  }
+}
+
+function render(d, isOwner) {
+  document.getElementById('content').classList.remove('hidden');
+
+  // Title
+  document.getElementById('funTitle').textContent = d.title;
+  const subtitleParts = [];
+  if (d.patterns_mastered > 0) subtitleParts.push(d.patterns_mastered + ' pattern' + (d.patterns_mastered > 1 ? 's' : '') + ' mastered');
+  if (d.total_solved > 0) subtitleParts.push(d.total_solved + ' problems solved');
+  document.getElementById('funSubtitle').textContent = subtitleParts.join(' \u00B7 ');
+
+  // Stats
+  document.getElementById('statTotal').textContent = d.total_solved;
+  document.getElementById('statTime').textContent = d.total_time_hours;
+  document.getElementById('statRating').textContent = d.avg_rating + '/5';
+  document.getElementById('statReviews').textContent = d.total_reviews;
+
+  // Difficulty bar
+  const easy = d.by_difficulty.easy || 0;
+  const medium = d.by_difficulty.medium || 0;
+  const hard = d.by_difficulty.hard || 0;
+  const total = easy + medium + hard;
+  const bar = document.getElementById('diffBar');
+  if (total > 0) {
+    bar.innerHTML = '';
+    if (easy > 0) { const s = document.createElement('div'); s.className = 'seg seg-easy'; s.style.width = (easy/total*100) + '%'; s.textContent = easy; bar.appendChild(s); }
+    if (medium > 0) { const s = document.createElement('div'); s.className = 'seg seg-medium'; s.style.width = (medium/total*100) + '%'; s.textContent = medium; bar.appendChild(s); }
+    if (hard > 0) { const s = document.createElement('div'); s.className = 'seg seg-hard'; s.style.width = (hard/total*100) + '%'; s.textContent = hard; bar.appendChild(s); }
+    document.getElementById('legEasy').textContent = 'Easy ' + easy;
+    document.getElementById('legMedium').textContent = 'Medium ' + medium;
+    document.getElementById('legHard').textContent = 'Hard ' + hard;
+  } else {
+    document.getElementById('diffSection').classList.add('hidden');
+  }
+
+  // Platforms
+  const platforms = d.by_platform || {};
+  const pillsEl = document.getElementById('pills');
+  const sorted = Object.entries(platforms).sort((a, b) => b[1] - a[1]);
+  if (sorted.length > 0) {
+    sorted.forEach(([name, count]) => {
+      const pill = document.createElement('div');
+      pill.className = 'pill';
+      pill.innerHTML = name + '<span class="count">' + count + '</span>';
+      pillsEl.appendChild(pill);
+    });
+  } else {
+    document.getElementById('platformSection').classList.add('hidden');
+  }
+
+  // Patterns
+  if (d.patterns_started > 0) {
+    document.getElementById('patMastered').textContent = d.patterns_mastered;
+    document.getElementById('patTotal').textContent = d.total_categories;
+    document.getElementById('patStarted').textContent = d.patterns_started;
+    document.getElementById('patFill').style.width = (d.patterns_mastered / d.total_categories * 100) + '%';
+    const topEl = document.getElementById('topPatterns');
+    (d.top_patterns || []).forEach(p => {
+      const row = document.createElement('div');
+      row.className = 'top-pat';
+      row.innerHTML = '<span class="name">' + p.name + '</span><span class="pct">' + p.pct + '%</span>';
+      topEl.appendChild(row);
+    });
+  } else {
+    document.getElementById('patternsSection').classList.add('hidden');
+  }
+
+  // Streaks
+  document.getElementById('currentStreak').textContent = d.current_streak;
+  document.getElementById('longestStreak').textContent = d.longest_streak;
+
+  // Share
+  if (isOwner) {
+    document.getElementById('shareBar').classList.remove('hidden');
+    const btn = document.getElementById('shareBtn');
+    btn.addEventListener('click', () => {
+      navigator.clipboard.writeText(window.location.href).then(() => {
+        btn.textContent = 'Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'Copy Flex Link'; btn.classList.remove('copied'); }, 2000);
+      });
+    });
+  }
+}
+
+init();
+</script>
+</body>
+</html>
