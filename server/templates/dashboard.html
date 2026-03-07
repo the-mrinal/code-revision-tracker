@@ -335,11 +335,18 @@ document.getElementById("loginBtn").addEventListener("click", async () => {
       status.style.color = "#6ee7b7";
     } else {
       const err = await r.json();
-      status.textContent = err.detail || "Failed to send link";
+      const detail = (err.detail || "").toLowerCase();
+      if (detail.includes("rate limit")) {
+        status.textContent = "Too many attempts. Please wait a minute and try again.";
+      } else if (detail.includes("invalid format")) {
+        status.textContent = "Please enter a valid email address.";
+      } else {
+        status.textContent = err.detail || "Failed to send link";
+      }
       status.style.color = "#fca5a5";
     }
   } catch {
-    status.textContent = "Server offline";
+    status.textContent = "Server offline — check your connection.";
     status.style.color = "#fca5a5";
   }
   btn.disabled = false;
