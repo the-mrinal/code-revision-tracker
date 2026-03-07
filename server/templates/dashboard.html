@@ -131,6 +131,14 @@
   .recommend-card .rec-title a { color: #7c9cff; }
   .recommend-card .rec-pattern { font-size: 11px; color: var(--muted); }
 
+  /* Tab bar */
+  .tab-bar { display: flex; gap: 6px; margin-bottom: 24px; }
+  .tab-bar button { padding: 6px 16px; border-radius: 4px; border: 1px solid var(--border); background: var(--card); color: var(--muted); font-size: 12px; cursor: pointer; text-transform: uppercase; font-weight: 600; letter-spacing: 0.5px; transition: border-color 0.2s, color 0.2s; }
+  .tab-bar button.active { border-color: var(--accent); color: var(--text); }
+  .tab-bar button:hover { border-color: var(--accent); }
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+
   /* Login overlay */
   .login-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; align-items: center; justify-content: center; }
   .login-overlay.open { display: flex; }
@@ -169,77 +177,92 @@
 
 <div class="stats-grid" id="statsGrid"></div>
 
-<div class="chart-row" id="chartRow"></div>
-
-<div class="section" id="patternsSection" style="display:none;">
-  <h2>DSA Patterns <span class="badge" id="patternsBadge">0/0</span></h2>
-  <div class="patterns-overview" id="patternsOverview"></div>
-  <div class="pattern-grid" id="patternGrid"></div>
-  <div class="pattern-details" id="patternDetails"></div>
-  <h3 style="font-size:14px;margin:16px 0 10px;color:var(--muted);">Suggested Next</h3>
-  <div class="recommend-cards" id="recommendCards"><div class="empty">Loading...</div></div>
+<div class="tab-bar" id="tabBar">
+  <button class="active" data-tab="overview">Overview</button>
+  <button data-tab="patterns">Patterns</button>
+  <button data-tab="revisions">Revisions</button>
+  <button data-tab="all">All Items</button>
 </div>
 
-<div class="section">
-  <h2>Today's Activity <span class="badge" id="activityBadge">0</span></h2>
-  <div class="toolbar">
-    <div class="activity-filter" id="activityFilter">
-      <button class="active" data-filter="all">All</button>
-      <button data-filter="NEW">New</button>
-      <button data-filter="REVISION">Revision</button>
+<div class="tab-content active" id="tab-overview">
+  <div class="chart-row" id="chartRow"></div>
+
+  <div class="section">
+    <h2>Today's Activity <span class="badge" id="activityBadge">0</span></h2>
+    <div class="toolbar">
+      <div class="activity-filter" id="activityFilter">
+        <button class="active" data-filter="all">All</button>
+        <button data-filter="NEW">New</button>
+        <button data-filter="REVISION">Revision</button>
+      </div>
     </div>
+    <table class="activity-table">
+      <thead>
+        <tr>
+          <th>Type</th>
+          <th>Title</th>
+          <th>Platform</th>
+          <th>Difficulty</th>
+          <th>Rating</th>
+          <th>Attempts</th>
+          <th>Time</th>
+        </tr>
+      </thead>
+      <tbody id="activityBody"><tr><td colspan="7" class="empty">Loading...</td></tr></tbody>
+    </table>
   </div>
-  <table class="activity-table">
-    <thead>
-      <tr>
-        <th>Type</th>
-        <th>Title</th>
-        <th>Platform</th>
-        <th>Difficulty</th>
-        <th>Rating</th>
-        <th>Attempts</th>
-        <th>Time</th>
-      </tr>
-    </thead>
-    <tbody id="activityBody"><tr><td colspan="7" class="empty">Loading...</td></tr></tbody>
-  </table>
 </div>
 
-<div class="section">
-  <h2>Due for Revision <span class="badge" id="revBadge">0</span></h2>
-  <div class="revision-cards" id="revisionCards"><div class="empty">Loading...</div></div>
+<div class="tab-content" id="tab-patterns">
+  <div class="section" id="patternsSection">
+    <h2>DSA Patterns <span class="badge" id="patternsBadge">0/0</span></h2>
+    <div class="patterns-overview" id="patternsOverview"></div>
+    <div class="pattern-grid" id="patternGrid"></div>
+    <div class="pattern-details" id="patternDetails"></div>
+    <h3 style="font-size:14px;margin:16px 0 10px;color:var(--muted);">Suggested Next</h3>
+    <div class="recommend-cards" id="recommendCards"><div class="empty">Loading...</div></div>
+  </div>
 </div>
 
-<div class="section">
-  <h2>All Items</h2>
-  <div class="toolbar">
-    <select id="filterPlatform"><option value="">All Platforms</option></select>
-    <select id="filterDifficulty">
-      <option value="">All Difficulties</option>
-      <option value="easy">Easy</option>
-      <option value="medium">Medium</option>
-      <option value="hard">Hard</option>
-    </select>
-    <input type="text" id="searchBox" placeholder="Search...">
-    <button onclick="exportCSV()">Export CSV</button>
+<div class="tab-content" id="tab-revisions">
+  <div class="section">
+    <h2>Due for Revision <span class="badge" id="revBadge">0</span></h2>
+    <div class="revision-cards" id="revisionCards"><div class="empty">Loading...</div></div>
   </div>
-  <table>
-    <thead>
-      <tr>
-        <th data-sort="title">Title</th>
-        <th data-sort="platform">Platform</th>
-        <th data-sort="difficulty">Difficulty</th>
-        <th data-sort="self_rating">Rating</th>
-        <th data-sort="attempts">Attempts</th>
-        <th data-sort="time_taken">Time</th>
-        <th data-sort="solved_at">Solved</th>
-        <th data-sort="next_review">Next Review</th>
-        <th></th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody id="tableBody"><tr><td colspan="10" class="empty">Loading...</td></tr></tbody>
-  </table>
+</div>
+
+<div class="tab-content" id="tab-all">
+  <div class="section">
+    <h2>All Items</h2>
+    <div class="toolbar">
+      <select id="filterPlatform"><option value="">All Platforms</option></select>
+      <select id="filterDifficulty">
+        <option value="">All Difficulties</option>
+        <option value="easy">Easy</option>
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+      </select>
+      <input type="text" id="searchBox" placeholder="Search...">
+      <button onclick="exportCSV()">Export CSV</button>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th data-sort="title">Title</th>
+          <th data-sort="platform">Platform</th>
+          <th data-sort="difficulty">Difficulty</th>
+          <th data-sort="self_rating">Rating</th>
+          <th data-sort="attempts">Attempts</th>
+          <th data-sort="time_taken">Time</th>
+          <th data-sort="solved_at">Solved</th>
+          <th data-sort="next_review">Next Review</th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="tableBody"><tr><td colspan="10" class="empty">Loading...</td></tr></tbody>
+    </table>
+  </div>
 </div>
 
 <div class="modal-overlay" id="editModal">
@@ -328,6 +351,29 @@ let patternsData = null;
 let patternLabels = [];
 let activityFilterValue = "all";
 let sortKey = "solved_at", sortDir = -1;
+
+// --- Tab switching ---
+function switchTab(name) {
+  document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+  document.querySelectorAll('.tab-bar button').forEach(btn => btn.classList.remove('active'));
+  const tab = document.getElementById('tab-' + name);
+  const btn = document.querySelector(`.tab-bar button[data-tab="${name}"]`);
+  if (tab) tab.classList.add('active');
+  if (btn) btn.classList.add('active');
+  localStorage.setItem('dashboard-tab', name);
+}
+
+document.querySelectorAll('.tab-bar button').forEach(btn => {
+  btn.addEventListener('click', () => switchTab(btn.dataset.tab));
+});
+
+// Restore last tab
+(function() {
+  const saved = localStorage.getItem('dashboard-tab');
+  if (saved && document.getElementById('tab-' + saved)) {
+    switchTab(saved);
+  }
+})();
 
 // --- Auth helpers ---
 function getAuth() {
@@ -791,9 +837,6 @@ function showSettingsBtn() {
 let expandedCategory = null;
 
 function renderPatterns(data, recommendations) {
-  const section = document.getElementById('patternsSection');
-  section.style.display = 'block';
-
   const {categories, overall} = data;
   document.getElementById('patternsBadge').textContent = `${overall.solved}/${overall.total}`;
 
