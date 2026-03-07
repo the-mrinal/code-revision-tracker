@@ -1,35 +1,137 @@
 # Code Revision Tracker
 
-A browser extension + server to track coding practice across LeetCode, CodeChef, HackerRank, Codeforces, and more. Uses the **SM-2 spaced repetition algorithm** to intelligently schedule which problems you should revisit.
+**Spaced repetition for coders.** Track every problem you solve across 10+ platforms. The SM-2 algorithm tells you exactly when to revise, so patterns stick for interviews and beyond.
 
-Stop forgetting solutions. Start retaining patterns.
+**Live at [revise.mrinal.dev](https://revise.mrinal.dev)**
+
+---
+
+![Landing Page](docs/images/landing-hero.png)
+
+## What It Does
+
+You solve coding problems. You forget them in a week. This fixes that.
+
+Code Revision Tracker is a browser extension + web dashboard that:
+- **Auto-detects** the problem you're solving (LeetCode, Codeforces, HackerRank, etc.)
+- **Times your solve** with a built-in timer — no manual entry
+- **Schedules revisions** using the SM-2 spaced repetition algorithm (same algorithm behind Anki and SuperMemo)
+- **Shows a dashboard** with stats, charts, activity feed, and a filterable table of everything you've solved
+
+No passwords. Sign in with a magic link. Your data is yours.
+
+## Screenshots
+
+### Landing Page
+
+![Supported Platforms](docs/images/landing-platforms.png)
+
+> 10+ competitive programming and interview prep platforms supported out of the box.
+
+### Dashboard
+
+![Dashboard](docs/images/dashboard.png)
+
+> Full analytics: problems solved, difficulty breakdown, platform distribution, revision schedule, and daily activity — all in one view.
+
+### Magic Link Login
+
+![Login](docs/images/login.png)
+
+> No passwords to remember. Enter your email, click the link, you're in.
+
+### Browser Extension
+
+<p>
+  <img src="docs/images/extension-auto-detect.png" width="280" alt="Extension - Auto Detect" />
+  <img src="docs/images/extension-capture.png" width="280" alt="Extension - Capture Problem" />
+</p>
+
+> The extension auto-detects the problem URL and title. Navigate to any supported platform and it picks it up instantly.
+
+<p>
+  <img src="docs/images/extension-timer.png" width="280" alt="Extension - Timer Running" />
+  <img src="docs/images/extension-save.png" width="280" alt="Extension - Save Question" />
+</p>
+
+> Start a timer when you begin solving. When you're done, rate your recall (1-5 stars), add notes, and save. The SM-2 algorithm handles the rest.
+
+## How It Works
+
+```
+Browser Extension (Chrome / Safari)
+        |
+        |  REST API
+        v
+   FastAPI Server  -->  Supabase (Postgres + Auth)
+        |
+        v
+   Web Dashboard (revise.mrinal.dev/dashboard)
+```
+
+1. **Solve a problem** on any supported platform
+2. **Click the extension** — it auto-detects the URL and title
+3. **Start the timer**, solve, stop when done
+4. **Rate your recall** (1-5 stars) and save
+5. **SM-2 schedules your next review** — problems you found hard come back sooner, easy ones later
+6. **Check the dashboard** for what's due today, your stats, and your full history
+
+## Supported Platforms
+
+| Platform | Auto-detected |
+|----------|:---:|
+| LeetCode | Yes |
+| Codeforces | Yes |
+| HackerRank | Yes |
+| CodeChef | Yes |
+| GeeksForGeeks | Yes |
+| InterviewBit | Yes |
+| AtCoder | Yes |
+| NeetCode | Yes |
+| AlgoMonster | Yes |
+| DesignGurus.io | Yes |
+
+Any other URL works too — it's tagged as "other".
 
 ## Features
 
-- **Browser Extension** (Chrome & Safari) — built-in timer, one-click capture of the current problem URL
-- **Auto-detect platform** — LeetCode, CodeChef, HackerRank, Codeforces, GeeksForGeeks, InterviewBit, AtCoder, NeetCode, AlgoMonster, DesignGurus
-- **Self-rating system** — rate how well you solved each problem (1-5 stars)
-- **SM-2 spaced repetition** — scientifically-backed algorithm schedules your revision
-- **Magic link auth** — passwordless login via email (Supabase Auth)
-- **Per-user data isolation** — each user sees only their own questions (Row Level Security)
-- **Dashboard** — filterable table, stats, charts, inline editing, CSV export
-- **Cloud-hosted** — Supabase Postgres database, deployable anywhere
+- **SM-2 Spaced Repetition** — the same algorithm behind Anki and SuperMemo. Rate your recall 1-5 stars, and the system schedules your next review at the optimal time.
+- **Built-in Timer** — start when you begin a problem, pause/resume, stop when done. Solve time is recorded automatically.
+- **Analytics Dashboard** — problems solved, difficulty breakdown, platform distribution, revision schedule, daily activity feed.
+- **Magic Link Auth** — no passwords. Enter your email, click the link in your inbox, done. Powered by Supabase Auth.
+- **10+ Platforms** — auto-detects LeetCode, Codeforces, HackerRank, CodeChef, GeeksForGeeks, InterviewBit, AtCoder, NeetCode, AlgoMonster, DesignGurus.
+- **Browser Extension** — Chrome and Safari. Captures the current problem URL with one click.
+- **Due for Revision** — the extension and dashboard both show which problems are due today, so you always know what to revise.
+- **CSV Export** — download your entire question history as a CSV.
+- **Per-user Data Isolation** — Row Level Security on Supabase. Each user only sees their own data.
 
-## Architecture
+## Getting Started
 
-```
-Browser Extension (popup UI)
-        ↓ REST API (revise.mrinal.dev)
-Python FastAPI Server → Supabase (Postgres + Auth)
-        ↓
-Dashboard UI (revise.mrinal.dev/dashboard)
-```
+### Use the hosted version (easiest)
 
-## Quick Start
+1. Go to [revise.mrinal.dev](https://revise.mrinal.dev)
+2. Click **Get Started Free**
+3. Enter your email and click **Send Magic Link**
+4. Check your inbox, click the link — you're logged in
+5. Install the browser extension (see below)
+6. Start solving problems!
 
-### 1. Supabase Setup
+### Install the Chrome Extension
 
-Create a Supabase project and run the table creation SQL in the SQL Editor:
+1. Download [`extension.zip`](https://github.com/the-mrinal/code-revision-tracker/raw/main/extension.zip)
+2. Unzip the downloaded file
+3. Open `chrome://extensions` in Chrome
+4. Enable **Developer mode** (top right toggle)
+5. Click **Load unpacked** and select the unzipped folder
+6. Pin the extension from the puzzle icon in the toolbar
+
+**Safari:** Available on request. It requires a macOS/iOS native app wrapper built with Xcode. Reach out at dmrinal626@gmail.com and I'll send you the build.
+
+### Self-host (for developers)
+
+#### 1. Supabase Setup
+
+Create a [Supabase](https://supabase.com) project and run this in the SQL Editor:
 
 ```sql
 create table public.questions (
@@ -66,88 +168,60 @@ Configure Auth redirect URLs in Supabase Dashboard:
 - **Site URL**: `https://your-domain.com/dashboard`
 - **Redirect URL**: `https://your-domain.com/api/auth/callback`
 
-### 2. Configure environment
+#### 2. Environment Variables
 
 Create a `.env` file:
 
-```
+```env
 SUPABASE_URL=https://xxx.supabase.co
 SUPABASE_ANON_KEY=eyJ...
 SUPABASE_SERVICE_ROLE_KEY=eyJ...
 SUPABASE_JWT_SECRET=your-jwt-secret
+SERVER_URL=https://your-domain.com
 ```
 
-### 3. Start the server
+#### 3. Run
 
 ```bash
 docker compose up -d
 ```
 
-### 4. Install the Chrome extension
+The server starts at `http://localhost:8765`. The landing page is at `/` and the dashboard at `/dashboard`.
 
-1. Download [`extension.zip`](https://github.com/the-mrinal/code-revision-tracker/raw/main/extension.zip)
-2. Unzip the downloaded file
-3. Go to `chrome://extensions` in Chrome
-4. Enable **Developer mode** (top right toggle)
-5. Click **Load unpacked** → select the unzipped folder
-6. Pin the extension from the puzzle icon in the toolbar
+#### 4. Point the extension at your server
 
-**Safari:** Available on request — contact dmrinal626@gmail.com for a build.
-
-### 5. Use it
-
-1. Open the extension popup or dashboard
-2. Enter your email and click "Send Magic Link"
-3. Click the link in your email to authenticate
-4. Navigate to a coding problem (e.g. LeetCode Two Sum)
-5. Click the extension icon → Start Timer → solve the problem → Stop → rate and save
-6. Visit the dashboard to see tracked problems and revision schedule
+Update the `SERVER_URL` in the extension's config to point to your self-hosted instance.
 
 ## API Endpoints
 
-All endpoints except auth require a `Authorization: Bearer <token>` header.
+All endpoints except auth require an `Authorization: Bearer <token>` header.
 
 | Method | Endpoint | Description |
 |--------|----------|-------------|
 | `POST` | `/api/auth/magic-link` | Send magic link email |
-| `GET` | `/api/auth/callback` | Exchange magic link token for session |
+| `GET` | `/api/auth/callback` | Handle auth callback (PKCE + implicit flow) |
 | `POST` | `/api/auth/refresh` | Refresh access token |
 | `POST` | `/api/questions` | Save a new question |
 | `GET` | `/api/questions` | List all questions |
 | `PUT` | `/api/questions/{id}` | Edit a question |
 | `DELETE` | `/api/questions/{id}` | Delete a question |
-| `POST` | `/api/questions/{id}/review` | Submit a review rating |
+| `POST` | `/api/questions/{id}/review` | Submit a review rating (triggers SM-2) |
 | `GET` | `/api/revisions/today` | Get questions due for revision today |
 | `GET` | `/api/activity/today` | Today's new + revised questions |
 | `GET` | `/api/stats` | Summary statistics |
 
-## Supported Platforms
-
-| Platform | Auto-detected |
-|----------|:---:|
-| LeetCode | Yes |
-| CodeChef | Yes |
-| HackerRank | Yes |
-| Codeforces | Yes |
-| GeeksForGeeks | Yes |
-| InterviewBit | Yes |
-| AtCoder | Yes |
-| NeetCode | Yes |
-| AlgoMonster | Yes |
-| DesignGurus.io | Yes |
-
-Any other URL is tagged as "other".
-
 ## SM-2 Algorithm
 
-The spaced repetition schedule is based on the [SM-2 algorithm](https://en.wikipedia.org/wiki/SuperMemo#Description_of_SM-2_algorithm):
+The revision schedule uses the [SM-2 algorithm](https://en.wikipedia.org/wiki/SuperMemo#Description_of_SM-2_algorithm):
 
-- **Rating 1-2**: Reset interval (review again soon)
-- **Rating 3**: Hard recall — short interval
-- **Rating 4**: Good recall — moderate interval
-- **Rating 5**: Easy recall — long interval
+| Rating | Meaning | What happens |
+|--------|---------|--------------|
+| 1-2 | Forgot / struggled | Interval resets — review again soon |
+| 3 | Hard recall | Short interval |
+| 4 | Good recall | Moderate interval |
+| 5 | Easy recall | Long interval |
 
-The easiness factor adjusts over time, making well-known problems appear less frequently and difficult ones more often.
+The easiness factor adjusts over time. Problems you consistently nail appear less frequently. Problems you struggle with keep coming back until they stick.
 
 ## Tech Stack
 
@@ -155,8 +229,12 @@ The easiness factor adjusts over time, making well-known problems appear less fr
 - **Database**: Supabase (Postgres + Row Level Security)
 - **Auth**: Supabase Auth (magic link / passwordless)
 - **Frontend**: Vanilla HTML/CSS/JS (no frameworks)
-- **Extension**: Manifest V3 (Chrome & Safari compatible)
+- **Extension**: Manifest V3 (Chrome & Safari)
 - **Deployment**: Docker Compose
+
+## Contributing
+
+Contributions welcome! Open an issue or submit a PR.
 
 ## License
 
