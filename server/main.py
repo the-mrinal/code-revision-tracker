@@ -3,6 +3,7 @@
 import re
 from datetime import date
 from typing import Optional
+from urllib.parse import urlparse, urlunparse
 
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
@@ -28,6 +29,7 @@ from database import (
     increment_attempts,
     insert_question,
     insert_user_platform,
+    merge_duplicates,
     update_question,
     update_question_sm2,
 )
@@ -54,6 +56,17 @@ PLATFORM_PATTERNS = {
     "algomonster": r"algo\.monster",
     "designgurus": r"designgurus\.io",
 }
+
+
+def normalize_url(url: str) -> str:
+    """Strip query params, fragments, and trailing sub-paths like /description/."""
+    parsed = urlparse(url)
+    path = parsed.path.rstrip("/")
+    # LeetCode: keep only /problems/<slug>
+    m = re.match(r"(/problems/[^/]+)", path)
+    if m and "leetcode.com" in parsed.netloc:
+        path = m.group(1)
+    return urlunparse((parsed.scheme, parsed.netloc, path + "/", "", "", ""))
 
 
 def detect_platform(url: str, user_platforms: list[dict] | None = None) -> str:
@@ -146,15 +159,16 @@ def auth_refresh(req: RefreshRequest):
 
 @app.post("/api/questions")
 def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
-    existing = find_by_url(user_id, q.url)
+    url = normalize_url(q.url)
+    existing = find_by_url(user_id, url)
     if existing:
         return increment_attempts(user_id, existing["id"], q.title)
 
     user_plats = get_user_platforms(user_id)
-    platform = detect_platform(q.url, user_plats)
+    platform = detect_platform(url, user_plats)
     sm2_result = sm2(q.self_rating, 2.5, 1, 0)
     data = {
-        "url": q.url,
+        "url": url,
         "title": q.title,
         "platform": platform,
         "difficulty": q.difficulty,
@@ -248,6 +262,12 @@ def remove_question(qid: int, user_id: str = Depends(get_current_user_id)):
     deleted = delete_question(user_id, qid)
     if not deleted:
         raise HTTPException(404, "Question not found")
+    return {"ok": True}
+
+
+@app.post("/api/questions/merge-duplicates")
+def merge_dupes(user_id: str = Depends(get_current_user_id)):
+    merge_duplicates(user_id)
     return {"ok": True}
 
 

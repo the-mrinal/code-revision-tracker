@@ -1,7 +1,9 @@
 """Supabase database queries for Revise."""
 
 import os
+import re
 from datetime import date, datetime
+from urllib.parse import urlparse, urlunparse
 
 from supabase import create_client
 
@@ -161,13 +163,24 @@ def increment_attempts(user_id: str, qid: int, title: str | None = None) -> dict
     return update_question(user_id, qid, update_data)
 
 
+def _normalize_url(url: str) -> str:
+    """Normalize URL for dedup: strip query params, fragments, sub-paths."""
+    parsed = urlparse(url)
+    path = parsed.path.rstrip("/")
+    m = re.match(r"(/problems/[^/]+)", path)
+    if m and "leetcode.com" in parsed.netloc:
+        path = m.group(1)
+    return urlunparse((parsed.scheme, parsed.netloc, path + "/", "", "", ""))
+
+
 def merge_duplicates(user_id: str):
     """Consolidate duplicate URL entries for a user."""
     all_rows = get_all_questions(user_id)
-    # Group by URL
+    # Group by normalized URL
     by_url: dict[str, list[dict]] = {}
     for row in all_rows:
-        by_url.setdefault(row["url"], []).append(row)
+        key = _normalize_url(row["url"])
+        by_url.setdefault(key, []).append(row)
 
     client = get_client()
     for url, rows in by_url.items():
@@ -182,6 +195,7 @@ def merge_duplicates(user_id: str):
         most_recent = max(rows, key=lambda r: r.get("solved_at") or "")
 
         update_data = {
+            "url": url,  # normalized URL
             "attempts": len(rows),
             "time_taken": total_time if total_time > 0 else None,
             "title": most_recent.get("title"),

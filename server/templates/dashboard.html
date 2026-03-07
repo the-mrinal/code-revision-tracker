@@ -261,6 +261,12 @@
       </div>
       <p style="font-size:11px;color:var(--muted);margin-top:8px;">Enter a domain like <code style="background:rgba(255,255,255,0.06);padding:1px 4px;border-radius:3px;font-size:11px;">khanacademy.org</code> or a regex pattern.</p>
     </div>
+    <div style="border-top:1px solid var(--border);padding-top:16px;margin-top:16px;">
+      <h3 style="font-size:13px;margin-bottom:8px;">Maintenance</h3>
+      <button id="mergeDupesBtn" onclick="mergeDuplicates()" style="background:var(--card);border:1px solid var(--border);color:var(--text);padding:8px 16px;border-radius:6px;font-size:13px;cursor:pointer;">Merge Duplicate Questions</button>
+      <span id="mergeStatus" style="font-size:12px;color:var(--muted);margin-left:8px;"></span>
+      <p style="font-size:11px;color:var(--muted);margin-top:8px;">Consolidate questions with the same URL into a single entry.</p>
+    </div>
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeSettings()">Close</button>
     </div>
@@ -695,6 +701,23 @@ async function deletePlatform(id) {
   if (!confirm('Remove this custom platform?')) return;
   await apiFetch(`/platforms/${id}`, { method: 'DELETE' });
   await loadPlatforms();
+}
+
+async function mergeDuplicates() {
+  const btn = document.getElementById('mergeDupesBtn');
+  const status = document.getElementById('mergeStatus');
+  btn.disabled = true;
+  status.textContent = 'Merging...';
+  try {
+    await apiFetch('/questions/merge-duplicates', { method: 'POST' });
+    status.textContent = 'Done! Reloading...';
+    await load();
+    status.textContent = 'Duplicates merged.';
+  } catch (e) {
+    status.textContent = 'Error: ' + e.message;
+  } finally {
+    btn.disabled = false;
+  }
 }
 
 document.getElementById('settingsBtn').addEventListener('click', openSettings);
