@@ -347,6 +347,80 @@ body {
   text-transform: uppercase;
 }
 
+/* Existing question meta banner */
+.existing-meta {
+  background: #1a1a2e;
+  border: 1px solid #2a2a4a;
+  border-radius: 8px;
+  padding: 8px 10px;
+  margin-bottom: 10px;
+  font-size: 11px;
+  color: #aaa;
+}
+
+.existing-meta .meta-header {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #7c9cff;
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+.existing-meta .meta-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 4px;
+}
+
+.existing-meta .meta-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+}
+
+.existing-meta .meta-tag.difficulty-easy { background: #064e3b; color: #6ee7b7; }
+.existing-meta .meta-tag.difficulty-medium { background: #78350f; color: #fbbf24; }
+.existing-meta .meta-tag.difficulty-hard { background: #4c1d1d; color: #fca5a5; }
+.existing-meta .meta-tag.default { background: #1e1e2e; color: #888; }
+
+.existing-meta .meta-notes {
+  margin-top: 6px;
+  padding: 6px 8px;
+  background: #111;
+  border-radius: 4px;
+  font-size: 11px;
+  color: #ccc;
+  line-height: 1.4;
+  max-height: 60px;
+  overflow-y: auto;
+  white-space: pre-wrap;
+}
+
+/* Revision item enhancements */
+.revision-item .rev-meta {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  flex-shrink: 0;
+}
+
+.revision-item .diff-tag {
+  font-size: 9px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.diff-tag.easy { background: #064e3b; color: #6ee7b7; }
+.diff-tag.medium { background: #78350f; color: #fbbf24; }
+.diff-tag.hard { background: #4c1d1d; color: #fca5a5; }
+
 .empty-state {
   color: #555;
   font-size: 12px;

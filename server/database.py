@@ -181,10 +181,35 @@ def _normalize_url(url: str) -> str:
     return urlunparse((parsed.scheme, parsed.netloc, path + "/", "", "", ""))
 
 
+def _merge_url_group(client, url: str, rows: list[dict]):
+    """Merge a group of duplicate rows sharing the same normalized URL."""
+    if len(rows) < 2:
+        return
+    # Keep the row with highest repetitions
+    rows.sort(key=lambda r: (r.get("repetitions") or 0, r.get("solved_at") or ""), reverse=True)
+    keep = rows[0]
+    others = rows[1:]
+
+    total_time = sum(r.get("time_taken") or 0 for r in rows)
+    most_recent = max(rows, key=lambda r: r.get("solved_at") or "")
+
+    update_data = {
+        "url": url,  # normalized URL
+        "attempts": len(rows),
+        "time_taken": total_time if total_time > 0 else None,
+        "title": most_recent.get("title"),
+        "difficulty": most_recent.get("difficulty"),
+        "self_rating": most_recent.get("self_rating"),
+        "notes": most_recent.get("notes"),
+    }
+    client.table("questions").update(update_data).eq("id", keep["id"]).execute()
+    for other in others:
+        client.table("questions").delete().eq("id", other["id"]).execute()
+
+
 def merge_duplicates(user_id: str):
     """Consolidate duplicate URL entries for a user."""
     all_rows = get_all_questions(user_id)
-    # Group by normalized URL
     by_url: dict[str, list[dict]] = {}
     for row in all_rows:
         key = _normalize_url(row["url"])
@@ -192,28 +217,24 @@ def merge_duplicates(user_id: str):
 
     client = get_client()
     for url, rows in by_url.items():
-        if len(rows) < 2:
-            continue
-        # Keep the row with highest repetitions
-        rows.sort(key=lambda r: (r.get("repetitions") or 0, r.get("solved_at") or ""), reverse=True)
-        keep = rows[0]
-        others = rows[1:]
+        _merge_url_group(client, url, rows)
 
-        total_time = sum(r.get("time_taken") or 0 for r in rows)
-        most_recent = max(rows, key=lambda r: r.get("solved_at") or "")
 
-        update_data = {
-            "url": url,  # normalized URL
-            "attempts": len(rows),
-            "time_taken": total_time if total_time > 0 else None,
-            "title": most_recent.get("title"),
-            "difficulty": most_recent.get("difficulty"),
-            "self_rating": most_recent.get("self_rating"),
-            "notes": most_recent.get("notes"),
-        }
-        client.table("questions").update(update_data).eq("id", keep["id"]).execute()
-        for other in others:
-            client.table("questions").delete().eq("id", other["id"]).execute()
+def merge_duplicates_for_question(user_id: str, qid: int) -> int | None:
+    """Merge duplicates for a single question's URL. Returns the surviving question ID."""
+    question = get_question(user_id, qid)
+    if not question:
+        return qid
+    norm_url = _normalize_url(question["url"])
+    all_rows = get_all_questions(user_id)
+    dupes = [r for r in all_rows if _normalize_url(r["url"]) == norm_url]
+    if len(dupes) < 2:
+        return qid
+    client = get_client()
+    _merge_url_group(client, norm_url, dupes)
+    # Return the surviving ID (highest repetitions)
+    dupes.sort(key=lambda r: (r.get("repetitions") or 0, r.get("solved_at") or ""), reverse=True)
+    return dupes[0]["id"]
 
 
 def get_user_platforms(user_id: str) -> list[dict]:

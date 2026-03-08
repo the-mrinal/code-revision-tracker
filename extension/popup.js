@@ -160,8 +160,41 @@ function populatePatternSelect() {
 }
 populatePatternSelect();
 
+// --- Show existing question metadata ---
+function showExistingMeta(q) {
+  const el = document.getElementById("existingMeta");
+  if (!q || !q.id) { el.style.display = "none"; return; }
+
+  const tags = [];
+  if (q.difficulty) {
+    tags.push(`<span class="meta-tag difficulty-${q.difficulty}">${q.difficulty}</span>`);
+  }
+  if (q.self_rating) {
+    tags.push(`<span class="meta-tag default">${"★".repeat(q.self_rating)}${"☆".repeat(5 - q.self_rating)}</span>`);
+  }
+  if (q.attempts && q.attempts > 1) {
+    tags.push(`<span class="meta-tag default">${q.attempts} attempts</span>`);
+  }
+  if (q.pattern) {
+    tags.push(`<span class="meta-tag default">${q.pattern}</span>`);
+  }
+  if (q.time_taken) {
+    tags.push(`<span class="meta-tag default">${q.time_taken} min total</span>`);
+  }
+
+  let html = `<div class="meta-header">Previously solved</div>`;
+  if (tags.length) html += `<div class="meta-row">${tags.join("")}</div>`;
+  if (q.notes) html += `<div class="meta-notes">${q.notes}</div>`;
+
+  el.innerHTML = html;
+  el.style.display = "block";
+
+  // Store for pre-filling finish form
+  el.dataset.questionJson = JSON.stringify(q);
+}
+
 // --- Auto-fill URL from active tab ---
-chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
   if (tabs[0]?.url) {
     document.getElementById("url").value = tabs[0].url;
     if (tabs[0].title) {
@@ -176,6 +209,18 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
       document.getElementById("patternLabel").textContent = pattern;
       document.getElementById("patternSelect").value = pattern;
     }
+
+    // Check if question already exists and show its metadata
+    try {
+      const auth = await getAuth();
+      if (auth?.access_token) {
+        const r = await apiFetch(`/questions/lookup?url=${encodeURIComponent(tabs[0].url)}`);
+        if (r.ok) {
+          const existing = await r.json();
+          if (existing) showExistingMeta(existing);
+        }
+      }
+    } catch {}
   }
 });
 
@@ -373,6 +418,17 @@ function showFinishForm() {
       s.classList.remove("active")
     );
     document.getElementById("finishBtn").disabled = true;
+
+    // Pre-fill from existing question data if available
+    try {
+      const metaEl = document.getElementById("existingMeta");
+      if (metaEl.dataset.questionJson) {
+        const prev = JSON.parse(metaEl.dataset.questionJson);
+        if (prev.difficulty) document.getElementById("difficulty").value = prev.difficulty;
+        if (prev.pattern) document.getElementById("patternSelect").value = prev.pattern;
+        if (prev.notes) document.getElementById("notes").value = prev.notes;
+      }
+    } catch {}
   });
 }
 
@@ -488,7 +544,10 @@ async function loadRevisions() {
         (q) => `
       <div class="revision-item">
         <a href="${q.url}" target="_blank">${q.title || q.url}</a>
-        <span class="platform-tag">${q.platform || ""}</span>
+        <div class="rev-meta">
+          ${q.difficulty ? `<span class="diff-tag ${q.difficulty}">${q.difficulty[0].toUpperCase()}</span>` : ""}
+          <span class="platform-tag">${q.platform || ""}</span>
+        </div>
       </div>`
       )
       .join("");

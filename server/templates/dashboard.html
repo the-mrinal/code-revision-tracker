@@ -140,6 +140,50 @@
   .tab-content.active { display: block; }
 
   /* Login overlay */
+  /* Flex modal */
+  .flex-modal .modal { width: 640px; max-height: 85vh; overflow-y: auto; padding: 0; }
+  .flex-content { padding: 24px; }
+  .flex-content .flex-title-card { text-align: center; padding: 32px 16px 24px; }
+  .flex-content .fun-title { font-size: 32px; font-weight: 800; background: linear-gradient(135deg, #a78bfa, #6ee7b7); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; line-height: 1.2; }
+  .flex-content .fun-subtitle { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .flex-content .flex-stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 16px; }
+  .flex-content .flex-stat { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 12px 8px; text-align: center; }
+  .flex-content .flex-stat .val { font-size: 26px; font-weight: 800; color: #fff; line-height: 1; }
+  .flex-content .flex-stat .lbl { font-size: 9px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .flex-content .flex-diff-bar { display: flex; height: 24px; border-radius: 6px; overflow: hidden; margin-bottom: 4px; }
+  .flex-content .flex-diff-bar .seg { display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: 700; color: #000; min-width: 24px; }
+  .flex-content .seg-easy { background: #34d399; }
+  .flex-content .seg-medium { background: #fbbf24; }
+  .flex-content .seg-hard { background: #f87171; }
+  .flex-content .flex-diff-legend { display: flex; gap: 14px; font-size: 10px; color: var(--muted); margin-bottom: 16px; }
+  .flex-content .flex-diff-legend span::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 2px; margin-right: 3px; vertical-align: middle; }
+  .flex-content .leg-e::before { background: #34d399; }
+  .flex-content .leg-m::before { background: #fbbf24; }
+  .flex-content .leg-h::before { background: #f87171; }
+  .flex-content .flex-pills { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+  .flex-content .flex-pill { background: #1e1b4b; color: #a5b4fc; padding: 4px 12px; border-radius: 16px; font-size: 11px; font-weight: 600; text-transform: capitalize; }
+  .flex-content .flex-pill .cnt { color: #c4b5fd; margin-left: 3px; }
+  .flex-content .flex-section { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; margin-bottom: 12px; }
+  .flex-content .flex-section h4 { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+  .flex-content .flex-pat-bar { height: 6px; background: #1a1a1a; border-radius: 3px; overflow: hidden; margin-bottom: 8px; }
+  .flex-content .flex-pat-fill { height: 100%; background: linear-gradient(90deg, #6ee7b7, #a78bfa); border-radius: 3px; }
+  .flex-content .flex-top-pat { display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 3px; }
+  .flex-content .flex-top-pat .nm { color: var(--text); }
+  .flex-content .flex-top-pat .pc { color: var(--muted); font-weight: 600; }
+  .flex-content .flex-streaks { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 16px; }
+  .flex-content .flex-streak { background: var(--bg); border: 1px solid var(--border); border-radius: 10px; padding: 14px; text-align: center; }
+  .flex-content .flex-streak .fl { font-size: 22px; margin-bottom: 2px; }
+  .flex-content .flex-streak .sn { font-size: 32px; font-weight: 800; color: #fff; line-height: 1; }
+  .flex-content .flex-streak .sl { font-size: 10px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 4px; }
+  .flex-content .flex-share { text-align: center; padding-top: 8px; }
+  .flex-content .flex-share button { background: var(--accent); color: #fff; border: none; padding: 8px 24px; border-radius: 6px; font-size: 13px; font-weight: 600; cursor: pointer; }
+  .flex-content .flex-share button:hover { opacity: 0.85; }
+  .flex-content .flex-share button.copied { background: #065f46; }
+  .flex-content .flex-loading { text-align: center; padding: 60px 20px; color: var(--muted); font-size: 14px; }
+  .flex-content .flex-empty { text-align: center; padding: 48px 20px; }
+  .flex-content .flex-empty .roast { font-size: 22px; font-weight: 800; color: #fff; line-height: 1.3; margin-bottom: 8px; }
+  .flex-content .flex-empty .roast-sub { color: var(--muted); font-size: 13px; }
+
   .login-overlay { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; align-items: center; justify-content: center; }
   .login-overlay.open { display: flex; }
   .login-box { background: var(--card); border: 1px solid var(--border); border-radius: 12px; padding: 32px; width: 380px; max-width: 90vw; text-align: center; }
@@ -168,7 +212,7 @@
 <div class="header-row">
   <h1>Revise</h1>
   <div style="display:flex;align-items:center;gap:8px;">
-    <a href="/flex" id="flexBtn" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;text-decoration:none;">Flex</a>
+    <button id="flexBtn" onclick="openFlex()" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Flex</button>
     <button class="settings-btn" id="settingsBtn" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Settings</button>
     <span class="user-email" id="userEmail" style="display:none"></span>
     <button class="sign-out-btn" id="signOutBtn" style="display:none">Sign Out</button>
@@ -308,6 +352,14 @@
     <div class="modal-actions">
       <button class="btn-cancel" onclick="closeEdit()">Cancel</button>
       <button class="btn-save" onclick="saveEdit()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay flex-modal" id="flexModal">
+  <div class="modal">
+    <div class="flex-content" id="flexContent">
+      <div class="flex-loading">Loading your flex...</div>
     </div>
   </div>
 </div>
@@ -772,6 +824,121 @@ function closeSettings() {
 
 document.getElementById('settingsModal').addEventListener('click', (e) => {
   if (e.target === document.getElementById('settingsModal')) closeSettings();
+});
+
+// --- Flex modal ---
+const ROASTS = [
+  "Error 404: Effort Not Found",
+  "This flex page is emptier than a LeetCode contest after the first Hard drops",
+  "All grind, zero receipts",
+  "Submitted: 0. Excuses: infinite.",
+  "The only thing solved here is the mystery of where the motivation went",
+  "LeetCode called. They don\u2019t remember you either.",
+  "Achievement unlocked: Professional Procrastinator",
+];
+
+async function openFlex() {
+  document.getElementById('flexModal').classList.add('open');
+  const el = document.getElementById('flexContent');
+  el.innerHTML = '<div class="flex-loading">Loading your flex...</div>';
+
+  try {
+    const auth = getAuth();
+    if (!auth) return;
+    const payload = JSON.parse(atob(auth.access_token.split('.')[1]));
+    const userId = payload.sub;
+    const r = await fetch(`${API}/flex/${userId}`);
+    if (!r.ok) { el.innerHTML = '<div class="flex-loading">Failed to load flex data.</div>'; return; }
+    const d = await r.json();
+    if (!d || d.total_solved === 0) {
+      const roast = ROASTS[Math.floor(Math.random() * ROASTS.length)];
+      el.innerHTML = `<div class="flex-empty"><div class="roast">${esc(roast)}</div><div class="roast-sub">Time to start grinding.</div></div>`;
+      return;
+    }
+    renderFlex(el, d, userId);
+  } catch (e) {
+    el.innerHTML = '<div class="flex-loading">Something went wrong.</div>';
+  }
+}
+
+function renderFlex(el, d, userId) {
+  const easy = d.by_difficulty.easy || 0, medium = d.by_difficulty.medium || 0, hard = d.by_difficulty.hard || 0;
+  const total = easy + medium + hard;
+
+  let diffBar = '';
+  if (total > 0) {
+    if (easy) diffBar += `<div class="seg seg-easy" style="width:${easy/total*100}%">${easy}</div>`;
+    if (medium) diffBar += `<div class="seg seg-medium" style="width:${medium/total*100}%">${medium}</div>`;
+    if (hard) diffBar += `<div class="seg seg-hard" style="width:${hard/total*100}%">${hard}</div>`;
+  }
+
+  const platforms = Object.entries(d.by_platform || {}).sort((a, b) => b[1] - a[1]);
+  const pills = platforms.map(([n, c]) => `<span class="flex-pill">${esc(n)}<span class="cnt">${c}</span></span>`).join('');
+
+  const topPats = (d.top_patterns || []).map(p => `<div class="flex-top-pat"><span class="nm">${esc(p.name)}</span><span class="pc">${p.pct}%</span></div>`).join('');
+  const patPct = d.total_categories ? Math.round(d.patterns_mastered / d.total_categories * 100) : 0;
+
+  const subtitleParts = [];
+  if (d.patterns_mastered > 0) subtitleParts.push(d.patterns_mastered + ' pattern' + (d.patterns_mastered > 1 ? 's' : '') + ' mastered');
+  if (d.total_solved > 0) subtitleParts.push(d.total_solved + ' problems solved');
+
+  el.innerHTML = `
+    <div class="flex-title-card">
+      <div class="fun-title">${esc(d.title)}</div>
+      <div class="fun-subtitle">${subtitleParts.join(' \u00B7 ')}</div>
+    </div>
+    <div class="flex-stats">
+      <div class="flex-stat"><div class="val">${d.total_solved}</div><div class="lbl">Solved</div></div>
+      <div class="flex-stat"><div class="val">${d.total_time_hours}</div><div class="lbl">Hours</div></div>
+      <div class="flex-stat"><div class="val">${d.avg_rating}/5</div><div class="lbl">Avg Rating</div></div>
+      <div class="flex-stat"><div class="val">${d.total_reviews}</div><div class="lbl">Reviews</div></div>
+    </div>
+    ${total > 0 ? `
+      <div class="flex-diff-bar">${diffBar}</div>
+      <div class="flex-diff-legend">
+        <span class="leg-e">Easy ${easy}</span>
+        <span class="leg-m">Medium ${medium}</span>
+        <span class="leg-h">Hard ${hard}</span>
+      </div>
+    ` : ''}
+    ${pills ? `<div class="flex-pills">${pills}</div>` : ''}
+    ${d.patterns_started > 0 ? `
+      <div class="flex-section">
+        <h4>DSA Patterns</h4>
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <span style="font-size:32px;font-weight:800;color:#fff;">${d.patterns_mastered}</span>
+          <div><div style="font-size:12px;color:var(--muted);">${d.total_categories} categories mastered</div><div style="font-size:12px;color:var(--muted);margin-top:1px;">${d.patterns_started} started</div></div>
+        </div>
+        <div class="flex-pat-bar"><div class="flex-pat-fill" style="width:${patPct}%"></div></div>
+        ${topPats}
+      </div>
+    ` : ''}
+    <div class="flex-streaks">
+      <div class="flex-streak"><div class="fl">&#128293;</div><div class="sn">${d.current_streak}</div><div class="sl">Current Streak</div></div>
+      <div class="flex-streak"><div class="fl">&#127942;</div><div class="sn">${d.longest_streak}</div><div class="sl">Longest Streak</div></div>
+    </div>
+    <div class="flex-share">
+      <button id="flexShareBtn" onclick="copyFlexLink('${userId}')">Copy Flex Link</button>
+    </div>
+  `;
+}
+
+function copyFlexLink(userId) {
+  const url = window.location.origin + '/flex/' + userId;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('flexShareBtn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = 'Copy Flex Link'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function closeFlex() {
+  document.getElementById('flexModal').classList.remove('open');
+}
+
+document.getElementById('flexModal').addEventListener('click', (e) => {
+  if (e.target === document.getElementById('flexModal')) closeFlex();
 });
 
 async function loadPlatforms() {

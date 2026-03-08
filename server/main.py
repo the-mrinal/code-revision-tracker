@@ -31,6 +31,7 @@ from database import (
     insert_question,
     insert_user_platform,
     merge_duplicates,
+    merge_duplicates_for_question,
     update_question,
     update_question_sm2,
 )
@@ -167,6 +168,15 @@ def auth_refresh(req: RefreshRequest):
 # --- Protected API endpoints ---
 
 
+@app.get("/api/questions/lookup")
+def lookup_question(url: str, user_id: str = Depends(get_current_user_id)):
+    normalized = normalize_url(url)
+    existing = find_by_url(user_id, normalized)
+    if not existing:
+        return None
+    return existing
+
+
 @app.post("/api/questions")
 def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
     url = normalize_url(q.url)
@@ -210,6 +220,8 @@ def revisions_today(user_id: str = Depends(get_current_user_id)):
 
 @app.post("/api/questions/{qid}/review")
 def review_question(qid: int, review: ReviewIn, user_id: str = Depends(get_current_user_id)):
+    # Auto-merge duplicates for this question's URL before reviewing
+    qid = merge_duplicates_for_question(user_id, qid) or qid
     question = get_question(user_id, qid)
     if not question:
         raise HTTPException(404, "Question not found")
