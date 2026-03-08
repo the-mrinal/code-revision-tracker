@@ -355,6 +355,26 @@ PROJECT STRUCTURE:
 /repository — Data access layer
 main.go    — Driver/demo code</div>
   </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">Study References</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <p style="margin-bottom:6px"><b>Go Language</b></p>
+      <p>• <a href="https://go.dev/tour/" target="_blank">A Tour of Go</a> — Interactive intro to Go</p>
+      <p>• <a href="https://go.dev/doc/effective_go" target="_blank">Effective Go</a> — Idiomatic Go patterns</p>
+      <p>• <a href="https://gobyexample.com/" target="_blank">Go by Example</a> — Annotated example programs</p>
+      <p style="margin:8px 0 6px"><b>Design Patterns</b></p>
+      <p>• <a href="https://refactoring.guru/design-patterns" target="_blank">Refactoring Guru</a> — Visual pattern explanations</p>
+      <p>• <a href="https://github.com/tmrts/go-patterns" target="_blank">Go Design Patterns</a> — Patterns implemented in Go</p>
+      <p style="margin:8px 0 6px"><b>System Design</b></p>
+      <p>• <a href="https://github.com/donnemartin/system-design-primer" target="_blank">System Design Primer</a> — Comprehensive HLD guide</p>
+      <p>• <a href="https://github.com/karanpratapsingh/system-design" target="_blank">System Design Course</a> — Free system design course</p>
+      <p>• <a href="https://highscalability.com/" target="_blank">High Scalability</a> — Real-world architecture case studies</p>
+      <p style="margin:8px 0 6px"><b>Machine Coding</b></p>
+      <p>• <a href="https://workat.tech/machine-coding/article/how-to-practice-for-machine-coding-kp0oj60mrw6w" target="_blank">How to Practice Machine Coding</a> — WorkAtTech guide</p>
+      <p>• <a href="https://github.com/kumaransg/LLD" target="_blank">LLD Problems Collection</a> — GitHub collection of LLD solutions</p>
+    </div>
+  </div>
 </div>
 
 <!-- INTERVIEWER -->
@@ -536,7 +556,7 @@ function showTab(id) {
   if(id==='overview') renderOverview();
 }
 
-function toggle(el) { el.classList.toggle('open') }
+function toggle(el) { el.classList.toggle('open'); var body = el.nextElementSibling; if (body && body.classList.contains('collapse-body')) { body.style.display = el.classList.contains('open') ? 'block' : 'none'; } }
 
 // ===== PLAN =====
 function renderPlan() {
