@@ -13,6 +13,7 @@
   <div class="status" id="status">
     <span class="dot" id="statusDot"></span>
     <span id="statusText">Connecting...</span>
+    <a href="#" id="resyncBtn" style="display:none;margin-left:auto;font-size:10px;color:#7c9cff;text-decoration:none;">Re-sync Login</a>
   </div>
 
   <div id="toast" class="toast"></div>
@@ -29,6 +30,15 @@
 
   <!-- View 1: Start — capture URL and begin timer -->
   <div class="form-section" id="startView" style="display:none">
+    <div class="field">
+      <label>Type</label>
+      <select id="questionType">
+        <option value="dsa" selected>DSA</option>
+        <option value="machine_coding">Machine Coding</option>
+        <option value="lld">LLD</option>
+        <option value="hld">HLD</option>
+      </select>
+    </div>
     <div class="field">
       <label>URL</label>
       <input type="text" id="url" readonly>

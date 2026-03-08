@@ -79,7 +79,27 @@ function showView(view) {
 function showLoginView() {
   showView(loginView);
   document.getElementById("signOutLink").style.display = "none";
+  document.getElementById("resyncBtn").style.display = "inline";
 }
+
+function showResyncBtn() {
+  document.getElementById("resyncBtn").style.display = "inline";
+}
+
+// --- Re-sync login: open dashboard to pull tokens from localStorage ---
+document.getElementById("resyncBtn").addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.create({ url: "https://revise.mrinal.dev/dashboard" }, () => {
+    // Wait a moment for the content script to sync tokens, then retry
+    setTimeout(async () => {
+      const auth = await getAuth();
+      if (auth?.access_token) {
+        document.getElementById("resyncBtn").style.display = "none";
+        initAuth();
+      }
+    }, 2000);
+  });
+});
 
 // --- Auth init ---
 async function initAuth() {
@@ -93,6 +113,7 @@ async function initAuth() {
     const r = await apiFetch("/stats");
     if (r.ok) {
       document.getElementById("signOutLink").style.display = "inline";
+      document.getElementById("resyncBtn").style.display = "none";
       document.getElementById("statusDot").classList.add("connected");
       document.getElementById("statusText").textContent = "Server connected";
       checkActiveTimer();
@@ -100,8 +121,9 @@ async function initAuth() {
       return;
     }
   } catch {}
-  // Token invalid
+  // Token invalid — show both login and resync
   showLoginView();
+  showResyncBtn();
 }
 
 // --- Send magic link ---
@@ -307,6 +329,7 @@ document.getElementById("startTimerBtn").addEventListener("click", async () => {
 
   const url = document.getElementById("url").value;
   const title = document.getElementById("title").value || null;
+  const questionType = document.getElementById("questionType").value;
 
   const payload = {
     url,
@@ -315,6 +338,7 @@ document.getElementById("startTimerBtn").addEventListener("click", async () => {
     difficulty: null,
     time_taken: null,
     notes: null,
+    question_type: questionType,
   };
 
   try {
@@ -331,6 +355,7 @@ document.getElementById("startTimerBtn").addEventListener("click", async () => {
         questionId: question.id,
         url: url,
         title: title || url,
+        questionType: questionType,
         startTime: Date.now(),
         accumulated: 0,
         running: true,
@@ -401,6 +426,7 @@ function showFinishForm() {
 
     finishTimerData = {
       questionId: timer.questionId,
+      questionType: timer.questionType,
       totalMinutes,
       totalSeconds,
     };
@@ -412,6 +438,12 @@ function showFinishForm() {
       timer.title || "Untitled";
     document.getElementById("finishTime").textContent =
       formatTime(totalSeconds) + ` (${totalMinutes} min)`;
+
+    // Show pattern dropdown only for DSA questions
+    const patternField = document.getElementById("patternSelect").closest(".field");
+    if (patternField) {
+      patternField.style.display = (!timer.questionType || timer.questionType === "dsa") ? "" : "none";
+    }
 
     selectedRating = 0;
     document.querySelectorAll("#stars .star").forEach((s) =>
@@ -445,6 +477,7 @@ document.getElementById("finishBtn").addEventListener("click", async () => {
     time_taken: finishTimerData.totalMinutes,
     notes: document.getElementById("notes").value || null,
     pattern: document.getElementById("patternSelect").value || null,
+    question_type: finishTimerData.questionType || "dsa",
   };
 
   try {

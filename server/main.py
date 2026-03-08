@@ -100,6 +100,7 @@ class QuestionIn(BaseModel):
     self_rating: int = Field(ge=1, le=5)
     time_taken: Optional[int] = None
     notes: Optional[str] = None
+    question_type: Optional[str] = "dsa"
 
 
 class QuestionUpdate(BaseModel):
@@ -110,6 +111,7 @@ class QuestionUpdate(BaseModel):
     time_taken: Optional[int] = None
     notes: Optional[str] = None
     pattern: Optional[str] = None
+    question_type: Optional[str] = None
 
 
 class ReviewIn(BaseModel):
@@ -201,6 +203,7 @@ def create_question(q: QuestionIn, user_id: str = Depends(get_current_user_id)):
         "notes": q.notes,
         "next_review": sm2_result["next_review"],
         "pattern": pattern_label,
+        "question_type": q.question_type,
     }
     question = insert_question(user_id, data)
     update_question_sm2(user_id, question["id"], sm2_result)
@@ -241,7 +244,7 @@ def edit_question(qid: int, q: QuestionUpdate, user_id: str = Depends(get_curren
     if not existing:
         raise HTTPException(404, "Question not found")
     updates = {}
-    for field in ["url", "title", "difficulty", "self_rating", "time_taken", "notes", "pattern"]:
+    for field in ["url", "title", "difficulty", "self_rating", "time_taken", "notes", "pattern", "question_type"]:
         val = getattr(q, field)
         if val is not None:
             updates[field] = val

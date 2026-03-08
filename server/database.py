@@ -24,7 +24,7 @@ def get_client():
 COLUMNS = (
     "id, user_id, url, title, platform, difficulty, self_rating, time_taken, "
     "notes, solved_at, easiness_factor, interval, repetitions, next_review, "
-    "last_reviewed, attempts, pattern"
+    "last_reviewed, attempts, pattern, question_type"
 )
 
 
