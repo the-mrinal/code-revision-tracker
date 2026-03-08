@@ -436,6 +436,12 @@ def dashboard():
         return f.read()
 
 
+@app.get("/prep", response_class=HTMLResponse)
+def prep_page():
+    with open("templates/prep.html") as f:
+        return f.read()
+
+
 @app.get("/flex", response_class=HTMLResponse)
 def flex_page():
     with open("templates/flex.html") as f:

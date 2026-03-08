@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Revise — Interview Prep</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--bg:#0a0a0a;--card:#111;--border:#222;--text:#ddd;--muted:#777;--accent:#5b6abf;--green:#34d399;--yellow:#fbbf24;--red:#f87171;--purple:#a78bfa}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--text);line-height:1.5;min-height:100vh}
+a{color:var(--accent);text-decoration:none}
+
+/* Nav */
+.nav{display:flex;gap:4px;padding:12px 16px;background:#0d0d0d;border-bottom:1px solid var(--border);position:sticky;top:0;z-index:10;overflow-x:auto;align-items:center}
+.nav button{padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:transparent;color:var(--muted);cursor:pointer;font-size:13px;white-space:nowrap;transition:.15s}
+.nav button.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.nav button:hover:not(.active){border-color:var(--muted)}
+.nav-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.nav-link{font-size:12px;color:var(--muted);border:1px solid var(--border);padding:4px 10px;border-radius:6px;text-decoration:none}
+.nav-link:hover{border-color:var(--muted);color:var(--text)}
+
+/* Layout */
+.tab{display:none;padding:16px;max-width:900px;margin:0 auto}
+.tab.active{display:block}
+
+/* Cards */
+.card{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:16px;margin-bottom:12px}
+.card h3{font-size:15px;margin-bottom:8px;color:var(--accent)}
+
+/* Progress bar */
+.progress-bar{height:6px;background:var(--border);border-radius:3px;margin:8px 0;overflow:hidden}
+.progress-fill{height:100%;background:var(--green);border-radius:3px;transition:width .3s}
+
+/* Checklist */
+.checklist label{display:flex;align-items:flex-start;gap:8px;padding:4px 0;font-size:14px;cursor:pointer}
+.checklist input[type=checkbox]{margin-top:3px;accent-color:var(--green);flex-shrink:0}
+.checklist input:checked+span{color:var(--muted);text-decoration:line-through}
+
+/* Stats row */
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:8px;margin-bottom:12px}
+.stat{background:var(--card);border:1px solid var(--border);border-radius:8px;padding:12px;text-align:center}
+.stat .num{font-size:28px;font-weight:700}
+.stat .lbl{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.5px}
+.stat.green .num{color:var(--green)}
+.stat.yellow .num{color:var(--yellow)}
+.stat.purple .num{color:var(--purple)}
+.stat.blue .num{color:var(--accent)}
+
+/* Forms & tables */
+.log-form{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.log-form input,.log-form select{padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:13px}
+.log-form input[type=text]{flex:1;min-width:150px}
+.log-form select{min-width:100px}
+.btn{padding:6px 14px;border:none;border-radius:6px;background:var(--accent);color:#fff;cursor:pointer;font-size:13px;transition:.15s}
+.btn:hover{opacity:.85}
+.btn.danger{background:var(--red)}
+.btn.small{padding:3px 8px;font-size:12px}
+.log-table{width:100%;font-size:13px;border-collapse:collapse}
+.log-table th{text-align:left;color:var(--muted);font-weight:500;padding:6px 8px;border-bottom:1px solid var(--border);font-size:11px;text-transform:uppercase}
+.log-table td{padding:6px 8px;border-bottom:1px solid var(--border)}
+.log-table tr:hover{background:rgba(91,106,191,.05)}
+.badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600}
+.badge.green{background:rgba(52,211,153,.15);color:var(--green)}
+.badge.yellow{background:rgba(251,191,36,.15);color:var(--yellow)}
+.badge.red{background:rgba(248,113,113,.15);color:var(--red)}
+
+/* Collapsible */
+.collapsible{cursor:pointer;user-select:none}
+.collapsible::before{content:'▸ ';color:var(--muted)}
+.collapsible.open::before{content:'▾ '}
+.collapse-body{display:none;margin-top:6px}
+.collapsible.open+.collapse-body{display:block}
+
+/* Interviewer */
+.prompt-box{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:12px;font-size:13px;max-height:400px;overflow-y:auto;white-space:pre-wrap;font-family:'SF Mono',Monaco,Consolas,monospace;line-height:1.6}
+
+/* Reference */
+.ref-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(max-width:600px){.ref-grid{grid-template-columns:1fr}}
+.ref-item{background:var(--bg);border:1px solid var(--border);border-radius:6px;padding:10px;font-size:13px}
+.ref-item .title{font-weight:600;color:var(--accent);font-size:13px}
+.ref-item .desc{color:var(--muted);font-size:12px;margin-top:2px}
+.tier{display:inline-block;padding:1px 6px;border-radius:3px;font-size:10px;font-weight:700;margin-right:4px}
+.tier.t1{background:rgba(248,113,113,.15);color:var(--red)}
+.tier.t2{background:rgba(251,191,36,.15);color:var(--yellow)}
+.tier.t3{background:rgba(167,139,250,.15);color:var(--purple)}
+
+/* DSA */
+.dsa-form{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+.dsa-form input,.dsa-form select{padding:6px 10px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:13px}
+.dsa-form input[type=text]{flex:1;min-width:120px}
+.filter-row{display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap}
+.filter-row select,.filter-row input{padding:4px 8px;border:1px solid var(--border);border-radius:4px;background:var(--bg);color:var(--text);font-size:12px}
+
+/* Login overlay */
+.login-overlay{display:none;position:fixed;inset:0;background:var(--bg);z-index:200;align-items:center;justify-content:center}
+.login-overlay.open{display:flex}
+.login-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:32px;width:380px;max-width:90vw;text-align:center}
+.login-box h2{font-size:20px;margin-bottom:8px}
+.login-box .login-subtitle{color:var(--muted);font-size:13px;margin-bottom:20px}
+.login-box input{width:100%;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);font-size:14px;outline:none;margin-bottom:12px}
+.login-box input:focus{border-color:var(--accent)}
+.login-box button{width:100%;padding:10px;background:var(--accent);color:#fff;border:none;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}
+.login-box .login-status{font-size:12px;color:var(--muted);margin-top:12px}
+</style>
+</head>
+<body>
+
+<div class="login-overlay" id="loginOverlay">
+  <div class="login-box">
+    <h2>Interview Prep</h2>
+    <p class="login-subtitle">Sign in to sync your DSA progress</p>
+    <input type="email" id="loginEmail" placeholder="you@example.com">
+    <button id="loginBtn">Send Magic Link</button>
+    <p class="login-status" id="loginStatus"></p>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="active" onclick="showTab('overview')">Overview</button>
+  <button onclick="showTab('plan')">7-Day Plan</button>
+  <button onclick="showTab('coding')">Machine Coding</button>
+  <button onclick="showTab('dsa')">DSA Tracker</button>
+  <button onclick="showTab('reference')">LLD/HLD Guide</button>
+  <button onclick="showTab('interviewer')">Interviewer</button>
+  <div class="nav-right">
+    <a href="/dashboard" class="nav-link">Revise Dashboard</a>
+  </div>
+</div>
+
+<!-- OVERVIEW -->
+<div id="overview" class="tab active">
+  <h2 style="margin-bottom:12px">Interview Prep</h2>
+  <div class="stats" id="overviewStats"></div>
+  <div class="card">
+    <h3>Today's Focus</h3>
+    <div id="todayFocus"></div>
+  </div>
+  <div class="card">
+    <h3>Recent Machine Coding</h3>
+    <div id="recentActivity" style="font-size:13px"></div>
+  </div>
+</div>
+
+<!-- 7-DAY PLAN -->
+<div id="plan" class="tab">
+  <h2 style="margin-bottom:4px">Go + LLD Machine Coding — 7-Day Sprint</h2>
+  <p style="color:var(--muted);font-size:13px;margin-bottom:12px">3 hrs/day, 21 hrs total</p>
+  <div class="progress-bar"><div class="progress-fill" id="planProgress"></div></div>
+  <p style="font-size:12px;color:var(--muted);margin-bottom:12px" id="planProgressText"></p>
+  <div id="planDays"></div>
+</div>
+
+<!-- MACHINE CODING -->
+<div id="coding" class="tab">
+  <h2 style="margin-bottom:12px">Machine Coding Practice Log</h2>
+  <div class="card">
+    <h3>Log a Practice Session</h3>
+    <div class="log-form">
+      <input type="text" id="mcProblem" placeholder="Problem (e.g. Parking Lot)">
+      <input type="number" id="mcTime" placeholder="Time (min)" min="1" max="180" style="width:90px">
+      <select id="mcScore">
+        <option value="">Score</option>
+        <option value="5">5 - Nailed it</option>
+        <option value="4">4 - Good</option>
+        <option value="3">3 - Okay</option>
+        <option value="2">2 - Struggled</option>
+        <option value="1">1 - Failed</option>
+      </select>
+      <button class="btn" onclick="addCodingLog()">Add</button>
+    </div>
+    <div style="font-size:12px;color:var(--muted);margin-bottom:8px">Checklist: Interface? SOLID? Extensible? Compiles? Edge cases?</div>
+  </div>
+  <div class="card">
+    <h3>Practice History</h3>
+    <table class="log-table">
+      <thead><tr><th>Date</th><th>Problem</th><th>Time</th><th>Score</th><th></th></tr></thead>
+      <tbody id="codingLogs"></tbody>
+    </table>
+    <p id="codingEmpty" style="color:var(--muted);font-size:13px;padding:8px 0">No sessions logged yet.</p>
+  </div>
+  <div class="card">
+    <h3>Problem Bank</h3>
+    <div class="ref-grid">
+      <div class="ref-item"><span class="tier t1">T1</span><span class="title">Splitwise</span><div class="desc">SplitStrategy interface — Equal, Exact, Percent</div></div>
+      <div class="ref-item"><span class="tier t1">T1</span><span class="title">Parking Lot</span><div class="desc">ParkingStrategy + VehicleFactory, multi-floor</div></div>
+      <div class="ref-item"><span class="tier t1">T1</span><span class="title">Snake & Ladder</span><div class="desc">DiceStrategy, game state management</div></div>
+      <div class="ref-item"><span class="tier t1">T1</span><span class="title">Cab Booking</span><div class="desc">Matching + pricing strategy, ride lifecycle</div></div>
+      <div class="ref-item"><span class="tier t1">T1</span><span class="title">Tic-Tac-Toe</span><div class="desc">Extensible board, win detection</div></div>
+      <div class="ref-item"><span class="tier t2">T2</span><span class="title">Rate Limiter</span><div class="desc">Token bucket / sliding window + concurrency</div></div>
+      <div class="ref-item"><span class="tier t2">T2</span><span class="title">Elevator System</span><div class="desc">State pattern + concurrency</div></div>
+      <div class="ref-item"><span class="tier t2">T2</span><span class="title">Movie Ticket Booking</span><div class="desc">Seat locking with mutex, pricing strategy</div></div>
+      <div class="ref-item"><span class="tier t2">T2</span><span class="title">KV Store</span><div class="desc">In-memory with TTL support</div></div>
+      <div class="ref-item"><span class="tier t3">T3</span><span class="title">Pub-Sub System</span><div class="desc">Topics, subscribers, filtering</div></div>
+      <div class="ref-item"><span class="tier t3">T3</span><span class="title">Workflow Engine</span><div class="desc">DAG-based task execution</div></div>
+      <div class="ref-item"><span class="tier t3">T3</span><span class="title">In-Memory File System</span><div class="desc">Directories, files, CRUD operations</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- DSA TRACKER -->
+<div id="dsa" class="tab">
+  <h2 style="margin-bottom:12px">DSA Problem Tracker <span style="font-size:11px;color:var(--green);font-weight:400" id="dsaSyncStatus">● Synced</span></h2>
+  <div class="stats" id="dsaStats"></div>
+  <div class="card">
+    <h3>Problems <span id="dsaCount" style="font-size:12px;color:var(--muted);font-weight:400"></span></h3>
+    <div class="filter-row">
+      <select id="dsaFilterPattern" onchange="renderDSA()"><option value="">All Patterns</option></select>
+      <select id="dsaFilterDiff" onchange="renderDSA()"><option value="">All Difficulties</option></select>
+      <select id="dsaFilterPlatform" onchange="renderDSA()"><option value="">All Platforms</option></select>
+      <input type="text" id="dsaSearch" placeholder="Search..." oninput="renderDSA()">
+    </div>
+    <table class="log-table">
+      <thead><tr><th>Problem</th><th>Pattern</th><th>Diff</th><th>Rating</th><th>Time</th><th>Review</th></tr></thead>
+      <tbody id="dsaList"></tbody>
+    </table>
+    <p id="dsaEmpty" style="color:var(--muted);font-size:13px;padding:8px 0">No problems tracked yet. Use the Revise extension to add problems!</p>
+  </div>
+</div>
+
+<!-- REFERENCE -->
+<div id="reference" class="tab">
+  <h2 style="margin-bottom:12px">LLD / HLD Quick Reference</h2>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">SOLID Principles</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <p><b>SRP</b> — Each class has one reason to change. OrderService handles order logic, not payment.</p>
+      <p><b>OCP</b> — New behavior via extension (new class), not modifying existing code.</p>
+      <p><b>LSP</b> — Subtypes must be substitutable for their base type.</p>
+      <p><b>ISP</b> — No client should depend on methods it doesn't use. Focused interfaces.</p>
+      <p><b>DIP</b> — High-level modules depend on abstractions, not concretions.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">Design Patterns Cheat Sheet</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <p><b>Strategy</b> — Multiple algorithms, swap at runtime. → Payment, pricing, sorting.</p>
+      <p><b>Observer</b> — One event notifies multiple listeners. → Notifications, events.</p>
+      <p><b>Factory</b> — Complex/varying object creation. → Document creator, vehicle types.</p>
+      <p><b>Decorator</b> — Add behavior dynamically. → Toppings, middleware.</p>
+      <p><b>State</b> — Behavior changes based on internal state. → Vending machine, order lifecycle.</p>
+      <p><b>Command</b> — Encapsulate requests as objects. → Undo/redo, task scheduler.</p>
+      <p><b>Chain of Responsibility</b> — Multiple handlers process a request. → Logging, validation.</p>
+      <p><b>Builder</b> — Construct complex objects step by step. → Query builder.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">LLD Framework (6 Steps)</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <ol style="padding-left:18px">
+        <li><b>Clarify Requirements</b> (3-5 min) — Scope, actors, constraints, out-of-scope.</li>
+        <li><b>Identify Entities</b> (5-7 min) — Nouns → structs. Relationships: has-a, is-a, uses-a.</li>
+        <li><b>Define Interfaces</b> (5-8 min) — Public API, abstraction, decouple components.</li>
+        <li><b>Apply Patterns</b> — Only when they solve a real problem.</li>
+        <li><b>Walk Through Use Case</b> (5 min) — Trace one flow end-to-end.</li>
+        <li><b>Discuss Extensibility</b> (5 min) — How does it handle new requirements?</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">HLD Framework (5 Steps)</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <ol style="padding-left:18px">
+        <li><b>Requirements</b> (5 min) — Functional + Non-functional (scale, latency, consistency).</li>
+        <li><b>Capacity Estimation</b> (3-5 min) — DAU → QPS → Storage → Bandwidth.</li>
+        <li><b>High-Level Architecture</b> (10-15 min) — Components, data flow, happy path first.</li>
+        <li><b>Deep Dive</b> (15-20 min) — DB schema, API design, sharding, caching, consistency.</li>
+        <li><b>Failure Handling</b> (5 min) — Circuit breaker, retry, monitoring, deployment.</li>
+      </ol>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">DB Selection Guide</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <p><b>Transactional</b> → PostgreSQL/MySQL (ACID, JOINs)</p>
+      <p><b>High write, flexible schema</b> → MongoDB (horizontal scaling)</p>
+      <p><b>Time-series</b> → InfluxDB/TimescaleDB</p>
+      <p><b>Cache/session</b> → Redis (sub-ms reads, TTL)</p>
+      <p><b>Graph/relationships</b> → Neo4j</p>
+      <p><b>Full-text search</b> → Elasticsearch</p>
+      <p><b>Blobs/files</b> → S3/GCS</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">Caching Strategies</h3>
+    <div class="collapse-body" style="font-size:13px">
+      <p><b>Cache-Aside</b> — App checks cache, on miss reads DB. Most common.</p>
+      <p><b>Write-Through</b> — Write to cache + DB simultaneously. Strong consistency.</p>
+      <p><b>Write-Behind</b> — Write cache only, async to DB. High throughput.</p>
+      <p><b>Read-Through</b> — Cache manages DB reads on miss.</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">HLD Problem Bank</h3>
+    <div class="collapse-body">
+      <div class="ref-grid">
+        <div class="ref-item"><span class="tier t1">T1</span><span class="title">URL Shortener</span></div>
+        <div class="ref-item"><span class="tier t1">T1</span><span class="title">Chat System</span></div>
+        <div class="ref-item"><span class="tier t1">T1</span><span class="title">News Feed</span></div>
+        <div class="ref-item"><span class="tier t1">T1</span><span class="title">Notification Service</span></div>
+        <div class="ref-item"><span class="tier t1">T1</span><span class="title">Rate Limiter</span></div>
+        <div class="ref-item"><span class="tier t1">T1</span><span class="title">KV Store</span></div>
+        <div class="ref-item"><span class="tier t2">T2</span><span class="title">Video Streaming</span></div>
+        <div class="ref-item"><span class="tier t2">T2</span><span class="title">File Storage</span></div>
+        <div class="ref-item"><span class="tier t2">T2</span><span class="title">Search Autocomplete</span></div>
+        <div class="ref-item"><span class="tier t2">T2</span><span class="title">Payment System</span></div>
+        <div class="ref-item"><span class="tier t3">T3</span><span class="title">Task Scheduler</span></div>
+        <div class="ref-item"><span class="tier t3">T3</span><span class="title">Collaborative Editor</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">Latency Numbers</h3>
+    <div class="collapse-body" style="font-size:13px;font-family:monospace">
+      <p>L1 cache .............. ~1 ns</p>
+      <p>L2 cache .............. ~4 ns</p>
+      <p>Main memory ........... ~100 ns</p>
+      <p>SSD random read ....... ~150 µs</p>
+      <p>HDD seek .............. ~10 ms</p>
+      <p>Same-DC round trip .... ~0.5 ms</p>
+      <p>US East↔West .......... ~40 ms</p>
+      <p>1M req/day ≈ 12 QPS</p>
+      <p>1B req/day ≈ 12K QPS</p>
+      <p>Redis: ~100K-200K QPS</p>
+    </div>
+  </div>
+
+  <div class="card">
+    <h3 class="collapsible" onclick="toggle(this)">Go Machine Coding Checklist</h3>
+    <div class="collapse-body" style="font-size:13px;font-family:monospace;white-space:pre-wrap">BEFORE CODING:
+[ ] What are my entities? (structs)
+[ ] Where does behavior vary? (→ interface)
+[ ] What's my service layer? (App struct)
+[ ] What's my storage? (maps on App)
+[ ] What's my CLI parsing? (main.go switch)
+
+DURING CODING:
+[ ] Using pointers where needed?
+[ ] Returning errors, not ignoring?
+[ ] Field names exported?
+[ ] Can add new type without modifying existing code?
+
+PROJECT STRUCTURE:
+/models    — Domain entities
+/service   — Business logic
+/strategy  — Pluggable algorithms
+/repository — Data access layer
+main.go    — Driver/demo code</div>
+  </div>
+</div>
+
+<!-- INTERVIEWER -->
+<div id="interviewer" class="tab">
+  <h2 style="margin-bottom:12px">Machine Coding Interviewer</h2>
+  <div class="card">
+    <h3>Quick Start</h3>
+    <p style="font-size:13px;color:var(--muted);margin-bottom:8px">Copy this prompt into a new Claude/ChatGPT conversation, then send a problem name to start.</p>
+    <button class="btn" onclick="copyPrompt()" id="copyBtn">Copy Interviewer Prompt</button>
+  </div>
+  <div class="card">
+    <h3>Classic Problems</h3>
+    <div class="ref-grid" style="margin-bottom:12px">
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Parking Lot System')">Parking Lot System</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Snake and Ladder Game')">Snake and Ladder</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Splitwise / Expense Sharing')">Splitwise</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Elevator System')">Elevator System</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Vending Machine')">Vending Machine</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Movie Ticket Booking')">Movie Ticket Booking</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Rate Limiter')">Rate Limiter</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('In-Memory Key-Value Store')">KV Store</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Task/Job Scheduler')">Task Scheduler</div>
+      <div class="ref-item" style="cursor:pointer" onclick="copyProblem('Logger Service')">Logger Service</div>
+    </div>
+    <p style="font-size:12px;color:var(--muted)">Click a problem to copy it to clipboard.</p>
+  </div>
+  <div class="card">
+    <h3 class="collapsible open" onclick="toggle(this)">Full Prompt Preview</h3>
+    <div class="collapse-body">
+      <div class="prompt-box" id="promptBox"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = window.location.origin + '/api';
+
+// ===== AUTH (shared with Revise dashboard) =====
+function getAuth() {
+  const raw = localStorage.getItem("auth");
+  return raw ? JSON.parse(raw) : null;
+}
+function setAuthTokens(tokens) { localStorage.setItem("auth", JSON.stringify(tokens)); }
+function clearAuthTokens() { localStorage.removeItem("auth"); }
+
+async function apiFetch(path, options = {}) {
+  const auth = getAuth();
+  if (!auth || !auth.access_token) throw new Error("Not authenticated");
+  const headers = { ...options.headers, Authorization: `Bearer ${auth.access_token}` };
+  let r = await fetch(`${API}${path}`, { ...options, headers });
+  if (r.status === 401 && auth.refresh_token) {
+    try {
+      const refreshResp = await fetch(`${API}/auth/refresh`, {
+        method: "POST", headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: auth.refresh_token }),
+      });
+      if (refreshResp.ok) {
+        const tokens = await refreshResp.json();
+        setAuthTokens(tokens);
+        headers.Authorization = `Bearer ${tokens.access_token}`;
+        r = await fetch(`${API}${path}`, { ...options, headers });
+      } else { clearAuthTokens(); showLogin(); throw new Error("Session expired"); }
+    } catch (e) { clearAuthTokens(); showLogin(); throw e; }
+  }
+  return r;
+}
+
+function captureTokensFromHash() {
+  const hash = window.location.hash;
+  if (hash && hash.includes("access_token=")) {
+    const params = new URLSearchParams(hash.substring(1));
+    const at = params.get("access_token"), rt = params.get("refresh_token");
+    if (at && rt) { setAuthTokens({ access_token: at, refresh_token: rt }); history.replaceState(null, "", window.location.pathname); }
+  }
+}
+
+function showLogin() { document.getElementById("loginOverlay").classList.add("open"); }
+function hideLogin() { document.getElementById("loginOverlay").classList.remove("open"); }
+
+document.getElementById("loginBtn").addEventListener("click", async () => {
+  const email = document.getElementById("loginEmail").value.trim();
+  if (!email) return;
+  const btn = document.getElementById("loginBtn");
+  const status = document.getElementById("loginStatus");
+  btn.disabled = true; btn.textContent = "Sending...";
+  try {
+    const r = await fetch(`${API}/auth/magic-link`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ email }) });
+    if (r.ok) { status.textContent = "Check your email for the magic link!"; status.style.color = "#6ee7b7"; }
+    else { status.textContent = "Failed to send. Try again."; status.style.color = "#f87171"; }
+  } catch { status.textContent = "Network error."; status.style.color = "#f87171"; }
+  btn.disabled = false; btn.textContent = "Send Magic Link";
+});
+
+// ===== DATA =====
+const PLAN_DAYS = [
+  {day:1, title:"Go Core Syntax & Idioms", tasks:["Complete Go Tour (pointers, structs, interfaces, maps, slices, goroutines)","Skim Effective Go (interfaces, embedding, errors, concurrency)","Nail: pointer vs value receivers, interface satisfaction, make vs literal","Practice: CLI todo app using maps and slices","Practice: Shape interface → Circle, Rectangle with area/perimeter","Practice: Unit tests for both using testing package"]},
+  {day:2, title:"Concurrency + HTTP Basics", tasks:["Study: goroutines, channels, select, sync.Mutex, WaitGroup","Study: context package basics (timeout, cancellation)","Practice: Concurrent word counter with goroutines + channels","Practice: Simple HTTP server with 2-3 handlers","Write tests for both"]},
+  {day:3, title:"SOLID + Strategy & Factory Patterns", tasks:["Study: SOLID principles with Go examples","Study: Strategy Pattern — interface, implementations, factory","Practice: Build Parking Lot from scratch","Implement ParkingStrategy interface (NearestFirst, MostSpaceFirst)","Implement VehicleFactory + service layer"]},
+  {day:4, title:"Machine Coding #1 — Timed", tasks:["Build Splitwise in 90 min (no help, no Google)","Use SplitStrategy interface (Equal, Exact, Percent)","Self-review: interface? extensible? compiles? edge cases?","Fix and redo weak parts (60 min)"]},
+  {day:5, title:"Machine Coding #2 — Timed", tasks:["Build Snake and Ladder in 90 min (DiceStrategy, game state)","Build Rate Limiter in 90 min (token bucket, sync.Mutex)","Self-review using Day 4 checklist"]},
+  {day:6, title:"Machine Coding #3 — Harder", tasks:["Build Elevator System in 90 min (State pattern + concurrency)","Review and refactor Day 4-5 solutions","Add unit tests for at least one solution","Study: errors.Is, errors.As, custom error types, DI via interfaces"]},
+  {day:7, title:"Polish + Mock", tasks:["Build Movie Ticket Booking in 90 min (mutex + pricing strategy)","Redo any previous problem from scratch in 60 min","Review all solutions — identify repeated mistakes"]}
+];
+
+const INTERVIEWER_PROMPT = `You are a Senior Software Engineer at a top Indian product company (think Flipkart, Swiggy, Uber, Cred level). You are conducting a Machine Coding Round interview.
+
+The candidate codes in **Golang only**. You must evaluate their code strictly through the lens of idiomatic Go — interfaces, struct composition, packages, error handling, concurrency patterns where relevant.
+
+## WHAT IS A MACHINE CODING ROUND?
+This is NOT a DSA round. In this round:
+- The candidate must produce fully working, executable Go code within ~90 minutes
+- The code must be clean, modular, extensible, and follow SOLID principles
+- After coding, there is a code review + extension round
+
+You evaluate: OOP/design modeling (via Go structs + interfaces), SOLID principles, design patterns, code readability, extensibility, error handling, and whether the code actually runs.
+
+## YOUR PERSONALITY
+- Phase 1-2 (Requirements + Coding): Friendly, encouraging, patient. Give small nudges if stuck.
+- Phase 3 (Code Review): Significantly tougher. Probe hard on design decisions. Challenge naming, structure, extensibility.
+- Phase 4 (Extension): Throw a curveball requirement. Watch how their design handles it.
+
+You are NOT sycophantic. Give honest, direct feedback.
+
+## INTERVIEW STRUCTURE
+
+### Phase 1: Problem Statement & Requirements (~10 min)
+Present detailed problem with core features, I/O format, sample input/output. Ask clarifying questions.
+
+### Phase 2: Coding (~50-60 min)
+Let candidate code. Give directional hints only. Mid-checkpoint at ~30 min.
+
+### Phase 3: Code Review & Demo (~15-20 min)
+Demo, code walkthrough, tough questions on design decisions, SOLID, patterns, concurrency, testing.
+
+### Phase 4: Extension Round (~10 min)
+New requirement that tests extensibility. Easy if they followed OCP, painful if not.
+
+## EVALUATION (Rate 1-5)
+Code Completeness | Modeling & Design | SOLID | Design Patterns | Go Idioms | Extensibility | Readability | Edge Cases
+
+## FINAL FEEDBACK
+Verdict: Strong Hire / Hire / On the Fence / No Hire
+Strengths, Weaknesses, Score Breakdown, Advice.
+
+## RULES
+- NEVER write code for the candidate
+- NEVER accept pseudocode as final answer
+- Always use Go terminology: structs, interfaces, goroutines, channels, packages
+
+Wait for the candidate to provide a machine coding question, then start Phase 1.`;
+
+// ===== STATE (user-scoped) =====
+function getUserId() {
+  const auth = getAuth();
+  if (!auth || !auth.access_token) return 'anon';
+  try { return JSON.parse(atob(auth.access_token.split('.')[1])).sub || 'anon'; } catch { return 'anon'; }
+}
+function ukey(key) { return `prep_${getUserId()}_${key}`; }
+function load(key, fallback) { try { return JSON.parse(localStorage.getItem(ukey(key))) || fallback } catch { return fallback } }
+function save(key, val) { localStorage.setItem(ukey(key), JSON.stringify(val)) }
+
+let planChecks = {};
+let codingLogs = [];
+function loadUserState() {
+  planChecks = load('planChecks', {});
+  codingLogs = load('codingLogs', []);
+}
+let dsaProblems = [];
+
+// ===== TABS =====
+function showTab(id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.nav button').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('.nav button').forEach(b => {
+    const match = b.getAttribute('onclick')?.match(/showTab\('(.+)'\)/);
+    b.classList.toggle('active', match && match[1] === id);
+  });
+  if(id==='overview') renderOverview();
+}
+
+function toggle(el) { el.classList.toggle('open') }
+
+// ===== PLAN =====
+function renderPlan() {
+  const container = document.getElementById('planDays');
+  container.innerHTML = '';
+  let total = 0, done = 0;
+  PLAN_DAYS.forEach(day => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    const dayDone = day.tasks.filter((_,i) => planChecks[`d${day.day}_${i}`]).length;
+    total += day.tasks.length; done += dayDone;
+    const pct = Math.round(dayDone / day.tasks.length * 100);
+    card.innerHTML = `
+      <h3 class="collapsible${day.day <= 2 ? ' open' : ''}" onclick="toggle(this)">Day ${day.day}: ${day.title} <span style="float:right;font-size:12px;color:${pct===100?'var(--green)':'var(--muted)'}">${dayDone}/${day.tasks.length}</span></h3>
+      <div class="collapse-body">
+        <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+        <div class="checklist">${day.tasks.map((t,i) => `<label><input type="checkbox" ${planChecks[`d${day.day}_${i}`]?'checked':''} onchange="togglePlan(${day.day},${i},this.checked)"><span>${t}</span></label>`).join('')}</div>
+      </div>`;
+    container.appendChild(card);
+  });
+  const pct = total ? Math.round(done/total*100) : 0;
+  document.getElementById('planProgress').style.width = pct + '%';
+  document.getElementById('planProgressText').textContent = `${done}/${total} tasks completed (${pct}%)`;
+}
+function togglePlan(day, idx, checked) {
+  if(checked) planChecks[`d${day}_${idx}`] = true; else delete planChecks[`d${day}_${idx}`];
+  save('planChecks', planChecks); renderPlan();
+}
+
+// ===== CODING LOG =====
+function renderCodingLogs() {
+  const tbody = document.getElementById('codingLogs');
+  const empty = document.getElementById('codingEmpty');
+  if(!codingLogs.length) { tbody.innerHTML = ''; empty.style.display = 'block'; return; }
+  empty.style.display = 'none';
+  tbody.innerHTML = codingLogs.map((l,i) => {
+    const cls = l.score >= 4 ? 'green' : l.score >= 3 ? 'yellow' : 'red';
+    return `<tr><td>${l.date}</td><td>${l.problem}</td><td>${l.time} min</td><td><span class="badge ${cls}">${l.score}/5</span></td><td><button class="btn danger small" onclick="removeCodingLog(${i})">×</button></td></tr>`;
+  }).join('');
+}
+function addCodingLog() {
+  const p = document.getElementById('mcProblem').value.trim();
+  const t = document.getElementById('mcTime').value;
+  const s = document.getElementById('mcScore').value;
+  if(!p || !t || !s) return;
+  codingLogs.unshift({ date: new Date().toLocaleDateString('en-IN',{day:'numeric',month:'short'}), problem: p, time: parseInt(t), score: parseInt(s) });
+  save('codingLogs', codingLogs);
+  document.getElementById('mcProblem').value = ''; document.getElementById('mcTime').value = ''; document.getElementById('mcScore').value = '';
+  renderCodingLogs();
+}
+function removeCodingLog(i) { codingLogs.splice(i, 1); save('codingLogs', codingLogs); renderCodingLogs(); }
+
+// ===== DSA (via Revise API) =====
+async function fetchDSA() {
+  try {
+    const r = await apiFetch('/questions');
+    if (r.ok) {
+      dsaProblems = await r.json();
+      document.getElementById('dsaSyncStatus').textContent = '● Synced';
+      document.getElementById('dsaSyncStatus').style.color = 'var(--green)';
+    }
+  } catch(e) {
+    document.getElementById('dsaSyncStatus').textContent = '● Not signed in';
+    document.getElementById('dsaSyncStatus').style.color = 'var(--red)';
+    dsaProblems = [];
+  }
+  renderDSA();
+}
+
+function renderDSA() {
+  const tbody = document.getElementById('dsaList');
+  const empty = document.getElementById('dsaEmpty');
+  const fp = document.getElementById('dsaFilterPattern').value;
+  const fd = document.getElementById('dsaFilterDiff').value;
+  const fpl = document.getElementById('dsaFilterPlatform').value;
+  const q = document.getElementById('dsaSearch').value.toLowerCase();
+  const filtered = dsaProblems.filter(p =>
+    (!fp || p.pattern === fp) && (!fd || (p.difficulty||'').toLowerCase() === fd.toLowerCase()) && (!fpl || p.platform === fpl) && (!q || (p.title||'').toLowerCase().includes(q))
+  );
+  if(!dsaProblems.length) { tbody.innerHTML = ''; empty.style.display = 'block'; } else { empty.style.display = 'none'; }
+  document.getElementById('dsaCount').textContent = `(${filtered.length}/${dsaProblems.length})`;
+  tbody.innerHTML = filtered.map(p => {
+    const d = (p.difficulty||'').toLowerCase();
+    const dcls = d === 'easy' ? 'green' : d === 'medium' ? 'yellow' : 'red';
+    const rcls = p.self_rating >= 4 ? 'green' : p.self_rating >= 3 ? 'yellow' : 'red';
+    const title = p.url ? `<a href="${p.url}" target="_blank">${p.title||p.url}</a>` : (p.title||'—');
+    const review = p.next_review ? new Date(p.next_review).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—';
+    const isdue = p.next_review && new Date(p.next_review) <= new Date();
+    return `<tr><td>${title}<br><span style="font-size:11px;color:var(--muted)">${p.platform||''}</span></td><td>${p.pattern||'—'}</td><td><span class="badge ${dcls}">${p.difficulty||'—'}</span></td><td><span class="badge ${rcls}">${p.self_rating||'—'}/5</span></td><td>${p.time_taken?p.time_taken+'m':'—'}</td><td style="${isdue?'color:var(--red);font-weight:600':''}">${review}</td></tr>`;
+  }).join('');
+  // stats
+  const dl = p => (p.difficulty||'').toLowerCase();
+  const easy = dsaProblems.filter(p=>dl(p)==='easy').length;
+  const med = dsaProblems.filter(p=>dl(p)==='medium').length;
+  const hard = dsaProblems.filter(p=>dl(p)==='hard').length;
+  const dueCount = dsaProblems.filter(p=>p.next_review && new Date(p.next_review)<=new Date()).length;
+  document.getElementById('dsaStats').innerHTML = `
+    <div class="stat green"><div class="num">${easy}</div><div class="lbl">Easy</div></div>
+    <div class="stat yellow"><div class="num">${med}</div><div class="lbl">Medium</div></div>
+    <div class="stat"><div class="num" style="color:var(--red)">${hard}</div><div class="lbl">Hard</div></div>
+    <div class="stat blue"><div class="num">${dsaProblems.length}</div><div class="lbl">Total</div></div>
+    ${dueCount?`<div class="stat"><div class="num" style="color:var(--red)">${dueCount}</div><div class="lbl">Due Review</div></div>`:''}`;
+  // filters
+  const patterns = [...new Set(dsaProblems.map(p=>p.pattern).filter(Boolean))].sort();
+  const platforms = [...new Set(dsaProblems.map(p=>p.platform).filter(Boolean))].sort();
+  const sel1 = document.getElementById('dsaFilterPattern'); const c1 = sel1.value;
+  sel1.innerHTML = '<option value="">All Patterns</option>' + patterns.map(t=>`<option value="${t}"${t===c1?' selected':''}>${t}</option>`).join('');
+  const sel2 = document.getElementById('dsaFilterPlatform'); const c2 = sel2.value;
+  sel2.innerHTML = '<option value="">All Platforms</option>' + platforms.map(t=>`<option value="${t}"${t===c2?' selected':''}>${t}</option>`).join('');
+}
+
+// ===== INTERVIEWER =====
+function renderInterviewer() { document.getElementById('promptBox').textContent = INTERVIEWER_PROMPT; }
+function copyPrompt() {
+  navigator.clipboard.writeText(INTERVIEWER_PROMPT).then(() => {
+    const btn = document.getElementById('copyBtn'); btn.textContent = 'Copied!';
+    setTimeout(() => btn.textContent = 'Copy Interviewer Prompt', 1500);
+  });
+}
+function copyProblem(name) { navigator.clipboard.writeText(name); }
+
+// ===== OVERVIEW =====
+function renderOverview() {
+  let total = 0, done = 0;
+  PLAN_DAYS.forEach(day => { total += day.tasks.length; done += day.tasks.filter((_,i) => planChecks[`d${day.day}_${i}`]).length; });
+  const planPct = total ? Math.round(done/total*100) : 0;
+  const mcAvg = codingLogs.length ? (codingLogs.reduce((a,l)=>a+l.score,0)/codingLogs.length).toFixed(1) : '-';
+
+  document.getElementById('overviewStats').innerHTML = `
+    <div class="stat green"><div class="num">${planPct}%</div><div class="lbl">7-Day Plan</div></div>
+    <div class="stat purple"><div class="num">${codingLogs.length}</div><div class="lbl">MC Sessions</div></div>
+    <div class="stat yellow"><div class="num">${mcAvg}</div><div class="lbl">Avg MC Score</div></div>
+    <div class="stat blue"><div class="num">${dsaProblems.length}</div><div class="lbl">DSA Tracked</div></div>`;
+
+  let currentDay = PLAN_DAYS.find(day => day.tasks.some((_,i) => !planChecks[`d${day.day}_${i}`])) || PLAN_DAYS[6];
+  const remaining = currentDay.tasks.filter((_,i) => !planChecks[`d${currentDay.day}_${i}`]);
+  document.getElementById('todayFocus').innerHTML = `
+    <p style="font-size:14px;margin-bottom:6px"><b>Day ${currentDay.day}:</b> ${currentDay.title}</p>
+    <p style="font-size:13px;color:var(--muted)">${remaining.length} tasks remaining</p>
+    <ul style="font-size:13px;padding-left:18px;margin-top:4px">${remaining.slice(0,3).map(t=>`<li>${t}</li>`).join('')}${remaining.length>3?`<li style="color:var(--muted)">+${remaining.length-3} more</li>`:''}</ul>`;
+
+  const recent = codingLogs.slice(0, 3);
+  document.getElementById('recentActivity').innerHTML = recent.length
+    ? recent.map(l => `<p>${l.date} — ${l.problem} (${l.score}/5, ${l.time}min)</p>`).join('')
+    : '<p style="color:var(--muted)">No machine coding sessions yet.</p>';
+}
+
+// ===== INIT =====
+captureTokensFromHash();
+renderInterviewer();
+
+const auth = getAuth();
+if (auth && auth.access_token) {
+  hideLogin();
+  loadUserState();
+  renderPlan();
+  renderCodingLogs();
+  renderOverview();
+  fetchDSA().then(() => renderOverview());
+} else {
+  showLogin();
+}
+</script>
+</body>
+</html>
