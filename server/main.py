@@ -1,5 +1,6 @@
 """FastAPI server for Revise."""
 
+import os
 import re
 from datetime import date
 from typing import Optional
@@ -8,6 +9,7 @@ from urllib.parse import urlparse, urlunparse
 from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import HTMLResponse, RedirectResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field
 
 from auth import (
@@ -457,6 +459,12 @@ def flex_page_user(user_id: str):
         return f.read()
 
 
+@app.get("/research", response_class=HTMLResponse)
+def research_page():
+    with open("templates/research.html") as f:
+        return f.read()
+
+
 @app.get("/api/flex/{user_id}")
 def flex_stats(user_id: str):
     stats = get_flex_stats(user_id)
@@ -464,3 +472,15 @@ def flex_stats(user_id: str):
         # Still return the empty stats so the frontend can show the roast
         return stats or {"total_solved": 0}
     return stats
+
+
+# Static file serving for research docs (markdown + SVG diagrams)
+_research_dir = os.path.join(
+    os.path.dirname(__file__), "..", "thoughts", "shared", "research"
+)
+if os.path.isdir(_research_dir):
+    app.mount(
+        "/research-assets",
+        StaticFiles(directory=_research_dir),
+        name="research-assets",
+    )

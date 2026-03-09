@@ -1,0 +1,1184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DSA Patterns — Research Dashboard</title>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<style>
+  :root {
+    --bg: #0a0a0a; --bg-card: #111; --bg-sidebar: #0d0d0d; --bg-hover: #1a1a1a;
+    --border: #222; --border-light: #333;
+    --text: #e0e0e0; --text-dim: #888; --text-muted: #555;
+    --accent: #5b6abf; --accent-dim: #3d4a8a;
+    --green: #34d399; --yellow: #fbbf24; --red: #f87171; --purple: #a78bfa;
+    --orange: #fb923c; --cyan: #22d3ee;
+    --font: 'SF Mono', 'Menlo', 'Consolas', monospace;
+    --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    --sidebar-w: 300px; --drawer-w: 420px;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family: var(--font-sans); background: var(--bg); color: var(--text); height:100vh; overflow:hidden; display:flex; }
+
+  /* ─── Sidebar ─── */
+  .sidebar {
+    width: var(--sidebar-w); min-width: var(--sidebar-w); height:100vh; overflow-y:auto;
+    background: var(--bg-sidebar); border-right:1px solid var(--border);
+    display:flex; flex-direction:column;
+  }
+  .sidebar::-webkit-scrollbar { width:4px; }
+  .sidebar::-webkit-scrollbar-thumb { background: var(--border-light); border-radius:4px; }
+  .sidebar-header {
+    padding:20px 16px 12px; border-bottom:1px solid var(--border);
+    position:sticky; top:0; background:var(--bg-sidebar); z-index:2;
+  }
+  .sidebar-header h1 { font-size:15px; font-weight:700; letter-spacing:-0.3px; color:var(--text); }
+  .sidebar-header p { font-size:11px; color:var(--text-dim); margin-top:4px; }
+  .sidebar-stats {
+    display:flex; gap:12px; margin-top:10px; padding:8px 0 0;
+  }
+  .stat { text-align:center; }
+  .stat-num { font-size:18px; font-weight:700; font-family:var(--font); color:var(--accent); }
+  .stat-label { font-size:9px; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; }
+  .sidebar-search {
+    padding:8px 12px; position:sticky; top:85px; background:var(--bg-sidebar); z-index:2;
+    border-bottom:1px solid var(--border);
+  }
+  .sidebar-search input {
+    width:100%; padding:7px 10px; border-radius:6px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:12px; font-family:var(--font);
+    outline:none; transition:border 0.2s;
+  }
+  .sidebar-search input:focus { border-color:var(--accent); }
+  .sidebar-search input::placeholder { color:var(--text-muted); }
+
+  .learning-path { padding:8px 0; flex:1; }
+  .lp-label {
+    font-size:9px; text-transform:uppercase; letter-spacing:1px; color:var(--text-muted);
+    padding:8px 16px 4px; font-weight:600;
+  }
+
+  .cat-item { border-bottom:1px solid var(--border); }
+  .cat-header {
+    display:flex; align-items:center; gap:8px; padding:10px 16px;
+    cursor:pointer; user-select:none; transition:background 0.15s;
+  }
+  .cat-header:hover { background:var(--bg-hover); }
+  .cat-header.active { background:#151530; }
+  .cat-num {
+    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:10px; font-weight:700; font-family:var(--font); flex-shrink:0;
+    background: var(--accent-dim); color:#fff;
+  }
+  .cat-num.done { background: var(--green); color:#000; }
+  .cat-name { font-size:13px; font-weight:500; flex:1; }
+  .cat-badge {
+    font-size:10px; font-family:var(--font); color:var(--text-dim);
+    background:var(--bg); padding:2px 6px; border-radius:10px; border:1px solid var(--border);
+  }
+  .cat-arrow {
+    font-size:10px; color:var(--text-muted); transition:transform 0.2s; flex-shrink:0;
+  }
+  .cat-item.open .cat-arrow { transform:rotate(90deg); }
+
+  .sub-list { display:none; padding:0 0 4px 0; }
+  .cat-item.open .sub-list { display:block; }
+  .sub-item {
+    display:flex; align-items:center; gap:6px; padding:6px 16px 6px 46px;
+    cursor:pointer; font-size:12px; color:var(--text-dim); transition:all 0.15s;
+  }
+  .sub-item:hover { background:var(--bg-hover); color:var(--text); }
+  .sub-item.active { color:var(--accent); background:#111125; }
+  .sub-item .sub-dot {
+    width:5px; height:5px; border-radius:50%; background:var(--border-light); flex-shrink:0;
+  }
+  .sub-item.active .sub-dot { background:var(--accent); }
+  .sub-item .sub-count { margin-left:auto; font-size:10px; font-family:var(--font); color:var(--text-muted); }
+
+  /* ─── Main Content ─── */
+  .main { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+  .topbar {
+    display:flex; align-items:center; gap:12px; padding:12px 24px;
+    border-bottom:1px solid var(--border); background:var(--bg-card);
+    min-height:52px;
+  }
+  .topbar-title { font-size:14px; font-weight:600; flex:1; }
+  .topbar-breadcrumb { font-size:11px; color:var(--text-dim); }
+  .topbar-breadcrumb span { color:var(--accent); }
+  .btn-practice {
+    padding:6px 14px; border-radius:6px; border:1px solid var(--accent);
+    background:transparent; color:var(--accent); font-size:12px; font-weight:500;
+    cursor:pointer; transition:all 0.2s; font-family:var(--font-sans);
+    display:flex; align-items:center; gap:6px;
+  }
+  .btn-practice:hover { background:var(--accent); color:#fff; }
+  .btn-practice.active { background:var(--accent); color:#fff; }
+  .btn-practice .icon { font-size:14px; }
+
+  .content-wrap { display:flex; flex:1; overflow:hidden; }
+  .content {
+    flex:1; overflow-y:auto; padding:32px 48px 80px; line-height:1.7;
+  }
+  .content::-webkit-scrollbar { width:6px; }
+  .content::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+
+  /* ─── Welcome State ─── */
+  .welcome { display:flex; flex-direction:column; align-items:center; justify-content:center; height:100%; text-align:center; padding:40px; }
+  .welcome h2 { font-size:28px; font-weight:700; margin-bottom:8px; letter-spacing:-0.5px; }
+  .welcome p { color:var(--text-dim); font-size:14px; max-width:500px; line-height:1.6; }
+  .welcome .start-hint {
+    margin-top:24px; padding:12px 20px; border-radius:8px; background:var(--bg-card);
+    border:1px solid var(--border); font-size:13px; color:var(--text-dim);
+  }
+  .welcome .start-hint kbd {
+    background:var(--bg); padding:2px 6px; border-radius:4px; border:1px solid var(--border-light);
+    font-family:var(--font); font-size:11px; color:var(--text);
+  }
+
+  /* ─── Practice Drawer ─── */
+  .drawer {
+    width:0; overflow:hidden; border-left:1px solid var(--border);
+    background:var(--bg-card); transition:width 0.25s ease; flex-shrink:0;
+  }
+  .drawer.open { width:var(--drawer-w); }
+  .drawer-inner { width:var(--drawer-w); height:100%; overflow-y:auto; display:flex; flex-direction:column; }
+  .drawer-inner::-webkit-scrollbar { width:4px; }
+  .drawer-inner::-webkit-scrollbar-thumb { background:var(--border-light); border-radius:4px; }
+  .drawer-header {
+    padding:16px 20px; border-bottom:1px solid var(--border);
+    display:flex; align-items:center; justify-content:space-between;
+    position:sticky; top:0; background:var(--bg-card); z-index:1;
+  }
+  .drawer-header h3 { font-size:14px; font-weight:600; }
+  .drawer-close {
+    background:none; border:none; color:var(--text-dim); font-size:18px; cursor:pointer;
+    padding:4px; border-radius:4px;
+  }
+  .drawer-close:hover { background:var(--bg-hover); color:var(--text); }
+  .drawer-body { padding:0; flex:1; }
+
+  .drawer-section { border-bottom:1px solid var(--border); }
+  .drawer-section-header {
+    padding:12px 20px; cursor:pointer; display:flex; align-items:center; gap:8px;
+    font-size:13px; font-weight:500; transition:background 0.15s; user-select:none;
+  }
+  .drawer-section-header:hover { background:var(--bg-hover); }
+  .drawer-section-header .arrow { font-size:10px; color:var(--text-muted); transition:transform 0.2s; }
+  .drawer-section.open .arrow { transform:rotate(90deg); }
+  .drawer-section-header .badge-count {
+    margin-left:auto; font-size:10px; font-family:var(--font);
+    padding:2px 6px; border-radius:10px; background:var(--bg); border:1px solid var(--border);
+    color:var(--text-dim);
+  }
+  .drawer-questions { display:none; padding:0 12px 12px; }
+  .drawer-section.open .drawer-questions { display:block; }
+
+  .q-card {
+    background:var(--bg); border:1px solid var(--border); border-radius:8px;
+    padding:10px 12px; margin-bottom:8px; transition:border-color 0.15s;
+  }
+  .q-card:hover { border-color:var(--border-light); }
+  .q-top { display:flex; align-items:center; gap:8px; margin-bottom:4px; }
+  .q-num { font-family:var(--font); font-size:11px; color:var(--text-muted); }
+  .q-title {
+    font-size:12px; font-weight:500; flex:1; color:var(--text);
+    text-decoration:none; transition:color 0.15s;
+  }
+  .q-title:hover { color:var(--accent); }
+  a.q-title { cursor:pointer; }
+  .q-diff {
+    font-size:10px; font-family:var(--font); padding:2px 8px; border-radius:10px; font-weight:600;
+  }
+  .q-diff.easy { background:#0a2e1f; color:var(--green); }
+  .q-diff.medium { background:#2e2a0a; color:var(--yellow); }
+  .q-diff.hard { background:#2e0a0a; color:var(--red); }
+  .q-twist { font-size:11px; color:var(--text-dim); line-height:1.5; margin-top:4px; }
+  .q-twist-toggle {
+    font-size:10px; color:var(--accent); cursor:pointer; background:none; border:none;
+    padding:2px 0; font-family:var(--font-sans); margin-top:2px;
+  }
+  .q-twist-toggle:hover { text-decoration:underline; }
+  .q-twist-text { display:none; margin-top:4px; }
+  .q-twist-text.show { display:block; }
+
+  /* ─── Markdown rendered content ─── */
+  .md h1 { font-size:26px; font-weight:700; margin:0 0 16px; letter-spacing:-0.5px; color:#fff; }
+  .md h2 { font-size:20px; font-weight:600; margin:32px 0 12px; padding-bottom:8px; border-bottom:1px solid var(--border); color:#fff; }
+  .md h3 { font-size:15px; font-weight:600; margin:24px 0 8px; color:var(--purple); }
+  .md h4 { font-size:13px; font-weight:600; margin:16px 0 6px; color:var(--text); }
+  .md p { margin:8px 0; font-size:14px; }
+  .md ul, .md ol { padding-left:24px; margin:8px 0; }
+  .md li { margin:4px 0; font-size:14px; }
+  .md strong { color:#fff; }
+  .md code {
+    font-family:var(--font); font-size:12px; background:var(--bg-card); border:1px solid var(--border);
+    padding:1px 5px; border-radius:4px; color:var(--cyan);
+  }
+  .md pre {
+    background:var(--bg-card); border:1px solid var(--border); border-radius:8px;
+    padding:16px; margin:12px 0; overflow-x:auto;
+  }
+  .md pre code {
+    background:none; border:none; padding:0; font-size:12px; line-height:1.6; color:var(--text);
+  }
+  .md table {
+    width:100%; border-collapse:collapse; margin:12px 0; font-size:13px;
+  }
+  .md th {
+    text-align:left; padding:8px 12px; border-bottom:2px solid var(--border-light);
+    font-weight:600; font-size:12px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .md td { padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:top; }
+  .md tr:hover td { background:var(--bg-hover); }
+  .md img {
+    max-width:100%; border-radius:8px; margin:12px 0; border:1px solid var(--border);
+    display:block;
+  }
+  .md .svg-wrap {
+    width:100%; margin:12px 0; border-radius:8px; border:1px solid var(--border);
+    overflow:hidden; background:var(--bg);
+  }
+  .md .svg-wrap svg { display:block; width:100%; height:auto; }
+  .md blockquote {
+    border-left:3px solid var(--accent); padding:8px 16px; margin:12px 0;
+    background:var(--bg-card); border-radius:0 6px 6px 0; color:var(--text-dim);
+  }
+  .md hr { border:none; border-top:1px solid var(--border); margin:24px 0; }
+  .md a { color:var(--accent); text-decoration:none; }
+  .md a:hover { text-decoration:underline; }
+  .md .q-link { color:var(--cyan); font-weight:500; transition:color 0.15s; }
+  .md .q-link:hover { color:var(--accent); text-decoration:underline; }
+  .md tr:has(.q-link):hover td { background:rgba(91,106,191,0.08); }
+
+  /* ─── Keyboard shortcut hint ─── */
+  .kbd-hint {
+    position:fixed; bottom:16px; right:16px; font-size:10px; color:var(--text-muted);
+    background:var(--bg-card); padding:6px 10px; border-radius:6px; border:1px solid var(--border);
+    z-index:10;
+  }
+  .kbd-hint kbd {
+    background:var(--bg); padding:1px 5px; border-radius:3px; border:1px solid var(--border-light);
+    font-family:var(--font); font-size:10px;
+  }
+
+  /* ─── Progress checkbox ─── */
+  .progress-check {
+    appearance:none; width:14px; height:14px; border:1.5px solid var(--border-light);
+    border-radius:3px; cursor:pointer; flex-shrink:0; position:relative; transition:all 0.15s;
+  }
+  .progress-check:checked { background:var(--green); border-color:var(--green); }
+  .progress-check:checked::after {
+    content:'✓'; position:absolute; top:-1px; left:1.5px;
+    font-size:10px; color:#000; font-weight:700;
+  }
+
+  /* ─── Scroll-to-section links ─── */
+  .sub-pattern-nav {
+    display:flex; flex-wrap:wrap; gap:6px; margin:16px 0 24px; padding:12px;
+    background:var(--bg-card); border:1px solid var(--border); border-radius:8px;
+  }
+  .sub-pattern-nav a {
+    padding:4px 10px; border-radius:5px; font-size:11px; font-family:var(--font);
+    color:var(--text-dim); background:var(--bg); border:1px solid var(--border);
+    text-decoration:none; transition:all 0.15s;
+  }
+  .sub-pattern-nav a:hover { border-color:var(--accent); color:var(--accent); }
+
+  /* ─── Auth bar ─── */
+  .auth-bar {
+    padding:8px 16px; border-bottom:1px solid var(--border); background:var(--bg-sidebar);
+    display:flex; align-items:center; gap:8px;
+  }
+  .auth-bar input {
+    flex:1; padding:5px 8px; border-radius:4px; border:1px solid var(--border);
+    background:var(--bg); color:var(--text); font-size:11px; font-family:var(--font); outline:none;
+  }
+  .auth-bar input:focus { border-color:var(--accent); }
+  .auth-bar button {
+    padding:5px 10px; border-radius:4px; border:1px solid var(--accent); background:var(--accent);
+    color:#fff; font-size:11px; cursor:pointer; font-family:var(--font-sans); white-space:nowrap;
+  }
+  .auth-bar button:hover { opacity:0.9; }
+  .auth-status { font-size:10px; color:var(--green); white-space:nowrap; }
+  .auth-status.disconnected { color:var(--red); }
+
+  /* ─── Question solved checkbox (content tables) ─── */
+  .q-solved-check {
+    appearance:none; width:14px; height:14px; border:1.5px solid var(--border-light);
+    border-radius:3px; cursor:pointer; flex-shrink:0; position:relative; transition:all 0.15s;
+    vertical-align:middle; margin-right:4px;
+  }
+  .q-solved-check:checked { background:var(--green); border-color:var(--green); }
+  .q-solved-check:checked::after {
+    content:'✓'; position:absolute; top:-1px; left:1.5px;
+    font-size:10px; color:#000; font-weight:700;
+  }
+  .q-solved-check.syncing { border-color:var(--yellow); animation:pulse 1s infinite; }
+  @keyframes pulse { 50% { opacity:0.5; } }
+
+  /* ─── Question metadata badges ─── */
+  .q-meta { display:flex; gap:6px; margin-top:6px; flex-wrap:wrap; align-items:center; }
+  .q-meta-badge {
+    font-size:9px; font-family:var(--font); padding:2px 6px; border-radius:8px;
+    border:1px solid var(--border); color:var(--text-dim); background:var(--bg);
+    display:inline-flex; align-items:center; gap:3px;
+  }
+  .q-meta-badge .label { color:var(--text-muted); }
+  .q-meta-badge.attempts { border-color:#5b6abf33; color:var(--accent); }
+  .q-meta-badge.time { border-color:#fbbf2433; color:var(--yellow); }
+  .q-meta-badge.rating { border-color:#34d39933; color:var(--green); }
+  .q-meta-badge.review { border-color:#a78bfa33; color:var(--purple); }
+  .q-meta-badge.rating.low { color:var(--red); border-color:#f8717133; }
+
+  /* ─── Solved row highlight ─── */
+  .md tr.solved td { opacity:0.6; }
+  .md tr.solved td:first-child { opacity:1; }
+
+  /* ─── Drawer card solved state ─── */
+  .q-card.solved { border-color:var(--green)33; background:#0a2e1f22; }
+
+  /* responsive */
+  @media (max-width:900px) {
+    .sidebar { width:240px; min-width:240px; }
+    .content { padding:24px; }
+    .drawer.open { width:340px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ─── Sidebar ─── -->
+<aside class="sidebar">
+  <div class="sidebar-header">
+    <h1>DSA Patterns</h1>
+    <p>Research deep-dives & practice</p>
+    <div class="sidebar-stats">
+      <div class="stat"><div class="stat-num" id="stat-patterns">94</div><div class="stat-label">Patterns</div></div>
+      <div class="stat"><div class="stat-num" id="stat-problems">436</div><div class="stat-label">Problems</div></div>
+      <div class="stat"><div class="stat-num" id="stat-progress">0%</div><div class="stat-label">Read</div></div>
+    </div>
+  </div>
+  <div class="auth-bar" id="auth-bar">
+    <span class="auth-status disconnected" id="auth-status">Not connected</span>
+    <button onclick="connectRevise()" id="auth-btn">Connect</button>
+  </div>
+  <div class="sidebar-search">
+    <input type="text" id="search" placeholder="Search patterns, problems..." autocomplete="off">
+  </div>
+  <div class="learning-path">
+    <div class="lp-label">Recommended Learning Order</div>
+    <div id="cat-list"></div>
+  </div>
+</aside>
+
+<!-- ─── Main ─── -->
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="topbar-breadcrumb" id="breadcrumb"></div>
+      <div class="topbar-title" id="topbar-title">Select a pattern to begin</div>
+    </div>
+    <button class="btn-practice" id="btn-practice" style="display:none" onclick="toggleDrawer()">
+      <span class="icon">&#x1F4DD;</span> Practice Questions
+    </button>
+  </div>
+  <div class="content-wrap">
+    <div class="content" id="content">
+      <div class="welcome">
+        <h2>Start Learning</h2>
+        <p>Pick a pattern category from the sidebar to read the research deep-dive. Categories are ordered from foundational to advanced — start from the top.</p>
+        <div class="start-hint">
+          Tip: Press <kbd>P</kbd> to toggle the practice questions panel
+        </div>
+      </div>
+    </div>
+    <div class="drawer" id="drawer">
+      <div class="drawer-inner">
+        <div class="drawer-header">
+          <h3>Practice Questions</h3>
+          <button class="drawer-close" onclick="toggleDrawer()">&times;</button>
+        </div>
+        <div class="drawer-body" id="drawer-body"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="kbd-hint"><kbd>P</kbd> practice &middot; <kbd>/</kbd> search &middot; <kbd>&uarr;</kbd><kbd>&darr;</kbd> navigate</div>
+
+<script>
+// ─── Config ───
+// When served from /research route, assets come from /research-assets/
+// When served locally (python -m http.server), assets are relative
+const ASSET_BASE = window.location.pathname.startsWith('/research') ? '/research-assets/' : '';
+
+// ─── Data ───
+const LEARNING_ORDER = [
+  { key: "Two Pointers",        color: "#5b6abf", icon: "↔", file: "2026-03-09-two-pointers-patterns-deep-dive.md" },
+  { key: "Sliding Window",      color: "#22d3ee", icon: "◫", file: "2026-03-09-sliding-window-patterns-deep-dive.md" },
+  { key: "Binary Search",       color: "#34d399", icon: "⟐", file: "2026-03-09-binary-search-patterns-deep-dive.md" },
+  { key: "Array/Matrix",        color: "#fb923c", icon: "▦", file: "2026-03-09-array-matrix-patterns-deep-dive.md" },
+  { key: "String Manipulation", color: "#f472b6", icon: "≋", file: "2026-03-09-string-manipulation-patterns-deep-dive.md" },
+  { key: "Linked List",         color: "#a78bfa", icon: "⟿", file: "2026-03-09-linked-list-patterns-deep-dive.md" },
+  { key: "Stack",               color: "#fbbf24", icon: "≡", file: "2026-03-09-stack-patterns-deep-dive.md" },
+  { key: "Tree Traversal",      color: "#4ade80", icon: "⌥", file: "2026-03-09-tree-traversal-patterns-deep-dive.md" },
+  { key: "Heap (Priority Queue)", color: "#f87171", icon: "△", file: "2026-03-09-heap-priority-queue-patterns-deep-dive.md" },
+  { key: "Greedy",              color: "#facc15", icon: "★", file: "2026-03-09-greedy-patterns-deep-dive.md" },
+  { key: "Backtracking",        color: "#c084fc", icon: "↩", file: "2026-03-09-backtracking-patterns-deep-dive.md" },
+  { key: "Dynamic Programming", color: "#38bdf8", icon: "◆", file: "2026-03-09-dynamic-programming-patterns-deep-dive.md" },
+  { key: "Graph Traversal",     color: "#fb7185", icon: "◎", file: "2026-03-09-graph-traversal-patterns-deep-dive.md" },
+  { key: "Bit Manipulation",    color: "#94a3b8", icon: "⊕", file: "2026-03-09-bit-manipulation-patterns-deep-dive.md" },
+  { key: "Design",              color: "#e879f9", icon: "☰", file: "2026-03-09-design-patterns-deep-dive.md" },
+];
+
+const PATTERNS = {
+  "Two Pointers": {
+    "Converging": [11,15,16,18,167,349,881,977,259],
+    "Fast & Slow": [141,202,287,392],
+    "Fixed Separation": [19,876,2095],
+    "In-place Array Modification": [26,27,75,80,283,443,905,2337,2938],
+    "String Comparison": [844,1598,2390],
+    "Expanding From Center": [5,647],
+    "String Reversal": [151,344,345,541],
+  },
+  "Sliding Window": {
+    "Fixed Size": [346,643,2985,3254,3318],
+    "Variable Size": [3,76,209,219,424,713,904,1004,1438,1493,1658,1838,2461,2516,2762,2779,2981,3026,3346,3347],
+    "Monotonic Queue": [239,862,1696],
+    "Character Frequency Matching": [1,438,567],
+  },
+  "Binary Search": {
+    "On Sorted Array": [35,69,74,278,374,540,704,1539],
+    "Rotated Sorted Array": [33,81,153,162,852,1095],
+    "On Answer (Binary Search on Result)": [410,774,875,1011,1482,1760,2064,2226],
+    "First/Last Occurrence": [34,658],
+    "Median/Kth": [4,378,719],
+  },
+  "Array/Matrix": {
+    "In-place Rotation": [48,189,867],
+    "Spiral Traversal": [54,59,885,2326],
+    "In-place Marking": [73,289,498],
+    "Prefix/Suffix Products": [238,845,2483],
+    "Plus One / Manual Arithmetic": [43,66,67,989],
+    "In-place from End": [88,977],
+    "Cyclic Sort": [41,268,287,442,448],
+  },
+  "String Manipulation": {
+    "Palindrome Check": [9,125,680],
+    "Anagram Check": [49,242],
+    "Roman Conversion": [12,13],
+    "String to Integer": [8,65],
+    "Manual Simulation": [43,67,415],
+    "String Matching": [28,214,686,796,3008],
+    "Repeated Substring": [28,459,686],
+  },
+  "Linked List": {
+    "In-place Reversal": [25,82,83,92,206,234],
+    "Merging Sorted Lists": [21,23],
+    "Number Addition": [2,369],
+    "Intersection Detection": [160,599],
+    "Reordering": [24,61,86,143,328],
+  },
+  "Stack": {
+    "Valid Parentheses": [20,32,921,1249,1963],
+    "Monotonic Stack": [402,496,503,739,901,907,962,1475,1673],
+    "Expression Evaluation": [150,224,227,772],
+    "Simulation": [71,394,735],
+    "Min Stack Design": [155,895,901],
+    "Largest Rectangle": [84,85],
+  },
+  "Tree Traversal": {
+    "Level Order Traversal": [102,103,199,515,1161],
+    "Recursive Preorder": [100,101,105,114,226,257,988],
+    "Recursive Inorder": [94,98,173,230,501,530],
+    "Recursive Postorder": [104,110,124,145,337,366,543,863,1110,2458],
+    "Lowest Common Ancestor": [235,236],
+    "Serialization/Deserialization": [297,572,652],
+  },
+  "Heap (Priority Queue)": {
+    "Top K Elements": [215,347,451,506,703,973,1046,2558],
+    "Two Heaps": [295,1825],
+    "K-way Merge": [23,373,378,632],
+    "Scheduling/Minimum Cost": [253,767,857,1642,1792,1834,1942,2402],
+  },
+  "Greedy": {
+    "Interval Merging": [56,57,759,986,2406],
+    "Jump Game": [45,55],
+    "Buy/Sell Stock": [121,122],
+    "Gas Station": [134,2202],
+    "Task Scheduling": [621,767,1054],
+    "Sorting Based": [135,406,455,1029],
+  },
+  "Backtracking": {
+    "Subsets": [17,77,78,90],
+    "Permutations": [31,46,60],
+    "Combination Sum": [39,40],
+    "Parentheses Generation": [22,301],
+    "Word Search": [79,212,2018],
+    "N-Queens": [37,51],
+    "Palindrome Partitioning": [131,132,1457],
+  },
+  "Dynamic Programming": {
+    "Fibonacci Style": [70,91,198,213,337,509,740,746],
+    "Kadane's Algorithm": [53,152,918,1749,2321],
+    "Coin Change": [322,377,518],
+    "0/1 Knapsack": [416,494],
+    "Word Break Style": [139,140],
+    "Longest Common Subsequence": [1092,1143,1312],
+    "Edit Distance": [72,583,712],
+    "Unique Paths on Grid": [62,63,64,120,221,931,1277],
+    "Interval DP": [312,546],
+    "Catalan Numbers": [95,96,241],
+    "Longest Increasing Subsequence": [300,354,1671,2407],
+    "Stock Problems": [121,122,123,188,309],
+  },
+  "Graph Traversal": {
+    "DFS Connected Components": [130,200,417,547,695,733,841,1020,1254,1905,2101],
+    "BFS Connected Components": [542,994,1091],
+    "DFS Cycle Detection": [207,210,802,1059],
+    "BFS Topological Sort": [210,269,310,444,1136,1857,2050,2115,2392],
+    "Deep Copy/Cloning": [133,138,1334,1490],
+    "Shortest Path (Dijkstra)": [743,778,1514,1631,1976,2045,2203,2290,2577,2812],
+    "Shortest Path (Bellman-Ford)": [787,1129],
+    "Union-Find": [200,261,305,323,547,684,721,737,947,952,959,1101],
+    "Strongly Connected Components": [210,547,1192,2127],
+    "Bridges & Articulation Points": [1192,2360],
+    "Minimum Spanning Tree": [1135,1168,1489,1584],
+    "Bidirectional BFS": [126,127,815],
+  },
+  "Bit Manipulation": {
+    "Bitwise XOR": [136,137,268,389],
+    "Bitwise AND": [191,231,477],
+    "Bitwise DP": [338,1442,1494],
+    "Power Check": [231,342],
+  },
+  "Design": {
+    "General Design": [146,155,225,232,251,271,295,341,346,353,359,362,379,380,432,460,604,622,641,642,706,715,900,981,1146,1348,1352,1381,1756,2013,2034,2296,2336],
+    "Tries": [208,211,425,648,720,745],
+  },
+};
+
+const PROBLEM_SLUGS = {
+  1:"two-sum",2:"add-two-numbers",3:"longest-substring-without-repeating-characters",4:"median-of-two-sorted-arrays",5:"longest-palindromic-substring",8:"string-to-integer-atoi",9:"palindrome-number",11:"container-with-most-water",12:"integer-to-roman",13:"roman-to-integer",15:"3sum",16:"3sum-closest",17:"letter-combinations-of-a-phone-number",18:"4sum",19:"remove-nth-node-from-end-of-list",20:"valid-parentheses",21:"merge-two-sorted-lists",22:"generate-parentheses",23:"merge-k-sorted-lists",24:"swap-nodes-in-pairs",25:"reverse-nodes-in-k-group",26:"remove-duplicates-from-sorted-array",27:"remove-element",28:"find-the-index-of-the-first-occurrence-in-a-string",31:"next-permutation",32:"longest-valid-parentheses",33:"search-in-rotated-sorted-array",34:"find-first-and-last-position-of-element-in-sorted-array",35:"search-insert-position",37:"sudoku-solver",39:"combination-sum",40:"combination-sum-ii",41:"first-missing-positive",43:"multiply-strings",45:"jump-game-ii",46:"permutations",48:"rotate-image",49:"group-anagrams",51:"n-queens",53:"maximum-subarray",54:"spiral-matrix",55:"jump-game",56:"merge-intervals",57:"insert-interval",59:"spiral-matrix-ii",60:"permutation-sequence",61:"rotate-list",62:"unique-paths",63:"unique-paths-ii",64:"minimum-path-sum",65:"valid-number",66:"plus-one",67:"add-binary",69:"sqrtx",70:"climbing-stairs",71:"simplify-path",72:"edit-distance",73:"set-matrix-zeroes",74:"search-a-2d-matrix",75:"sort-colors",76:"minimum-window-substring",77:"combinations",78:"subsets",79:"word-search",80:"remove-duplicates-from-sorted-array-ii",81:"search-in-rotated-sorted-array-ii",82:"remove-duplicates-from-sorted-list-ii",83:"remove-duplicates-from-sorted-list",84:"largest-rectangle-in-histogram",85:"maximal-rectangle",86:"partition-list",88:"merge-sorted-array",90:"subsets-ii",91:"decode-ways",92:"reverse-linked-list-ii",94:"binary-tree-inorder-traversal",95:"unique-binary-search-trees-ii",96:"unique-binary-search-trees",98:"validate-binary-search-tree",100:"same-tree",101:"symmetric-tree",102:"binary-tree-level-order-traversal",103:"binary-tree-zigzag-level-order-traversal",104:"maximum-depth-of-binary-tree",105:"construct-binary-tree-from-preorder-and-inorder-traversal",110:"balanced-binary-tree",114:"flatten-binary-tree-to-linked-list",120:"triangle",121:"best-time-to-buy-and-sell-stock",122:"best-time-to-buy-and-sell-stock-ii",123:"best-time-to-buy-and-sell-stock-iii",124:"binary-tree-maximum-path-sum",125:"valid-palindrome",126:"word-ladder-ii",127:"word-ladder",130:"surrounded-regions",131:"palindrome-partitioning",132:"palindrome-partitioning-ii",133:"clone-graph",134:"gas-station",135:"candy",136:"single-number",137:"single-number-ii",138:"copy-list-with-random-pointer",139:"word-break",140:"word-break-ii",141:"linked-list-cycle",143:"reorder-list",145:"binary-tree-postorder-traversal",146:"lru-cache",150:"evaluate-reverse-polish-notation",151:"reverse-words-in-a-string",152:"maximum-product-subarray",153:"find-minimum-in-rotated-sorted-array",155:"min-stack",160:"intersection-of-two-linked-lists",162:"find-peak-element",167:"two-sum-ii-input-array-is-sorted",173:"binary-search-tree-iterator",188:"best-time-to-buy-and-sell-stock-iv",189:"rotate-array",191:"number-of-1-bits",198:"house-robber",199:"binary-tree-right-side-view",200:"number-of-islands",202:"happy-number",206:"reverse-linked-list",207:"course-schedule",208:"implement-trie-prefix-tree",209:"minimum-size-subarray-sum",210:"course-schedule-ii",211:"design-add-and-search-words-data-structure",212:"word-search-ii",213:"house-robber-ii",214:"shortest-palindrome",215:"kth-largest-element-in-an-array",219:"contains-duplicate-ii",221:"maximal-square",224:"basic-calculator",225:"implement-stack-using-queues",226:"invert-binary-tree",227:"basic-calculator-ii",230:"kth-smallest-element-in-a-bst",231:"power-of-two",232:"implement-queue-using-stacks",234:"palindrome-linked-list",235:"lowest-common-ancestor-of-a-binary-search-tree",236:"lowest-common-ancestor-of-a-binary-tree",238:"product-of-array-except-self",239:"sliding-window-maximum",241:"different-ways-to-add-parentheses",242:"valid-anagram",253:"meeting-rooms-ii",257:"binary-tree-paths",268:"missing-number",278:"first-bad-version",283:"move-zeroes",287:"find-the-duplicate-number",289:"game-of-life",295:"find-median-from-data-stream",297:"serialize-and-deserialize-binary-tree",300:"longest-increasing-subsequence",301:"remove-invalid-parentheses",309:"best-time-to-buy-and-sell-stock-with-cooldown",312:"burst-balloons",322:"coin-change",328:"odd-even-linked-list",337:"house-robber-iii",338:"counting-bits",341:"flatten-nested-list-iterator",342:"power-of-four",344:"reverse-string",345:"reverse-vowels-of-a-string",347:"top-k-frequent-elements",349:"intersection-of-two-arrays",354:"russian-doll-envelopes",373:"find-k-pairs-with-smallest-sums",374:"guess-number-higher-or-lower",377:"combination-sum-iv",378:"kth-smallest-element-in-a-sorted-matrix",380:"insert-delete-getrandom-o1",389:"find-the-difference",392:"is-subsequence",394:"decode-string",402:"remove-k-digits",406:"queue-reconstruction-by-height",410:"split-array-largest-sum",415:"add-strings",416:"partition-equal-subset-sum",417:"pacific-atlantic-water-flow",424:"longest-repeating-character-replacement",438:"find-all-anagrams-in-a-string",442:"find-all-duplicates-in-an-array",443:"string-compression",448:"find-all-numbers-disappeared-in-an-array",451:"sort-characters-by-frequency",455:"assign-cookies",459:"repeated-substring-pattern",460:"lfu-cache",477:"total-hamming-distance",494:"target-sum",496:"next-greater-element-i",498:"diagonal-traverse",501:"find-mode-in-binary-search-tree",503:"next-greater-element-ii",509:"fibonacci-number",518:"coin-change-ii",530:"minimum-absolute-difference-in-bst",540:"single-element-in-a-sorted-array",541:"reverse-string-ii",542:"01-matrix",543:"diameter-of-binary-tree",546:"remove-boxes",547:"number-of-provinces",567:"permutation-in-string",572:"subtree-of-another-tree",583:"delete-operation-for-two-strings",599:"minimum-index-sum-of-two-lists",604:"design-compressed-string-iterator",621:"task-scheduler",622:"design-circular-queue",632:"smallest-range-covering-elements-from-k-lists",641:"design-circular-deque",643:"maximum-average-subarray-i",647:"palindromic-substrings",648:"replace-words",652:"find-duplicate-subtrees",658:"find-k-closest-elements",680:"valid-palindrome-ii",684:"redundant-connection",686:"repeated-string-match",695:"max-area-of-island",703:"kth-largest-element-in-a-stream",704:"binary-search",706:"design-hashmap",712:"minimum-ascii-delete-sum-for-two-strings",713:"subarray-product-less-than-k",719:"find-k-th-smallest-pair-distance",720:"longest-word-in-dictionary",721:"accounts-merge",733:"flood-fill",735:"asteroid-collision",739:"daily-temperatures",740:"delete-and-earn",743:"network-delay-time",745:"prefix-and-suffix-search",746:"min-cost-climbing-stairs",767:"reorganize-string",778:"swim-in-rising-water",787:"cheapest-flights-within-k-stops",796:"rotate-string",802:"find-eventual-safe-states",815:"bus-routes",841:"keys-and-rooms",844:"backspace-string-compare",845:"longest-mountain-in-array",852:"peak-index-in-a-mountain-array",857:"minimum-cost-to-hire-k-workers",862:"shortest-subarray-with-sum-at-least-k",863:"all-nodes-distance-k-in-binary-tree",867:"transpose-matrix",875:"koko-eating-bananas",876:"middle-of-the-linked-list",881:"boats-to-save-people",885:"spiral-matrix-iii",895:"maximum-frequency-stack",900:"rle-iterator",901:"online-stock-span",904:"fruit-into-baskets",905:"sort-array-by-parity",907:"sum-of-subarray-minimums",918:"maximum-sum-circular-subarray",921:"minimum-add-to-make-parentheses-valid",931:"minimum-falling-path-sum",947:"most-stones-removed-with-same-row-or-column",962:"maximum-width-ramp",973:"k-closest-points-to-origin",977:"squares-of-a-sorted-array",981:"time-based-key-value-store",986:"interval-list-intersections",988:"smallest-string-starting-from-leaf",989:"add-to-array-form-of-integer",994:"rotting-oranges",1004:"max-consecutive-ones-iii",1011:"capacity-to-ship-packages-within-d-days",1020:"number-of-enclaves",1029:"two-city-scheduling",1046:"last-stone-weight",1091:"shortest-path-in-binary-matrix",1092:"shortest-common-supersequence",1095:"find-in-mountain-array",1110:"delete-nodes-and-return-forest",1129:"shortest-path-with-alternating-colors",1143:"longest-common-subsequence",1146:"snapshot-array",1161:"maximum-level-sum-of-a-binary-tree",1192:"critical-connections-in-a-network",1249:"minimum-remove-to-make-valid-parentheses",1254:"number-of-closed-islands",1277:"count-square-submatrices-with-all-ones",1312:"minimum-insertion-steps-to-make-a-string-palindrome",1348:"tweet-counts-per-frequency",1352:"product-of-the-last-k-numbers",1381:"design-a-stack-with-increment-operation",1438:"longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit",1442:"count-triplets-that-can-form-two-arrays-of-equal-xor",1457:"pseudo-palindromic-paths-in-a-binary-tree",1475:"final-prices-with-a-special-discount-in-a-shop",1482:"minimum-number-of-days-to-make-m-bouquets",1489:"find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree",1493:"longest-subarray-of-1s-after-deleting-one-element",1514:"path-with-maximum-probability",1539:"kth-missing-positive-number",1584:"min-cost-to-connect-all-points",1631:"path-with-minimum-effort",1642:"furthest-building-you-can-reach",1658:"minimum-operations-to-reduce-x-to-zero",1671:"minimum-number-of-removals-to-make-mountain-array",1673:"find-the-most-competitive-subsequence",1696:"jump-game-vi",1749:"maximum-absolute-sum-of-any-subarray",1760:"minimum-limit-of-balls-in-a-bag",1792:"maximum-average-pass-ratio",1834:"single-threaded-cpu",1838:"frequency-of-the-most-frequent-element",1905:"count-sub-islands",1942:"the-number-of-the-smallest-unoccupied-chair",1963:"minimum-number-of-swaps-to-make-the-string-balanced",1976:"number-of-ways-to-arrive-at-destination",2013:"detect-squares",2045:"second-minimum-time-to-reach-destination",2050:"parallel-courses-iii",2064:"minimized-maximum-of-products-distributed-to-any-store",2095:"delete-the-middle-node-of-a-linked-list",2101:"detonate-the-maximum-bombs",2202:"maximize-the-topmost-element-after-k-moves",2226:"maximum-candies-allocated-to-k-children",2290:"minimum-obstacle-removal-to-reach-corner",2296:"design-a-text-editor",2321:"maximum-score-of-a-good-subarray",2326:"spiral-matrix-iv",2337:"move-pieces-to-obtain-a-string",2390:"removing-stars-from-a-string",2402:"meeting-rooms-iii",2406:"divide-intervals-into-minimum-number-of-groups",2407:"longest-increasing-subsequence-ii",2461:"maximum-sum-of-distinct-subarrays-with-length-k",2483:"minimum-penalty-for-a-shop",2516:"take-k-of-each-character-from-left-and-right",2558:"take-gifts-from-the-richest-pile",2577:"minimum-time-to-visit-a-cell-in-a-grid",2762:"continuous-subarrays",2779:"maximum-beauty-of-an-array-after-applying-operation",2812:"find-the-safest-path-in-a-grid",2938:"separate-black-and-white-balls",2981:"find-longest-special-substring-that-occurs-thrice-i",3008:"find-beautiful-indices-in-the-given-array-ii",3026:"maximum-good-subarray-sum",3254:"find-the-power-of-k-size-subarrays-i",3318:"find-x-sum-of-all-k-long-subarrays-i",3346:"maximum-frequency-of-an-element-after-performing-operations-i",3347:"maximum-frequency-of-an-element-after-performing-operations-ii",
+};
+
+// ─── State ───
+let currentCat = null;
+let drawerOpen = false;
+let loadedDocs = {};    // cache: filename → markdown string
+let parsedQuestions = {}; // cache: filename → {subpattern: [{num, title, diff, twist}]}
+
+// ─── Build sidebar ───
+function buildSidebar() {
+  const list = document.getElementById('cat-list');
+  LEARNING_ORDER.forEach((cat, idx) => {
+    const subs = PATTERNS[cat.key];
+    const totalProblems = Object.values(subs).reduce((s, arr) => s + arr.length, 0);
+    const subCount = Object.keys(subs).length;
+
+    const div = document.createElement('div');
+    div.className = 'cat-item';
+    div.dataset.cat = cat.key;
+
+    div.innerHTML = `
+      <div class="cat-header" onclick="toggleCat('${cat.key}')">
+        <div class="cat-num" style="background:${cat.color}22;color:${cat.color};border:1.5px solid ${cat.color}">${idx + 1}</div>
+        <div class="cat-name">${cat.key}</div>
+        <div class="cat-badge">${subCount}p &middot; ${totalProblems}q</div>
+        <div class="cat-arrow">&#9654;</div>
+      </div>
+      <div class="sub-list">
+        ${Object.entries(subs).map(([name, nums]) => `
+          <div class="sub-item" onclick="selectPattern('${cat.key}', '${name.replace(/'/g, "\\'")}')">
+            <input type="checkbox" class="progress-check" data-key="${cat.key}:${name}"
+              onclick="event.stopPropagation(); saveProgress(this)" ${getProgress(cat.key + ':' + name) ? 'checked' : ''}>
+            <div class="sub-dot"></div>
+            <span>${name}</span>
+            <span class="sub-count">${nums.length}</span>
+          </div>
+        `).join('')}
+      </div>
+    `;
+    list.appendChild(div);
+  });
+  updateProgressStat();
+}
+
+function toggleCat(key) {
+  const el = document.querySelector(`.cat-item[data-cat="${key}"]`);
+  el.classList.toggle('open');
+}
+
+// ─── Pattern selection ───
+async function selectPattern(catKey, subName) {
+  currentCat = catKey;
+  const catInfo = LEARNING_ORDER.find(c => c.key === catKey);
+
+  // Update sidebar active states
+  document.querySelectorAll('.cat-header').forEach(h => h.classList.remove('active'));
+  document.querySelectorAll('.sub-item').forEach(s => s.classList.remove('active'));
+  const catEl = document.querySelector(`.cat-item[data-cat="${catKey}"]`);
+  catEl.classList.add('open');
+  catEl.querySelector('.cat-header').classList.add('active');
+  // Find the sub-item
+  const subItems = catEl.querySelectorAll('.sub-item');
+  subItems.forEach(s => {
+    if (s.querySelector('span').textContent === subName) s.classList.add('active');
+  });
+
+  // Update topbar
+  const idx = LEARNING_ORDER.findIndex(c => c.key === catKey) + 1;
+  document.getElementById('breadcrumb').innerHTML = `<span>#${idx}</span> ${catKey}`;
+  document.getElementById('topbar-title').textContent = subName ? `${subName}` : catKey;
+  document.getElementById('btn-practice').style.display = 'flex';
+
+  // Load markdown
+  await loadAndRender(catInfo.file, subName);
+  // Load questions into drawer
+  await loadQuestionsDrawer(catInfo.file, catKey);
+}
+
+async function loadAndRender(file, scrollToSub) {
+  const content = document.getElementById('content');
+  content.innerHTML = '<div style="padding:40px;color:var(--text-dim)">Loading...</div>';
+
+  try {
+    let md;
+    if (loadedDocs[file]) {
+      md = loadedDocs[file];
+    } else {
+      const resp = await fetch(ASSET_BASE + file);
+      if (!resp.ok) throw new Error(`Failed to load ${file}`);
+      md = await resp.text();
+      loadedDocs[file] = md;
+    }
+
+    // Strip YAML frontmatter
+    md = md.replace(/^---[\s\S]*?---\n*/, '');
+
+    // Configure marked
+    marked.setOptions({ breaks: false, gfm: true });
+    let html = marked.parse(md);
+
+    // Fix diagram image paths (relative to current dir, should work)
+    // They reference diagrams/<name>.svg which is correct relative to dashboard.html
+
+    content.innerHTML = `<div class="md">${html}</div>`;
+
+    // Inline SVG images so they render at correct aspect ratio
+    await inlineSvgs(content);
+
+    // Make problem numbers & titles in tables clickable LeetCode links
+    linkifyQuestionTables(content);
+
+    // Scroll to sub-pattern section if specified
+    if (scrollToSub) {
+      setTimeout(() => {
+        const headings = content.querySelectorAll('h2');
+        for (const h of headings) {
+          if (h.textContent.includes(scrollToSub)) {
+            h.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            h.style.background = 'rgba(91,106,191,0.1)';
+            h.style.borderRadius = '4px';
+            h.style.padding = '4px 8px';
+            setTimeout(() => { h.style.background = ''; h.style.padding = ''; }, 2000);
+            break;
+          }
+        }
+      }, 100);
+    }
+
+    // Parse questions for drawer
+    parseQuestionsFromMd(file, md);
+
+    // Set up scroll-sync: highlight sidebar sub-pattern as user scrolls
+    setupScrollSync(content);
+
+  } catch (e) {
+    content.innerHTML = `<div style="padding:40px;color:var(--red)">Error loading doc: ${e.message}<br><br>
+      <span style="color:var(--text-dim);font-size:13px">Make sure you're accessing this via the Revise server at <code style="color:var(--cyan)">/research</code></span></div>`;
+  }
+}
+
+// ─── Scroll sync: sidebar follows content scroll ───
+let scrollObserver = null;
+function setupScrollSync(contentEl) {
+  // Disconnect previous observer
+  if (scrollObserver) scrollObserver.disconnect();
+
+  // Find all h2 headings (sub-pattern sections) — they look like "1. Converging Pointers Pattern"
+  const headings = contentEl.querySelectorAll('.md h2');
+  if (!headings.length || !currentCat) return;
+
+  // Get the sub-pattern names for the current category
+  const subNames = Object.keys(PATTERNS[currentCat]);
+  const catEl = document.querySelector(`.cat-item[data-cat="${currentCat}"]`);
+  if (!catEl) return;
+  const subItems = catEl.querySelectorAll('.sub-item');
+
+  scrollObserver = new IntersectionObserver((entries) => {
+    // Find the topmost visible heading
+    let topEntry = null;
+    for (const entry of entries) {
+      if (entry.isIntersecting) {
+        if (!topEntry || entry.boundingClientRect.top < topEntry.boundingClientRect.top) {
+          topEntry = entry;
+        }
+      }
+    }
+    if (!topEntry) return;
+
+    const headingText = topEntry.target.textContent;
+    // Match heading to sub-pattern
+    subItems.forEach(item => {
+      const name = item.querySelector('span').textContent;
+      const isMatch = headingText.includes(name);
+      item.classList.toggle('active', isMatch);
+      if (isMatch) {
+        // Scroll sidebar to show this item
+        item.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+      }
+    });
+  }, {
+    root: contentEl,
+    rootMargin: '-10% 0px -70% 0px', // trigger when heading is in top 30% of viewport
+    threshold: 0
+  });
+
+  headings.forEach(h => scrollObserver.observe(h));
+}
+
+// ─── Inline SVGs so they render at correct size ───
+async function inlineSvgs(container) {
+  const imgs = container.querySelectorAll('img[src$=".svg"]');
+  const promises = Array.from(imgs).map(async (img) => {
+    try {
+      // Fix src to use asset base if relative
+      let src = img.getAttribute('src');
+      if (src && !src.startsWith('http') && !src.startsWith('/')) {
+        src = ASSET_BASE + src;
+      }
+      const resp = await fetch(src);
+      if (!resp.ok) return;
+      const svgText = await resp.text();
+      const wrap = document.createElement('div');
+      wrap.className = 'svg-wrap';
+      wrap.innerHTML = svgText;
+      // Remove any fixed width/height on the SVG element so it scales
+      const svgEl = wrap.querySelector('svg');
+      if (svgEl) {
+        svgEl.removeAttribute('width');
+        svgEl.removeAttribute('height');
+      }
+      img.replaceWith(wrap);
+    } catch {}
+  });
+  await Promise.all(promises);
+}
+
+// ─── Linkify question tables in rendered content ───
+function linkifyQuestionTables(container) {
+  const tables = container.querySelectorAll('table');
+  tables.forEach(table => {
+    const headers = table.querySelectorAll('th');
+    const headerTexts = Array.from(headers).map(h => h.textContent.trim().toLowerCase());
+    const numIdx = headerTexts.indexOf('#');
+    const titleIdx = headerTexts.indexOf('title');
+    const diffIdx = headerTexts.indexOf('difficulty');
+    if (numIdx === -1 || titleIdx === -1) return;
+
+    // Add a "Solved" column header
+    const solvedTh = document.createElement('th');
+    solvedTh.textContent = '';
+    solvedTh.style.width = '30px';
+    headers[0].parentElement.insertBefore(solvedTh, headers[0]);
+
+    const rows = table.querySelectorAll('tbody tr');
+    rows.forEach(row => {
+      const cells = row.querySelectorAll('td');
+      if (cells.length <= Math.max(numIdx, titleIdx)) return;
+
+      const numCell = cells[numIdx];
+      const titleCell = cells[titleIdx];
+      const num = parseInt(numCell.textContent.trim());
+      if (!num || !PROBLEM_SLUGS[num]) return;
+
+      const url = `https://leetcode.com/problems/${PROBLEM_SLUGS[num]}/`;
+      const title = titleCell.textContent.trim();
+      const difficulty = diffIdx >= 0 && cells[diffIdx] ? cells[diffIdx].textContent.trim() : '';
+      const reviseData = getReviseData(num);
+      const isSolved = !!reviseData;
+
+      // Add checkbox cell at start
+      const checkTd = document.createElement('td');
+      checkTd.style.width = '30px';
+      checkTd.style.textAlign = 'center';
+      const cb = document.createElement('input');
+      cb.type = 'checkbox';
+      cb.className = 'q-solved-check';
+      cb.dataset.num = num;
+      cb.checked = isSolved;
+      cb.title = isSolved ? `Solved (${reviseData.attempts} attempts)` : 'Mark as solved & sync to Revise';
+      cb.addEventListener('click', (e) => {
+        e.stopPropagation();
+        if (!isConnected) { cb.checked = false; alert('Connect to Revise first'); return; }
+        if (cb.checked) {
+          syncToRevise(num, title, difficulty, cb);
+          row.classList.add('solved');
+        }
+      });
+      checkTd.appendChild(cb);
+      row.insertBefore(checkTd, row.firstChild);
+      if (isSolved) row.classList.add('solved');
+
+      // Make the number a link
+      numCell.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="q-link">${num}</a>`;
+
+      // Make the title a link
+      titleCell.innerHTML = `<a href="${url}" target="_blank" rel="noopener" class="q-link">${title}</a>`;
+
+      // Add metadata row below the twist column (last cell)
+      const lastCell = cells[cells.length - 1];
+      const metaDiv = document.createElement('div');
+      metaDiv.className = 'q-meta';
+      metaDiv.dataset.num = num;
+      metaDiv.innerHTML = buildMetaHtml(reviseData);
+      lastCell.appendChild(metaDiv);
+
+      // Row click → open LeetCode
+      row.style.cursor = 'pointer';
+      row.addEventListener('click', (e) => {
+        if (e.target.tagName === 'A' || e.target.tagName === 'INPUT') return;
+        window.open(url, '_blank');
+      });
+    });
+  });
+}
+
+// ─── Parse questions from markdown ───
+function parseQuestionsFromMd(file, md) {
+  if (parsedQuestions[file]) return;
+
+  const result = {};
+  // Split by ## headings to find sub-patterns
+  const sections = md.split(/(?=^## \d+\. )/m);
+
+  for (const section of sections) {
+    const headingMatch = section.match(/^## \d+\.\s+(.+?)(?:\s+Pattern)?\s*$/m);
+    if (!headingMatch) continue;
+    const subName = headingMatch[1].replace(/\s+Pattern$/, '').trim();
+
+    // Find the questions table
+    const tableMatch = section.match(/### Questions Detail[\s\S]*?\n(\|[\s\S]*?)(?=\n---|\n## |\n###(?! Questions)|$)/);
+    if (!tableMatch) continue;
+
+    const rows = tableMatch[1].trim().split('\n').filter(r => r.startsWith('|'));
+    // Skip header and separator rows
+    const questions = [];
+    for (let i = 2; i < rows.length; i++) {
+      const cols = rows[i].split('|').map(c => c.trim()).filter(Boolean);
+      if (cols.length >= 4) {
+        questions.push({
+          num: parseInt(cols[0]) || 0,
+          title: cols[1],
+          difficulty: cols[2],
+          twist: cols[3]
+        });
+      }
+    }
+    if (questions.length > 0) {
+      result[subName] = questions;
+    }
+  }
+
+  parsedQuestions[file] = result;
+}
+
+// ─── Questions Drawer ───
+async function loadQuestionsDrawer(file, catKey) {
+  const body = document.getElementById('drawer-body');
+
+  // Ensure questions are parsed
+  if (!parsedQuestions[file] && loadedDocs[file]) {
+    parseQuestionsFromMd(file, loadedDocs[file]);
+  }
+
+  const questions = parsedQuestions[file];
+  if (!questions || Object.keys(questions).length === 0) {
+    body.innerHTML = '<div style="padding:20px;color:var(--text-dim);font-size:13px">Questions loading with document...</div>';
+    return;
+  }
+
+  let html = '';
+  for (const [subName, qs] of Object.entries(questions)) {
+    const solvedCount = qs.filter(q => !!getReviseData(q.num)).length;
+    html += `
+      <div class="drawer-section open">
+        <div class="drawer-section-header" onclick="this.parentElement.classList.toggle('open')">
+          <span class="arrow">&#9654;</span>
+          <span>${subName}</span>
+          <span class="badge-count">${solvedCount}/${qs.length}</span>
+        </div>
+        <div class="drawer-questions">
+          ${qs.map(q => {
+            const slug = PROBLEM_SLUGS[q.num];
+            const url = slug ? `https://leetcode.com/problems/${slug}/` : '#';
+            const diffClass = q.difficulty.toLowerCase();
+            const twistId = `twist-${catKey}-${q.num}`.replace(/[^a-z0-9-]/gi, '-');
+            const reviseData = getReviseData(q.num);
+            const isSolved = !!reviseData;
+            return `
+              <div class="q-card ${isSolved ? 'solved' : ''}" data-num="${q.num}">
+                <div class="q-top">
+                  <input type="checkbox" class="q-solved-check" data-num="${q.num}" data-title="${q.title}" data-diff="${q.difficulty}"
+                    ${isSolved ? 'checked' : ''} onclick="handleDrawerCheck(this, ${q.num}, '${q.title.replace(/'/g,"\\'")}', '${q.difficulty}')"
+                    title="${isSolved ? `Solved (${reviseData.attempts} attempts)` : 'Mark solved & sync'}">
+                  <span class="q-num">#${q.num}</span>
+                  <a class="q-title" href="${url}" target="_blank" rel="noopener">${q.title}</a>
+                  <span class="q-diff ${diffClass}">${q.difficulty}</span>
+                </div>
+                <div class="q-meta" data-num="${q.num}">${buildMetaHtml(reviseData)}</div>
+                <div class="q-twist">
+                  <button class="q-twist-toggle" onclick="document.getElementById('${twistId}').classList.toggle('show'); this.textContent = this.textContent === 'Show hint' ? 'Hide hint' : 'Show hint'">Show hint</button>
+                  <div class="q-twist-text" id="${twistId}">${q.twist}</div>
+                </div>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    `;
+  }
+
+  body.innerHTML = html;
+}
+
+function toggleDrawer() {
+  drawerOpen = !drawerOpen;
+  document.getElementById('drawer').classList.toggle('open', drawerOpen);
+  document.getElementById('btn-practice').classList.toggle('active', drawerOpen);
+}
+
+// ─── Progress ───
+function getProgress(key) {
+  try { return JSON.parse(localStorage.getItem('dsa-progress') || '{}')[key]; } catch { return false; }
+}
+function saveProgress(checkbox) {
+  const key = checkbox.dataset.key;
+  try {
+    const data = JSON.parse(localStorage.getItem('dsa-progress') || '{}');
+    data[key] = checkbox.checked;
+    localStorage.setItem('dsa-progress', JSON.stringify(data));
+  } catch {}
+  updateProgressStat();
+}
+function updateProgressStat() {
+  try {
+    const data = JSON.parse(localStorage.getItem('dsa-progress') || '{}');
+    const total = document.querySelectorAll('.progress-check').length;
+    const done = Object.values(data).filter(Boolean).length;
+    document.getElementById('stat-progress').textContent = total ? Math.round(done / total * 100) + '%' : '0%';
+  } catch {}
+}
+
+// ─── Search ───
+document.getElementById('search').addEventListener('input', function(e) {
+  const q = e.target.value.toLowerCase().trim();
+  document.querySelectorAll('.cat-item').forEach(cat => {
+    const catName = cat.dataset.cat.toLowerCase();
+    const subs = cat.querySelectorAll('.sub-item');
+    let catMatch = catName.includes(q);
+    let anySubMatch = false;
+
+    subs.forEach(sub => {
+      const subName = sub.querySelector('span').textContent.toLowerCase();
+      const match = subName.includes(q) || catMatch || q === '';
+      sub.style.display = match ? '' : 'none';
+      if (match && q) anySubMatch = true;
+    });
+
+    cat.style.display = (catMatch || anySubMatch || !q) ? '' : 'none';
+    if (anySubMatch && q) cat.classList.add('open');
+  });
+
+  // Also search problem numbers
+  if (/^\d+$/.test(q)) {
+    const num = parseInt(q);
+    document.querySelectorAll('.cat-item').forEach(cat => {
+      const catKey = cat.dataset.cat;
+      const subs = PATTERNS[catKey];
+      let found = false;
+      cat.querySelectorAll('.sub-item').forEach((subEl, i) => {
+        const subName = Object.keys(subs)[i];
+        if (subs[subName] && subs[subName].includes(num)) {
+          subEl.style.display = '';
+          found = true;
+        }
+      });
+      if (found) { cat.style.display = ''; cat.classList.add('open'); }
+    });
+  }
+});
+
+// ─── Keyboard shortcuts ───
+document.addEventListener('keydown', function(e) {
+  if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+    if (e.key === 'Escape') e.target.blur();
+    return;
+  }
+  if (e.key === 'p' || e.key === 'P') { toggleDrawer(); e.preventDefault(); }
+  if (e.key === '/') { document.getElementById('search').focus(); e.preventDefault(); }
+});
+
+// ─── Revise API Integration ───
+const API_BASE = '/api'; // same origin when hosted with revise
+let reviseQuestions = {};  // url → question object from API
+let isConnected = false;
+
+function getAuth() {
+  try {
+    const raw = localStorage.getItem('auth');
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return parsed.access_token ? parsed : null;
+  } catch { return null; }
+}
+
+async function apiFetch(path, options = {}) {
+  const auth = getAuth();
+  if (!auth) throw new Error('Not authenticated');
+  const headers = { ...options.headers, Authorization: `Bearer ${auth.access_token}`, 'Content-Type': 'application/json' };
+  const resp = await fetch(`${API_BASE}${path}`, { ...options, headers });
+  if (resp.status === 401) {
+    // Try refresh
+    const refreshResp = await fetch(`${API_BASE}/auth/refresh`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ refresh_token: auth.refresh_token })
+    });
+    if (refreshResp.ok) {
+      const tokens = await refreshResp.json();
+      localStorage.setItem('auth', JSON.stringify({ access_token: tokens.access_token, refresh_token: tokens.refresh_token }));
+      headers.Authorization = `Bearer ${tokens.access_token}`;
+      const retry = await fetch(`${API_BASE}${path}`, { ...options, headers });
+      if (!retry.ok) throw new Error(`API error: ${retry.status}`);
+      return retry.json();
+    }
+    throw new Error('Auth expired');
+  }
+  if (!resp.ok) throw new Error(`API error: ${resp.status}`);
+  return resp.json();
+}
+
+async function connectRevise() {
+  try {
+    const auth = getAuth();
+    if (!auth) {
+      // Redirect to login
+      window.location.href = '/dashboard';
+      return;
+    }
+    const questions = await apiFetch('/questions');
+    reviseQuestions = {};
+    for (const q of questions) {
+      const normalized = q.url.replace(/\/$/, '');
+      reviseQuestions[normalized] = q;
+    }
+    isConnected = true;
+    document.getElementById('auth-status').textContent = `${questions.length} questions synced`;
+    document.getElementById('auth-status').className = 'auth-status';
+    document.getElementById('auth-btn').textContent = 'Refresh';
+    // Re-render current view to show checkboxes + metadata
+    if (currentCat) {
+      const catInfo = LEARNING_ORDER.find(c => c.key === currentCat);
+      await loadAndRender(catInfo.file, null);
+      await loadQuestionsDrawer(catInfo.file, currentCat);
+    }
+  } catch (e) {
+    document.getElementById('auth-status').textContent = e.message;
+    document.getElementById('auth-status').className = 'auth-status disconnected';
+  }
+}
+
+function getReviseData(num) {
+  const slug = PROBLEM_SLUGS[num];
+  if (!slug) return null;
+  const url = `https://leetcode.com/problems/${slug}`;
+  return reviseQuestions[url] || null;
+}
+
+function ratingStars(rating) {
+  if (!rating) return '';
+  return '★'.repeat(rating) + '☆'.repeat(5 - rating);
+}
+
+async function syncToRevise(num, title, difficulty, checkbox) {
+  const slug = PROBLEM_SLUGS[num];
+  if (!slug) return;
+  checkbox.classList.add('syncing');
+  const url = `https://leetcode.com/problems/${slug}/`;
+  try {
+    const result = await apiFetch('/questions', {
+      method: 'POST',
+      body: JSON.stringify({
+        url,
+        title: title || slug,
+        difficulty: difficulty || null,
+        self_rating: 3,
+        question_type: 'dsa'
+      })
+    });
+    // Update local cache
+    reviseQuestions[url.replace(/\/$/, '')] = result;
+    checkbox.checked = true;
+    checkbox.classList.remove('syncing');
+    // Cross-sync all checkboxes for this problem
+    document.querySelectorAll(`.q-solved-check[data-num="${num}"]`).forEach(c => c.checked = true);
+    document.querySelectorAll(`.q-card[data-num="${num}"]`).forEach(c => c.classList.add('solved'));
+    // Update metadata display
+    updateMetaDisplay(num, result);
+    // Refresh stats
+    document.getElementById('auth-status').textContent = `${Object.keys(reviseQuestions).length} questions synced`;
+  } catch (e) {
+    checkbox.classList.remove('syncing');
+    checkbox.checked = false;
+    console.error('Sync failed:', e);
+  }
+}
+
+function updateMetaDisplay(num, data) {
+  document.querySelectorAll(`.q-meta[data-num="${num}"]`).forEach(el => {
+    el.innerHTML = buildMetaHtml(data);
+  });
+}
+
+function buildMetaHtml(data) {
+  if (!data) return '';
+  let html = '';
+  if (data.attempts) html += `<span class="q-meta-badge attempts"><span class="label">attempts</span> ${data.attempts}</span>`;
+  if (data.time_taken) html += `<span class="q-meta-badge time"><span class="label">time</span> ${data.time_taken}m</span>`;
+  if (data.self_rating) html += `<span class="q-meta-badge rating ${data.self_rating <= 2 ? 'low' : ''}"><span class="label">rating</span> ${ratingStars(data.self_rating)}</span>`;
+  if (data.next_review) html += `<span class="q-meta-badge review"><span class="label">next</span> ${data.next_review}</span>`;
+  return html;
+}
+
+function handleDrawerCheck(cb, num, title, diff) {
+  if (!isConnected) { cb.checked = false; alert('Connect to Revise first'); return; }
+  if (cb.checked) {
+    syncToRevise(num, title, diff, cb);
+    cb.closest('.q-card').classList.add('solved');
+    // Also check in content table if visible
+    document.querySelectorAll(`.q-solved-check[data-num="${num}"]`).forEach(c => c.checked = true);
+  }
+}
+
+// ─── Init ───
+buildSidebar();
+
+// Auto-open first category
+toggleCat(LEARNING_ORDER[0].key);
+
+// Auto-connect if auth exists
+if (getAuth()) connectRevise();
+</script>
+</body>
+</html>
