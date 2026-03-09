@@ -1,0 +1,192 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <filter id="shadow2">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="16" font-weight="bold">Kadane's Algorithm</text>
+  <text x="450" y="50" text-anchor="middle" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="11">Maximum Subarray Sum -- Extend or Restart Decision</text>
+
+  <!-- Array index labels -->
+  <g font-family="SF Mono, Menlo, monospace" font-size="10" fill="#555" text-anchor="middle">
+    <text x="100" y="82">i=0</text>
+    <text x="190" y="82">i=1</text>
+    <text x="280" y="82">i=2</text>
+    <text x="370" y="82">i=3</text>
+    <text x="460" y="82">i=4</text>
+    <text x="550" y="82">i=5</text>
+    <text x="640" y="82">i=6</text>
+    <text x="730" y="82">i=7</text>
+    <text x="820" y="82">i=8</text>
+  </g>
+
+  <!-- Array cells -->
+  <!-- -2 -->
+  <rect x="68" y="90" width="64" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1"/>
+  <text x="100" y="113" text-anchor="middle" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="14">-2</text>
+
+  <!-- 1 -->
+  <rect x="158" y="90" width="64" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1"/>
+  <text x="190" y="113" text-anchor="middle" fill="#ccc" font-family="SF Mono, Menlo, monospace" font-size="14">1</text>
+
+  <!-- -3 -->
+  <rect x="248" y="90" width="64" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1"/>
+  <text x="280" y="113" text-anchor="middle" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="14">-3</text>
+
+  <!-- 4 (max subarray start) -->
+  <rect x="338" y="90" width="64" height="36" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="2"/>
+  <text x="370" y="113" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" font-weight="bold">4</text>
+
+  <!-- -1 -->
+  <rect x="428" y="90" width="64" height="36" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="2"/>
+  <text x="460" y="113" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" font-weight="bold">-1</text>
+
+  <!-- 2 -->
+  <rect x="518" y="90" width="64" height="36" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="2"/>
+  <text x="550" y="113" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" font-weight="bold">2</text>
+
+  <!-- 1 -->
+  <rect x="608" y="90" width="64" height="36" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="2"/>
+  <text x="640" y="113" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" font-weight="bold">1</text>
+
+  <!-- -5 -->
+  <rect x="698" y="90" width="64" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1"/>
+  <text x="730" y="113" text-anchor="middle" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="14">-5</text>
+
+  <!-- 4 -->
+  <rect x="788" y="90" width="64" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1"/>
+  <text x="820" y="113" text-anchor="middle" fill="#ccc" font-family="SF Mono, Menlo, monospace" font-size="14">4</text>
+
+  <!-- Max subarray bracket -->
+  <line x1="338" y1="130" x2="672" y2="130" stroke="#34d399" stroke-width="2"/>
+  <line x1="338" y1="126" x2="338" y2="134" stroke="#34d399" stroke-width="2"/>
+  <line x1="672" y1="126" x2="672" y2="134" stroke="#34d399" stroke-width="2"/>
+  <text x="505" y="145" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">max subarray = [4,-1,2,1] = 6</text>
+
+  <!-- current_sum row -->
+  <text x="20" y="182" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10">cur_sum</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">
+    <rect x="76" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#333"/>
+    <text x="100" y="183" fill="#f87171">-2</text>
+
+    <rect x="166" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#333"/>
+    <text x="190" y="183" fill="#ccc">1</text>
+
+    <rect x="256" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#333"/>
+    <text x="280" y="183" fill="#f87171">-2</text>
+
+    <rect x="346" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#34d399"/>
+    <text x="370" y="183" fill="#34d399">4</text>
+
+    <rect x="436" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#5b6abf"/>
+    <text x="460" y="183" fill="#5b6abf">3</text>
+
+    <rect x="526" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#5b6abf"/>
+    <text x="550" y="183" fill="#5b6abf">5</text>
+
+    <rect x="616" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#34d399"/>
+    <text x="640" y="183" fill="#34d399" font-weight="bold">6</text>
+
+    <rect x="706" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#333"/>
+    <text x="730" y="183" fill="#ccc">1</text>
+
+    <rect x="796" y="168" width="48" height="22" rx="4" fill="#1a1a2e" stroke="#333"/>
+    <text x="820" y="183" fill="#ccc">5</text>
+  </g>
+
+  <!-- max_sum row -->
+  <text x="20" y="218" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">max_sum</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">
+    <rect x="76" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#333"/>
+    <text x="100" y="219" fill="#888">-2</text>
+
+    <rect x="166" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#333"/>
+    <text x="190" y="219" fill="#888">1</text>
+
+    <rect x="256" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#333"/>
+    <text x="280" y="219" fill="#888">1</text>
+
+    <rect x="346" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#333"/>
+    <text x="370" y="219" fill="#888">4</text>
+
+    <rect x="436" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#333"/>
+    <text x="460" y="219" fill="#888">4</text>
+
+    <rect x="526" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#333"/>
+    <text x="550" y="219" fill="#888">5</text>
+
+    <rect x="616" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#fbbf24"/>
+    <text x="640" y="219" fill="#fbbf24" font-weight="bold">6</text>
+
+    <rect x="706" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#fbbf24"/>
+    <text x="730" y="219" fill="#fbbf24">6</text>
+
+    <rect x="796" y="204" width="48" height="22" rx="4" fill="#1a1a1a" stroke="#fbbf24"/>
+    <text x="820" y="219" fill="#fbbf24">6</text>
+  </g>
+
+  <!-- Decision annotations -->
+  <text x="20" y="252" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">decision</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">
+    <text x="100" y="252" fill="#fbbf24">START</text>
+    <text x="190" y="252" fill="#34d399">RESTART</text>
+    <text x="280" y="252" fill="#5b6abf">EXTEND</text>
+    <text x="370" y="252" fill="#34d399">RESTART</text>
+    <text x="460" y="252" fill="#5b6abf">EXTEND</text>
+    <text x="550" y="252" fill="#5b6abf">EXTEND</text>
+    <text x="640" y="252" fill="#5b6abf">EXTEND</text>
+    <text x="730" y="252" fill="#5b6abf">EXTEND</text>
+    <text x="820" y="252" fill="#5b6abf">EXTEND</text>
+  </g>
+
+  <!-- Decision detail boxes -->
+  <rect x="15" y="272" width="420" height="210" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="225" y="294" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Extend vs Restart Logic</text>
+
+  <!-- i=1: restart -->
+  <rect x="30" y="306" width="390" height="30" rx="4" fill="#0a0a0a" stroke="#222"/>
+  <text x="40" y="325" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">i=1: max(-2+1, 1) = max(-1, 1) = 1</text>
+  <text x="355" y="325" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">RESTART</text>
+
+  <!-- i=3: restart -->
+  <rect x="30" y="342" width="390" height="30" rx="4" fill="#0a0a0a" stroke="#222"/>
+  <text x="40" y="361" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">i=3: max(-2+4, 4) = max(2, 4) = 4</text>
+  <text x="355" y="361" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">RESTART</text>
+
+  <!-- i=4: extend -->
+  <rect x="30" y="378" width="390" height="30" rx="4" fill="#0a0a0a" stroke="#222"/>
+  <text x="40" y="397" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10">i=4: max(4+(-1), -1) = max(3, -1) = 3</text>
+  <text x="355" y="397" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9">EXTEND</text>
+
+  <!-- i=6: extend to max -->
+  <rect x="30" y="414" width="390" height="30" rx="4" fill="#0a0a0a" stroke="#34d399"/>
+  <text x="40" y="433" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">i=6: max(5+1, 1) = max(6, 1) = 6</text>
+  <text x="335" y="433" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="9" font-weight="bold">MAX=6</text>
+
+  <!-- i=7: extend but drops -->
+  <rect x="30" y="450" width="390" height="22" rx="4" fill="#0a0a0a" stroke="#222"/>
+  <text x="40" y="465" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">i=7: max(6+(-5), -5) = max(1, -5) = 1  (sum drops)</text>
+
+  <!-- Algorithm + Key insight box -->
+  <rect x="455" y="272" width="430" height="210" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="670" y="294" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Core Algorithm</text>
+
+  <rect x="470" y="306" width="400" height="120" rx="6" fill="#0a0a0a" stroke="#222"/>
+  <g font-family="SF Mono, Menlo, monospace" font-size="10" fill="#ccc">
+    <text x="480" y="324">cur_sum = max_sum = nums[0]</text>
+    <text x="480" y="342" fill="#888">for</text><text x="504" y="342"> num </text><text x="536" y="342" fill="#888">in</text><text x="552" y="342"> nums[1:]:</text>
+    <text x="496" y="360" fill="#a78bfa"># Extend current or restart?</text>
+    <text x="496" y="378">cur_sum = max(cur_sum + num, num)</text>
+    <text x="496" y="396">max_sum = max(max_sum, cur_sum)</text>
+    <text x="480" y="414" fill="#888">return</text><text x="520" y="414"> max_sum</text>
+  </g>
+
+  <text x="670" y="445" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">Time: O(n)   Space: O(1)</text>
+  <text x="670" y="462" text-anchor="middle" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">Restart when prefix sum goes negative</text>
+  <text x="670" y="477" text-anchor="middle" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">Answer: max_sum = 6</text>
+</svg>

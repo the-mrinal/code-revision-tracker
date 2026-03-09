@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+  <text x="450" y="35" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">BFS Topological Sort — Kahn's Algorithm</text>
+
+  <!-- Dependency graph -->
+  <g transform="translate(50, 55)">
+    <text x="100" y="0" text-anchor="middle" fill="#888" font-size="12">Course Prerequisites</text>
+    <g transform="translate(0, 15)">
+      <circle cx="100" cy="20" r="22" fill="#111" stroke="#34d399" stroke-width="2"/>
+      <text x="100" y="25" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">0</text>
+      <text x="130" y="18" fill="#34d399" font-size="9">in=0</text>
+
+      <circle cx="45" cy="90" r="22" fill="#111" stroke="#a78bfa" stroke-width="2"/>
+      <text x="45" y="95" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="bold">1</text>
+      <text x="75" y="88" fill="#a78bfa" font-size="9">in=1</text>
+
+      <circle cx="155" cy="90" r="22" fill="#111" stroke="#a78bfa" stroke-width="2"/>
+      <text x="155" y="95" text-anchor="middle" fill="#a78bfa" font-size="14" font-weight="bold">2</text>
+      <text x="185" y="88" fill="#a78bfa" font-size="9">in=1</text>
+
+      <circle cx="100" cy="160" r="22" fill="#111" stroke="#fbbf24" stroke-width="2"/>
+      <text x="100" y="165" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="bold">3</text>
+      <text x="130" y="158" fill="#fbbf24" font-size="9">in=2</text>
+
+      <line x1="84" y1="36" x2="60" y2="72" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="116" y1="36" x2="140" y2="72" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="57" y1="108" x2="86" y2="142" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+      <line x1="143" y1="108" x2="114" y2="142" stroke="#888" stroke-width="1.5" marker-end="url(#arr)"/>
+    </g>
+  </g>
+
+  <defs>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#888"/></marker>
+  </defs>
+
+  <!-- Step-by-step processing -->
+  <g transform="translate(280, 55)">
+    <text x="0" y="0" fill="#888" font-size="12">Kahn's Algorithm — Step by Step</text>
+    <rect x="0" y="12" width="580" height="215" rx="8" fill="#111" stroke="#222"/>
+
+    <text x="15" y="38" fill="#5b6abf" font-size="12" font-weight="bold">Step 1: Find in-degree 0 nodes</text>
+    <text x="30" y="55" fill="#34d399" font-size="11">Queue: [0]  in-degree: {0:0, 1:1, 2:1, 3:2}</text>
+
+    <text x="15" y="78" fill="#5b6abf" font-size="12" font-weight="bold">Step 2: Process node 0</text>
+    <text x="30" y="95" fill="#ccc" font-size="11">Remove 0→1, 0→2. Decrement in-degrees.</text>
+    <text x="30" y="110" fill="#a78bfa" font-size="11">Queue: [1, 2]  in-degree: {1:0, 2:0, 3:2}</text>
+
+    <text x="15" y="133" fill="#5b6abf" font-size="12" font-weight="bold">Step 3: Process nodes 1, 2</text>
+    <text x="30" y="150" fill="#ccc" font-size="11">Remove 1→3, 2→3. in-degree[3]: 2→1→0</text>
+    <text x="30" y="165" fill="#fbbf24" font-size="11">Queue: [3]  in-degree: {3:0}</text>
+
+    <text x="15" y="190" fill="#5b6abf" font-size="12" font-weight="bold">Step 4: Process node 3 → done!</text>
+    <text x="30" y="207" fill="#34d399" font-size="11" font-weight="bold">order = [0, 1, 2, 3] ✓  len==4==numCourses</text>
+  </g>
+
+  <!-- Visual pipeline -->
+  <g transform="translate(50, 305)">
+    <text x="380" y="0" text-anchor="middle" fill="#888" font-size="12">Topological Order — "peel the onion"</text>
+    <g transform="translate(30, 18)">
+      <rect x="0" y="0" width="100" height="42" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+      <text x="50" y="16" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">Round 1</text>
+      <text x="50" y="32" text-anchor="middle" fill="#34d399" font-size="13">[ 0 ]</text>
+
+      <text x="112" y="26" fill="#5b6abf" font-size="16">→</text>
+
+      <rect x="130" y="0" width="140" height="42" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="200" y="16" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">Round 2</text>
+      <text x="200" y="32" text-anchor="middle" fill="#a78bfa" font-size="13">[ 1, 2 ]</text>
+
+      <text x="282" y="26" fill="#5b6abf" font-size="16">→</text>
+
+      <rect x="300" y="0" width="100" height="42" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+      <text x="350" y="16" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">Round 3</text>
+      <text x="350" y="32" text-anchor="middle" fill="#fbbf24" font-size="13">[ 3 ]</text>
+
+      <text x="412" y="26" fill="#5b6abf" font-size="16">→</text>
+
+      <rect x="430" y="0" width="140" height="42" rx="6" fill="#111" stroke="#34d399" stroke-width="2"/>
+      <text x="500" y="16" text-anchor="middle" fill="#34d399" font-size="10">valid order</text>
+      <text x="500" y="32" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">[0,1,2,3] ✓</text>
+    </g>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(50, 390)">
+    <rect x="0" y="0" width="810" height="55" rx="8" fill="#111" stroke="#222"/>
+    <text x="20" y="22" fill="#888" font-size="12">Levels = parallel rounds (semesters).</text>
+    <text x="20" y="42" fill="#f87171" font-size="12">Cycle detection: if processed &lt; n → some nodes never reached in-degree 0 → CYCLE</text>
+  </g>
+
+  <!-- Summary -->
+  <g transform="translate(50, 460)">
+    <rect x="0" y="0" width="810" height="48" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="20" y="20" fill="#5b6abf" font-size="13" font-weight="bold">Key Takeaway</text>
+    <text x="20" y="40" fill="#ccc" font-size="11">Start with in-degree 0 → process → decrement neighbors → repeat. Detects cycles + gives valid ordering.</text>
+  </g>
+</svg>

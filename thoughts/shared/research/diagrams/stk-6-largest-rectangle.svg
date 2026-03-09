@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="'SF Mono', Menlo, monospace">
+  <defs>
+    <linearGradient id="barGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#5b6abf" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#5b6abf" stop-opacity="0.6"/>
+    </linearGradient>
+    <linearGradient id="rectGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#34d399" stop-opacity="0.35"/>
+      <stop offset="100%" stop-color="#34d399" stop-opacity="0.15"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+  <rect x="1" y="1" width="898" height="518" rx="12" fill="none" stroke="#222" stroke-width="1"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" fill="#e2e8f0" font-size="15" font-weight="bold">Largest Rectangle in Histogram</text>
+  <text x="450" y="48" text-anchor="middle" fill="#64748b" font-size="11">heights = [2, 1, 5, 6, 2, 3]  |  Monotonic Stack Approach</text>
+
+  <!-- ==================== HISTOGRAM SECTION ==================== -->
+  <!-- Histogram area card -->
+  <rect x="20" y="58" width="520" height="230" rx="8" fill="#111" stroke="#222"/>
+  <text x="35" y="78" fill="#94a3b8" font-size="10" font-weight="bold">HISTOGRAM</text>
+
+  <!-- Y-axis labels -->
+  <text x="52" y="225" text-anchor="end" fill="#475569" font-size="9">0</text>
+  <text x="52" y="198" text-anchor="end" fill="#475569" font-size="9">1</text>
+  <text x="52" y="171" text-anchor="end" fill="#475569" font-size="9">2</text>
+  <text x="52" y="144" text-anchor="end" fill="#475569" font-size="9">3</text>
+  <text x="52" y="117" text-anchor="end" fill="#475569" font-size="9">4</text>
+  <text x="52" y="90" text-anchor="end" fill="#475569" font-size="9">5</text>
+  <text x="52" y="90" text-anchor="end" fill="#475569" font-size="9" dy="-27">6</text>
+
+  <!-- Grid lines -->
+  <line x1="58" y1="225" x2="480" y2="225" stroke="#1e293b" stroke-width="0.5"/>
+  <line x1="58" y1="198" x2="480" y2="198" stroke="#1e293b" stroke-width="0.5"/>
+  <line x1="58" y1="171" x2="480" y2="171" stroke="#1e293b" stroke-width="0.5"/>
+  <line x1="58" y1="144" x2="480" y2="144" stroke="#1e293b" stroke-width="0.5"/>
+  <line x1="58" y1="117" x2="480" y2="117" stroke="#1e293b" stroke-width="0.5"/>
+  <line x1="58" y1="90" x2="480" y2="90" stroke="#1e293b" stroke-width="0.5"/>
+  <line x1="58" y1="63" x2="480" y2="63" stroke="#1e293b" stroke-width="0.5"/>
+
+  <!-- Baseline -->
+  <line x1="58" y1="225" x2="480" y2="225" stroke="#334155" stroke-width="1.5"/>
+
+  <!-- Largest rectangle overlay: height=5, width=2 (indices 2,3) -->
+  <!-- x from bar[2] to bar[3]+barWidth: 188 to 318, y from 225-5*27=90 to 225 -->
+  <rect x="188" y="90" width="130" height="135" rx="3" fill="url(#rectGrad)" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3"/>
+  <text x="253" y="155" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">Area = 10</text>
+  <text x="253" y="170" text-anchor="middle" fill="#34d399" font-size="9" opacity="0.8">5 x 2</text>
+
+  <!-- Bar 0: height=2, index=0 -->
+  <rect x="78" y="171" width="50" height="54" rx="3" fill="url(#barGrad)" stroke="#5b6abf" stroke-width="1"/>
+  <text x="103" y="165" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="bold">2</text>
+  <text x="103" y="242" text-anchor="middle" fill="#64748b" font-size="9">i=0</text>
+
+  <!-- Bar 1: height=1, index=1 -->
+  <rect x="143" y="198" width="50" height="27" rx="3" fill="url(#barGrad)" stroke="#5b6abf" stroke-width="1"/>
+  <text x="168" y="192" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="bold">1</text>
+  <text x="168" y="242" text-anchor="middle" fill="#64748b" font-size="9">i=1</text>
+
+  <!-- Bar 2: height=5, index=2 -->
+  <rect x="208" y="90" width="50" height="135" rx="3" fill="url(#barGrad)" stroke="#5b6abf" stroke-width="1"/>
+  <text x="233" y="84" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="bold">5</text>
+  <text x="233" y="242" text-anchor="middle" fill="#64748b" font-size="9">i=2</text>
+
+  <!-- Bar 3: height=6, index=3 -->
+  <rect x="273" y="63" width="50" height="162" rx="3" fill="url(#barGrad)" stroke="#5b6abf" stroke-width="1"/>
+  <text x="298" y="57" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="bold">6</text>
+  <text x="298" y="242" text-anchor="middle" fill="#64748b" font-size="9">i=3</text>
+
+  <!-- Bar 4: height=2, index=4 -->
+  <rect x="338" y="171" width="50" height="54" rx="3" fill="url(#barGrad)" stroke="#5b6abf" stroke-width="1"/>
+  <text x="363" y="165" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="bold">2</text>
+  <text x="363" y="242" text-anchor="middle" fill="#64748b" font-size="9">i=4</text>
+
+  <!-- Bar 5: height=3, index=5 -->
+  <rect x="403" y="144" width="50" height="81" rx="3" fill="url(#barGrad)" stroke="#5b6abf" stroke-width="1"/>
+  <text x="428" y="138" text-anchor="middle" fill="#c4b5fd" font-size="11" font-weight="bold">3</text>
+  <text x="428" y="242" text-anchor="middle" fill="#64748b" font-size="9">i=5</text>
+
+  <!-- ==================== FORMULA & LEGEND (RIGHT PANEL) ==================== -->
+  <rect x="555" y="58" width="325" height="115" rx="8" fill="#111" stroke="#222"/>
+  <text x="570" y="78" fill="#94a3b8" font-size="10" font-weight="bold">WIDTH CALCULATION</text>
+
+  <text x="570" y="100" fill="#a78bfa" font-size="12" font-weight="bold">width = i - stack.top() - 1</text>
+  <text x="570" y="120" fill="#64748b" font-size="10">When stack is empty: width = i</text>
+
+  <text x="570" y="145" fill="#94a3b8" font-size="10" font-weight="bold">LEGEND</text>
+  <rect x="570" y="152" width="10" height="10" rx="2" fill="#5b6abf"/>
+  <text x="586" y="161" fill="#94a3b8" font-size="9">Histogram bar</text>
+  <rect x="700" y="152" width="10" height="10" rx="2" fill="#34d399" opacity="0.4" stroke="#34d399" stroke-width="0.5"/>
+  <text x="716" y="161" fill="#94a3b8" font-size="9">Max rectangle</text>
+
+  <!-- Key insight box -->
+  <rect x="555" y="182" width="325" height="48" rx="8" fill="#111" stroke="#34d399" stroke-width="0.8" opacity="0.9"/>
+  <text x="570" y="202" fill="#34d399" font-size="10" font-weight="bold">KEY INSIGHT</text>
+  <text x="570" y="218" fill="#94a3b8" font-size="9">Increasing stack: pop when shorter bar found.</text>
+  <text x="570" y="228" fill="#94a3b8" font-size="9">Each pop computes rectangle area.</text>
+
+  <!-- ==================== STACK EVOLUTION ==================== -->
+  <rect x="20" y="260" width="860" height="110" rx="8" fill="#111" stroke="#222"/>
+  <text x="35" y="280" fill="#94a3b8" font-size="10" font-weight="bold">STACK EVOLUTION (monotonic increasing stack of indices)</text>
+
+  <!-- Step i=0: push 0 -->
+  <text x="40" y="302" fill="#64748b" font-size="9">i=0</text>
+  <text x="40" y="315" fill="#94a3b8" font-size="9">push 0</text>
+  <rect x="40" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="51" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">0</text>
+  <text x="40" y="355" fill="#475569" font-size="8">stack: [0]</text>
+
+  <!-- Step i=1: pop 0 (area=2), push 1 -->
+  <text x="145" y="302" fill="#64748b" font-size="9">i=1</text>
+  <text x="145" y="315" fill="#fbbf24" font-size="9">pop 0</text>
+  <rect x="145" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#fbbf24" stroke-width="0.8"/>
+  <text x="156" y="333" text-anchor="middle" fill="#fbbf24" font-size="9">0</text>
+  <text x="172" y="333" fill="#f87171" font-size="9">area=2</text>
+  <text x="145" y="355" fill="#475569" font-size="8">stack: [1]</text>
+
+  <!-- Step i=2: push 2 -->
+  <text x="270" y="302" fill="#64748b" font-size="9">i=2</text>
+  <text x="270" y="315" fill="#94a3b8" font-size="9">push 2</text>
+  <rect x="270" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="281" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">1</text>
+  <rect x="296" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="307" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">2</text>
+  <text x="270" y="355" fill="#475569" font-size="8">stack: [1,2]</text>
+
+  <!-- Step i=3: push 3 -->
+  <text x="385" y="302" fill="#64748b" font-size="9">i=3</text>
+  <text x="385" y="315" fill="#94a3b8" font-size="9">push 3</text>
+  <rect x="385" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="396" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">1</text>
+  <rect x="411" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="422" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">2</text>
+  <rect x="437" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="448" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">3</text>
+  <text x="385" y="355" fill="#475569" font-size="8">stack: [1,2,3]</text>
+
+  <!-- Step i=4: pop 3 (area=6), pop 2 (area=10!), push 4 -->
+  <text x="520" y="296" fill="#64748b" font-size="9">i=4</text>
+  <text x="520" y="309" fill="#fbbf24" font-size="9">pop 3</text>
+  <rect x="520" y="312" width="22" height="18" rx="3" fill="#1e293b" stroke="#fbbf24" stroke-width="0.8"/>
+  <text x="531" y="325" text-anchor="middle" fill="#fbbf24" font-size="9">3</text>
+  <text x="547" y="325" fill="#f87171" font-size="9">area=6</text>
+
+  <text x="520" y="343" fill="#34d399" font-size="9" font-weight="bold">pop 2</text>
+  <rect x="520" y="346" width="22" height="18" rx="3" fill="#0d3320" stroke="#34d399" stroke-width="1.2"/>
+  <text x="531" y="359" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">2</text>
+  <text x="547" y="359" fill="#34d399" font-size="9" font-weight="bold">area=10 MAX</text>
+
+  <!-- Step i=5: push 5 -->
+  <text x="670" y="302" fill="#64748b" font-size="9">i=5</text>
+  <text x="670" y="315" fill="#94a3b8" font-size="9">push 5</text>
+  <rect x="670" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="681" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">1</text>
+  <rect x="696" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="707" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">4</text>
+  <rect x="722" y="320" width="22" height="18" rx="3" fill="#1e293b" stroke="#5b6abf" stroke-width="0.8"/>
+  <text x="733" y="333" text-anchor="middle" fill="#c4b5fd" font-size="9">5</text>
+  <text x="670" y="355" fill="#475569" font-size="8">stack: [1,4,5]</text>
+
+  <!-- Cleanup pops at end -->
+  <text x="790" y="302" fill="#64748b" font-size="9">end</text>
+  <text x="790" y="315" fill="#fbbf24" font-size="9">pop all</text>
+  <text x="790" y="331" fill="#f87171" font-size="8">5: area=3</text>
+  <text x="790" y="343" fill="#f87171" font-size="8">4: area=4</text>
+  <text x="790" y="355" fill="#f87171" font-size="8">1: area=6</text>
+
+  <!-- ==================== SUMMARY BOX ==================== -->
+  <rect x="20" y="380" width="860" height="55" rx="8" fill="#111" stroke="#222"/>
+  <text x="35" y="400" fill="#94a3b8" font-size="10" font-weight="bold">AREA COMPUTATION ON POP</text>
+  <text x="35" y="420" fill="#a78bfa" font-size="12">Popped bar's height x distance between boundaries = rectangle area</text>
+  <text x="35" y="432" fill="#64748b" font-size="9">area = heights[popped] x (i - stack.top() - 1)    |    if stack empty: area = heights[popped] x i</text>
+
+  <!-- ==================== ALL POP AREAS TABLE ==================== -->
+  <rect x="20" y="445" width="860" height="60" rx="8" fill="#111" stroke="#222"/>
+  <text x="35" y="465" fill="#94a3b8" font-size="10" font-weight="bold">ALL COMPUTED AREAS</text>
+
+  <!-- Table entries -->
+  <text x="35" y="485" fill="#64748b" font-size="9">Pop idx=0: h=2, w=1</text>
+  <rect x="155" y="476" width="32" height="14" rx="3" fill="#1e293b" stroke="#f87171" stroke-width="0.6"/>
+  <text x="171" y="487" text-anchor="middle" fill="#f87171" font-size="9">2</text>
+
+  <text x="210" y="485" fill="#64748b" font-size="9">Pop idx=3: h=6, w=1</text>
+  <rect x="330" y="476" width="32" height="14" rx="3" fill="#1e293b" stroke="#f87171" stroke-width="0.6"/>
+  <text x="346" y="487" text-anchor="middle" fill="#f87171" font-size="9">6</text>
+
+  <text x="385" y="485" fill="#64748b" font-size="9">Pop idx=2: h=5, w=2</text>
+  <rect x="505" y="476" width="36" height="14" rx="3" fill="#0d3320" stroke="#34d399" stroke-width="1"/>
+  <text x="523" y="487" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">10</text>
+
+  <text x="565" y="485" fill="#64748b" font-size="9">Pop idx=5: h=3, w=1</text>
+  <rect x="685" y="476" width="32" height="14" rx="3" fill="#1e293b" stroke="#f87171" stroke-width="0.6"/>
+  <text x="701" y="487" text-anchor="middle" fill="#f87171" font-size="9">3</text>
+
+  <text x="740" y="485" fill="#64748b" font-size="9">Pop idx=4: h=2, w=2</text>
+  <rect x="855" y="476" width="16" height="14" rx="3" fill="#1e293b" stroke="#f87171" stroke-width="0.6"/>
+  <text x="863" y="487" text-anchor="middle" fill="#f87171" font-size="9">4</text>
+
+  <!-- Max result callout -->
+  <text x="450" y="512" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">Maximum Rectangle Area = 10  (height=5, spanning indices 2-3)</text>
+</svg>

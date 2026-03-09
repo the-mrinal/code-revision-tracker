@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#a78bfa" font-size="18" font-weight="bold">Expanding From Center — Longest Palindrome</text>
+  <text x="450" y="58" text-anchor="middle" fill="#888" font-size="12">s = "babad" → find longest palindromic substring</text>
+
+  <!-- String display header -->
+  <text x="60" y="88" fill="#888" font-size="11">Input string:</text>
+
+  <!-- String boxes: b a b a d -->
+  <!-- Index 0: b -->
+  <rect x="155" y="70" width="44" height="44" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="177" y="98" text-anchor="middle" fill="#e0e0e0" font-size="20" font-weight="bold">b</text>
+  <text x="177" y="64" text-anchor="middle" fill="#555" font-size="9">0</text>
+
+  <!-- Index 1: a -->
+  <rect x="205" y="70" width="44" height="44" rx="6" fill="#1a1a2e" stroke="#5b6abf" stroke-width="2"/>
+  <text x="227" y="98" text-anchor="middle" fill="#a78bfa" font-size="20" font-weight="bold">a</text>
+  <text x="227" y="64" text-anchor="middle" fill="#5b6abf" font-size="9">1</text>
+
+  <!-- Index 2: b -->
+  <rect x="255" y="70" width="44" height="44" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="277" y="98" text-anchor="middle" fill="#e0e0e0" font-size="20" font-weight="bold">b</text>
+  <text x="277" y="64" text-anchor="middle" fill="#555" font-size="9">2</text>
+
+  <!-- Index 3: a -->
+  <rect x="305" y="70" width="44" height="44" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="327" y="98" text-anchor="middle" fill="#e0e0e0" font-size="20" font-weight="bold">a</text>
+  <text x="327" y="64" text-anchor="middle" fill="#555" font-size="9">3</text>
+
+  <!-- Index 4: d -->
+  <rect x="355" y="70" width="44" height="44" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="377" y="98" text-anchor="middle" fill="#e0e0e0" font-size="20" font-weight="bold">d</text>
+  <text x="377" y="64" text-anchor="middle" fill="#555" font-size="9">4</text>
+
+  <!-- 2n-1 centers note -->
+  <text x="440" y="80" fill="#888" font-size="10">2n-1 = 9 centers</text>
+  <text x="440" y="94" fill="#555" font-size="10">5 odd + 4 even</text>
+
+  <!-- ============================================================ -->
+  <!-- CENTER 1: index 1 ('a') -->
+  <!-- ============================================================ -->
+  <rect x="40" y="130" width="390" height="155" rx="8" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="60" y="152" fill="#5b6abf" font-size="12" font-weight="bold">Center: index 1 ('a') — odd length</text>
+
+  <!-- Step 1: start with center -->
+  <text x="60" y="175" fill="#888" font-size="10">Step 1: Start at center</text>
+  <!-- mini boxes -->
+  <rect x="220" y="160" width="30" height="26" rx="4" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="235" y="178" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">a</text>
+  <text x="310" y="175" fill="#888" font-size="10">palindrome = "a", len=1</text>
+
+  <!-- Step 2: expand L=0, R=2 → match -->
+  <text x="60" y="203" fill="#888" font-size="10">Step 2: Expand L=0, R=2</text>
+  <!-- b [a] b -->
+  <rect x="185" y="188" width="30" height="26" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="200" y="206" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">b</text>
+  <rect x="220" y="188" width="30" height="26" rx="4" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="235" y="206" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">a</text>
+  <rect x="255" y="188" width="30" height="26" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="270" y="206" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">b</text>
+  <!-- match arrow -->
+  <text x="295" y="206" fill="#34d399" font-size="11">✓ match!</text>
+  <text x="358" y="206" fill="#34d399" font-size="10">"bab", len=3</text>
+
+  <!-- Step 3: expand L=-1 → stop -->
+  <text x="60" y="232" fill="#888" font-size="10">Step 3: Expand L=-1</text>
+  <text x="185" y="232" fill="#f87171" font-size="11">← out of bounds → stop</text>
+
+  <!-- Result for center 1 -->
+  <rect x="60" y="245" width="355" height="28" rx="5" fill="#0d1f0d" stroke="#34d399" stroke-width="1.5"/>
+  <text x="237" y="264" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">Palindrome = "bab", length = 3</text>
+
+  <!-- ============================================================ -->
+  <!-- CENTER 2: index 2 ('b') -->
+  <!-- ============================================================ -->
+  <rect x="460" y="130" width="400" height="185" rx="8" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="480" y="152" fill="#5b6abf" font-size="12" font-weight="bold">Center: index 2 ('b') — odd length</text>
+
+  <!-- Step 1: start with center -->
+  <text x="480" y="175" fill="#888" font-size="10">Step 1: Start at center</text>
+  <rect x="640" y="160" width="30" height="26" rx="4" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="655" y="178" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">b</text>
+  <text x="680" y="175" fill="#888" font-size="10">palindrome = "b", len=1</text>
+
+  <!-- Step 2: expand L=1('a'), R=3('a') → match -->
+  <text x="480" y="203" fill="#888" font-size="10">Step 2: Expand L=1, R=3</text>
+  <rect x="601" y="188" width="30" height="26" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="616" y="206" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">a</text>
+  <rect x="636" y="188" width="30" height="26" rx="4" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="651" y="206" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">b</text>
+  <rect x="671" y="188" width="30" height="26" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="686" y="206" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">a</text>
+  <text x="710" y="206" fill="#34d399" font-size="11">✓ match!</text>
+  <text x="750" y="206" fill="#34d399" font-size="10">"aba", len=3</text>
+
+  <!-- Step 3: expand L=0('b'), R=4('d') → mismatch -->
+  <text x="480" y="232" fill="#888" font-size="10">Step 3: Expand L=0, R=4</text>
+  <rect x="566" y="217" width="30" height="26" rx="4" fill="#2e1a1a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="581" y="235" text-anchor="middle" fill="#f87171" font-size="13" font-weight="bold">b</text>
+  <rect x="601" y="217" width="30" height="26" rx="4" fill="#111" stroke="#555" stroke-width="1"/>
+  <text x="616" y="235" text-anchor="middle" fill="#888" font-size="13">a</text>
+  <rect x="636" y="217" width="30" height="26" rx="4" fill="#111" stroke="#555" stroke-width="1"/>
+  <text x="651" y="235" text-anchor="middle" fill="#888" font-size="13">b</text>
+  <rect x="671" y="217" width="30" height="26" rx="4" fill="#111" stroke="#555" stroke-width="1"/>
+  <text x="686" y="235" text-anchor="middle" fill="#888" font-size="13">a</text>
+  <rect x="706" y="217" width="30" height="26" rx="4" fill="#2e1a1a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="721" y="235" text-anchor="middle" fill="#f87171" font-size="13" font-weight="bold">d</text>
+  <text x="744" y="232" fill="#f87171" font-size="10">✗ stop</text>
+
+  <!-- Result for center 2 -->
+  <rect x="480" y="248" width="360" height="28" rx="5" fill="#0d1f0d" stroke="#34d399" stroke-width="1.5"/>
+  <text x="660" y="267" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">Palindrome = "aba", length = 3</text>
+
+  <!-- ============================================================ -->
+  <!-- Even-length center note -->
+  <!-- ============================================================ -->
+  <rect x="40" y="300" width="390" height="60" rx="8" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="235" y="320" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">Even-length centers (between chars)</text>
+  <text x="235" y="338" text-anchor="middle" fill="#888" font-size="10">e.g. center between idx 0-1: s[0]='b' ≠ s[1]='a' → no palindrome</text>
+  <text x="235" y="353" text-anchor="middle" fill="#888" font-size="10">Try all n-1 gaps: (b,a) (a,b) (b,a) (a,d) → none match here</text>
+
+  <!-- ============================================================ -->
+  <!-- Final answer highlight -->
+  <!-- ============================================================ -->
+  <rect x="460" y="335" width="400" height="50" rx="8" fill="#0d1f0d" stroke="#34d399" stroke-width="2"/>
+  <text x="660" y="356" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">Answer: "bab"  (length 3)</text>
+  <text x="660" y="374" text-anchor="middle" fill="#888" font-size="10">Both "bab" and "aba" tie at len=3; return first found</text>
+
+  <!-- ============================================================ -->
+  <!-- Algorithm complexity box -->
+  <!-- ============================================================ -->
+  <rect x="40" y="375" width="390" height="50" rx="8" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="235" y="395" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">Complexity</text>
+  <text x="235" y="413" text-anchor="middle" fill="#ccc" font-size="11">Time: O(n²)  ·  Space: O(1)  ·  Centers: 2n-1</text>
+
+  <!-- ============================================================ -->
+  <!-- Legend -->
+  <!-- ============================================================ -->
+  <rect x="40" y="440" width="820" height="32" rx="6" fill="#111" stroke="#333" stroke-width="1"/>
+  <!-- match swatch -->
+  <rect x="60" y="450" width="12" height="12" rx="2" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="78" y="461" fill="#34d399" font-size="10">Match → expand further</text>
+  <!-- mismatch swatch -->
+  <rect x="230" y="450" width="12" height="12" rx="2" fill="#2e1a1a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="248" y="461" fill="#f87171" font-size="10">Mismatch → stop</text>
+  <!-- center swatch -->
+  <rect x="370" y="450" width="12" height="12" rx="2" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="388" y="461" fill="#a78bfa" font-size="10">Center char</text>
+  <!-- info -->
+  <text x="520" y="461" fill="#555" font-size="10">|</text>
+  <text x="535" y="461" fill="#888" font-size="10">2n-1 possible centers  ·  n odd-length + (n-1) even-length</text>
+</svg>

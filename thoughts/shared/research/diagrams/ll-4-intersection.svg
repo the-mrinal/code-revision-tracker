@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <marker id="i-b" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#5b6abf"/>
+    </marker>
+    <marker id="i-p" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#a78bfa"/>
+    </marker>
+    <marker id="i-g" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#34d399"/>
+    </marker>
+    <marker id="i-y" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <text x="450" y="35" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="16" font-weight="bold" text-anchor="middle">Intersection Detection — The Two-Pointer Switch Trick</text>
+
+  <!-- The Y-shaped intersection -->
+  <text x="40" y="75" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="12">Physical Structure</text>
+
+  <!-- List A: 4→1→ -->
+  <text x="60" y="110" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="11">List A</text>
+  <rect x="120" y="95" width="44" height="28" rx="6" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="142" y="114" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">4</text>
+  <line x1="164" y1="109" x2="192" y2="109" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#i-b)"/>
+  <rect x="202" y="95" width="44" height="28" rx="6" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="224" y="114" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">1</text>
+
+  <!-- Converge arrow from A -->
+  <line x1="246" y1="109" x2="330" y2="148" stroke="#5b6abf" stroke-width="1.5"/>
+
+  <!-- List B: 5→6→1→ -->
+  <text x="40" y="175" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="11">List B</text>
+  <rect x="90" y="160" width="44" height="28" rx="6" fill="#111" stroke="#a78bfa" stroke-width="2"/>
+  <text x="112" y="179" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">5</text>
+  <line x1="134" y1="174" x2="157" y2="174" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#i-p)"/>
+  <rect x="167" y="160" width="44" height="28" rx="6" fill="#111" stroke="#a78bfa" stroke-width="2"/>
+  <text x="189" y="179" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">6</text>
+  <line x1="211" y1="174" x2="234" y2="174" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#i-p)"/>
+  <rect x="244" y="160" width="44" height="28" rx="6" fill="#111" stroke="#a78bfa" stroke-width="2"/>
+  <text x="266" y="179" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="12" text-anchor="middle">1</text>
+
+  <!-- Converge arrow from B -->
+  <line x1="288" y1="174" x2="330" y2="155" stroke="#a78bfa" stroke-width="1.5"/>
+
+  <!-- Shared tail: 8→4→5 -->
+  <rect x="340" y="138" width="50" height="32" rx="6" fill="#1a1a2e" stroke="#34d399" stroke-width="2.5"/>
+  <text x="365" y="159" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" font-weight="bold" text-anchor="middle">8</text>
+  <line x1="390" y1="154" x2="418" y2="154" stroke="#34d399" stroke-width="1.5" marker-end="url(#i-g)"/>
+  <rect x="428" y="138" width="44" height="32" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="450" y="159" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" text-anchor="middle">4</text>
+  <line x1="472" y1="154" x2="500" y2="154" stroke="#34d399" stroke-width="1.5" marker-end="url(#i-g)"/>
+  <rect x="510" y="138" width="44" height="32" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="532" y="159" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="14" text-anchor="middle">5</text>
+
+  <text x="365" y="132" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">intersection!</text>
+
+  <!-- The trick explanation -->
+  <line x1="30" y1="210" x2="870" y2="210" stroke="#222" stroke-width="1"/>
+
+  <text x="450" y="240" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" font-weight="bold" text-anchor="middle">The Switch Trick: pA traverses A then B, pB traverses B then A</text>
+
+  <!-- pA path -->
+  <text x="40" y="275" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">pA:</text>
+
+  <!-- A's nodes -->
+  <rect x="80" y="260" width="32" height="24" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="96" y="277" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">4</text>
+  <rect x="118" y="260" width="32" height="24" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="134" y="277" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+  <rect x="156" y="260" width="32" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="172" y="277" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">8</text>
+  <rect x="194" y="260" width="32" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="210" y="277" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">4</text>
+  <rect x="232" y="260" width="32" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="248" y="277" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">5</text>
+  <!-- NULL -->
+  <rect x="270" y="260" width="32" height="24" rx="4" fill="#111" stroke="#555" stroke-width="1"/>
+  <text x="286" y="277" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">NULL</text>
+
+  <!-- Switch indicator -->
+  <text x="310" y="277" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">→ switch to B</text>
+
+  <!-- B's nodes (pA continues) -->
+  <rect x="420" y="260" width="32" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="436" y="277" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">5</text>
+  <rect x="458" y="260" width="32" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="474" y="277" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">6</text>
+  <rect x="496" y="260" width="32" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="512" y="277" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+  <!-- MEET -->
+  <rect x="534" y="256" width="36" height="30" rx="4" fill="#1a1a2e" stroke="#fbbf24" stroke-width="2.5"/>
+  <text x="552" y="276" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">8</text>
+
+  <!-- pB path -->
+  <text x="40" y="320" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">pB:</text>
+
+  <!-- B's nodes -->
+  <rect x="80" y="305" width="32" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="96" y="322" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">5</text>
+  <rect x="118" y="305" width="32" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="134" y="322" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">6</text>
+  <rect x="156" y="305" width="32" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="172" y="322" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+  <rect x="194" y="305" width="32" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="210" y="322" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">8</text>
+  <rect x="232" y="305" width="32" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="248" y="322" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">4</text>
+  <rect x="270" y="305" width="32" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="286" y="322" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">5</text>
+  <!-- NULL -->
+  <rect x="308" y="305" width="32" height="24" rx="4" fill="#111" stroke="#555" stroke-width="1"/>
+  <text x="324" y="322" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">NULL</text>
+
+  <text x="348" y="322" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">→ switch to A</text>
+
+  <!-- A's nodes (pB continues) -->
+  <rect x="458" y="305" width="32" height="24" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="474" y="322" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">4</text>
+  <rect x="496" y="305" width="32" height="24" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="512" y="322" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+  <!-- MEET -->
+  <rect x="534" y="301" width="36" height="30" rx="4" fill="#1a1a2e" stroke="#fbbf24" stroke-width="2.5"/>
+  <text x="552" y="321" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">8</text>
+
+  <!-- MEET label -->
+  <line x1="552" y1="286" x2="552" y2="301" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="552" y="254" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold" text-anchor="middle">MEET!</text>
+
+  <!-- Math explanation -->
+  <rect x="40" y="355" width="820" height="55" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="450" y="377" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="11" text-anchor="middle">Why it works: pA travels a + (b-c) steps, pB travels b + (a-c) steps → both = a + b - c</text>
+  <text x="450" y="397" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">a=5 (lenA), b=6 (lenB), c=3 (shared tail) → pA: 5+(6-3)=8 steps, pB: 6+(5-3)=8 steps</text>
+
+  <!-- Legend -->
+  <rect x="610" y="420" width="260" height="65" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="630" y="440" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">Legend</text>
+  <rect x="630" y="448" width="10" height="10" rx="2" fill="#5b6abf"/>
+  <text x="646" y="458" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">List A only</text>
+  <rect x="720" y="448" width="10" height="10" rx="2" fill="#a78bfa"/>
+  <text x="736" y="458" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">List B only</text>
+  <rect x="630" y="466" width="10" height="10" rx="2" fill="#34d399"/>
+  <text x="646" y="476" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Shared tail</text>
+  <rect x="720" y="466" width="10" height="10" rx="2" fill="#fbbf24"/>
+  <text x="736" y="476" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Intersection</text>
+
+  <!-- No intersection note -->
+  <rect x="40" y="425" width="370" height="55" rx="8" fill="#111" stroke="#f87171" stroke-width="1"/>
+  <text x="60" y="447" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">NO INTERSECTION CASE</text>
+  <text x="60" y="467" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Both reach NULL simultaneously after a+b steps.</text>
+  <text x="60" y="477" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">pA == pB == null → return null</text>
+</svg>

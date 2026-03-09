@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 580" font-family="SF Mono, Menlo, monospace">
+  <rect width="1100" height="580" rx="12" fill="#0a0a0a"/>
+  <text x="550" y="32" text-anchor="middle" fill="#f472b6" font-size="16" font-weight="700">N-Queens — Place 4 Queens on 4x4 Board</text>
+  <text x="550" y="52" text-anchor="middle" fill="#777" font-size="11">No two queens share a row, column, or diagonal. Place one queen per row.</text>
+
+  <!-- Solution 1 -->
+  <text x="170" y="82" text-anchor="middle" fill="#f472b6" font-size="14" font-weight="600">Solution 1</text>
+  <g transform="translate(60, 95)">
+    <rect x="0" y="0" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="55" y="0" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="82" y="38" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+    <rect x="110" y="0" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="165" y="0" width="55" height="55" fill="#222" stroke="#333"/>
+
+    <rect x="0" y="55" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="55" y="55" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="110" y="55" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="165" y="55" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="192" y="93" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+
+    <rect x="0" y="110" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="27" y="148" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+    <rect x="55" y="110" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="110" y="110" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="165" y="110" width="55" height="55" fill="#222" stroke="#333"/>
+
+    <rect x="0" y="165" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="55" y="165" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="110" y="165" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="137" y="203" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+    <rect x="165" y="165" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+
+    <!-- Row labels -->
+    <text x="-15" y="33" text-anchor="end" fill="#555" font-size="11">r0</text>
+    <text x="-15" y="88" text-anchor="end" fill="#555" font-size="11">r1</text>
+    <text x="-15" y="143" text-anchor="end" fill="#555" font-size="11">r2</text>
+    <text x="-15" y="198" text-anchor="end" fill="#555" font-size="11">r3</text>
+    <text x="27" y="-8" text-anchor="middle" fill="#555" font-size="11">c0</text>
+    <text x="82" y="-8" text-anchor="middle" fill="#555" font-size="11">c1</text>
+    <text x="137" y="-8" text-anchor="middle" fill="#555" font-size="11">c2</text>
+    <text x="192" y="-8" text-anchor="middle" fill="#555" font-size="11">c3</text>
+  </g>
+
+  <!-- Solution 2 -->
+  <text x="500" y="82" text-anchor="middle" fill="#f472b6" font-size="14" font-weight="600">Solution 2</text>
+  <g transform="translate(390, 95)">
+    <rect x="0" y="0" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="55" y="0" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="110" y="0" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="137" y="38" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+    <rect x="165" y="0" width="55" height="55" fill="#222" stroke="#333"/>
+
+    <rect x="0" y="55" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="27" y="93" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+    <rect x="55" y="55" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="110" y="55" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="165" y="55" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+
+    <rect x="0" y="110" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="55" y="110" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="110" y="110" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+    <rect x="165" y="110" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="192" y="148" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+
+    <rect x="0" y="165" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="55" y="165" width="55" height="55" fill="#2e1a2e" stroke="#f472b6" stroke-width="2"/>
+    <text x="82" y="203" text-anchor="middle" fill="#f472b6" font-size="30">♛</text>
+    <rect x="110" y="165" width="55" height="55" fill="#222" stroke="#333"/>
+    <rect x="165" y="165" width="55" height="55" fill="#1a1a1a" stroke="#333"/>
+  </g>
+
+  <!-- O(1) constraint check -->
+  <rect x="650" y="85" width="420" height="240" rx="8" fill="#111" stroke="#222"/>
+  <text x="860" y="112" text-anchor="middle" fill="#f472b6" font-size="14" font-weight="600">O(1) Safety Check — 3 Sets</text>
+
+  <text x="680" y="145" fill="#fbbf24" font-size="13" font-weight="600">columns = {col}</text>
+  <text x="680" y="165" fill="#777" font-size="11">Is this column already taken?</text>
+
+  <text x="680" y="200" fill="#38bdf8" font-size="13" font-weight="600">diag1 = {row - col}</text>
+  <text x="680" y="220" fill="#777" font-size="11">↘ diagonal: cells on the same diagonal</text>
+  <text x="680" y="238" fill="#555" font-size="10">have the same (row - col) value</text>
+  <text x="680" y="254" fill="#555" font-size="10">(0,0)→0  (1,1)→0  (2,2)→0  same!</text>
+
+  <text x="680" y="285" fill="#34d399" font-size="13" font-weight="600">diag2 = {row + col}</text>
+  <text x="680" y="305" fill="#777" font-size="11">↙ anti-diagonal: same (row + col)</text>
+
+  <!-- Backtracking walkthrough -->
+  <rect x="60" y="345" width="980" height="215" rx="8" fill="#111" stroke="#222"/>
+  <text x="550" y="375" text-anchor="middle" fill="#f472b6" font-size="14" font-weight="600">Row-by-Row Backtracking Process</text>
+
+  <!-- Row 0 -->
+  <text x="90" y="410" fill="#ddd" font-size="12">Row 0:  try col 0  →  safe ✓  place queen</text>
+  <rect x="600" y="395" width="40" height="25" rx="3" fill="#1a2e1a" stroke="#34d399"/>
+  <text x="620" y="413" text-anchor="middle" fill="#34d399" font-size="11">Q</text>
+  <rect x="645" y="395" width="40" height="25" rx="3" fill="#1a1a1a" stroke="#333"/>
+  <rect x="690" y="395" width="40" height="25" rx="3" fill="#1a1a1a" stroke="#333"/>
+  <rect x="735" y="395" width="40" height="25" rx="3" fill="#1a1a1a" stroke="#333"/>
+  <text x="810" y="413" fill="#555" font-size="10">cols={0}</text>
+
+  <!-- Row 1 -->
+  <text x="90" y="445" fill="#ddd" font-size="12">Row 1:  col 0 ✗(col)  col 1 ✗(diag)  col 2 ✓</text>
+  <rect x="600" y="430" width="40" height="25" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <rect x="645" y="430" width="40" height="25" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <rect x="690" y="430" width="40" height="25" rx="3" fill="#1a2e1a" stroke="#34d399"/>
+  <text x="710" y="448" text-anchor="middle" fill="#34d399" font-size="11">Q</text>
+  <rect x="735" y="430" width="40" height="25" rx="3" fill="#1a1a1a" stroke="#333"/>
+  <text x="810" y="448" fill="#555" font-size="10">cols={0,2}</text>
+
+  <!-- Row 2 blocked -->
+  <text x="90" y="480" fill="#f87171" font-size="12">Row 2:  ALL columns blocked!  →  BACKTRACK</text>
+  <rect x="600" y="465" width="40" height="25" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <rect x="645" y="465" width="40" height="25" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <rect x="690" y="465" width="40" height="25" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <rect x="735" y="465" width="40" height="25" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <text x="810" y="483" fill="#f87171" font-size="10" font-weight="600">DEAD END</text>
+
+  <!-- After backtrack -->
+  <text x="90" y="515" fill="#fbbf24" font-size="12">Undo Row1 col2, try col3.  Then Row2 works!</text>
+  <text x="90" y="540" fill="#34d399" font-size="12">Eventually finds both solutions shown above.</text>
+  <text x="700" y="540" fill="#555" font-size="10">Most branches pruned early by the 3 sets</text>
+</svg>

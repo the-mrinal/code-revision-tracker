@@ -1,0 +1,125 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" fill="#0a0a0a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" fill="#a78bfa" font-size="17" font-weight="bold" text-anchor="middle">String to Integer — atoi("   -42abc")</text>
+
+  <!-- Section divider -->
+  <line x1="450" y1="50" x2="450" y2="460" stroke="#222" stroke-width="1.5"/>
+
+  <!-- LEFT: atoi parsing pipeline -->
+  <text x="220" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Parsing Pipeline</text>
+
+  <!-- Input string visualization -->
+  <text x="44" y="90" fill="#64748b" font-size="11">Input: "   -42abc"</text>
+
+  <!-- character boxes -->
+  <rect x="44" y="98" width="38" height="38" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="63" y="122" fill="#64748b" font-size="15" text-anchor="middle">·</text>
+  <rect x="86" y="98" width="38" height="38" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="105" y="122" fill="#64748b" font-size="15" text-anchor="middle">·</text>
+  <rect x="128" y="98" width="38" height="38" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="147" y="122" fill="#64748b" font-size="15" text-anchor="middle">·</text>
+  <rect x="170" y="98" width="38" height="38" rx="6" fill="#111" stroke="#fbbf24" stroke-width="2"/>
+  <text x="189" y="122" fill="#fbbf24" font-size="15" font-weight="bold" text-anchor="middle">-</text>
+  <rect x="212" y="98" width="38" height="38" rx="6" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="231" y="122" fill="#34d399" font-size="15" font-weight="bold" text-anchor="middle">4</text>
+  <rect x="254" y="98" width="38" height="38" rx="6" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="273" y="122" fill="#34d399" font-size="15" font-weight="bold" text-anchor="middle">2</text>
+  <rect x="296" y="98" width="38" height="38" rx="6" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="315" y="122" fill="#f87171" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+  <rect x="338" y="98" width="38" height="38" rx="6" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="357" y="122" fill="#f87171" font-size="15" font-weight="bold" text-anchor="middle">b</text>
+  <rect x="380" y="98" width="38" height="38" rx="6" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="399" y="122" fill="#f87171" font-size="15" font-weight="bold" text-anchor="middle">c</text>
+
+  <!-- Phase labels below chars -->
+  <text x="105" y="148" fill="#64748b" font-size="9" text-anchor="middle">SKIP</text>
+  <text x="63" y="148" fill="#64748b" font-size="9" text-anchor="middle">SKIP</text>
+  <text x="147" y="148" fill="#64748b" font-size="9" text-anchor="middle">SKIP</text>
+  <text x="189" y="148" fill="#fbbf24" font-size="9" text-anchor="middle">SIGN</text>
+  <text x="252" y="148" fill="#34d399" font-size="9" text-anchor="middle">DIGITS</text>
+  <text x="357" y="148" fill="#f87171" font-size="9" text-anchor="middle">STOP</text>
+
+  <!-- Phase 1: whitespace -->
+  <rect x="44" y="158" width="370" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="58" y="175" fill="#64748b" font-size="11" font-weight="bold">Phase 1 — Skip leading whitespace</text>
+  <text x="58" y="192" fill="#64748b" font-size="10">i = 0</text>
+  <text x="100" y="192" fill="#64748b" font-size="10">while i &lt; len(s) and s[i] == ' ': i++</text>
+  <text x="58" y="204" fill="#34d399" font-size="10">i advances to index 3  →  s[3] = '-'</text>
+
+  <!-- Phase 2: sign -->
+  <rect x="44" y="214" width="370" height="50" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+  <text x="58" y="231" fill="#fbbf24" font-size="11" font-weight="bold">Phase 2 — Read sign (optional)</text>
+  <text x="58" y="247" fill="#64748b" font-size="10">sign = 1</text>
+  <text x="100" y="247" fill="#64748b" font-size="10">if s[i] == '-': sign = -1; i++</text>
+  <text x="58" y="259" fill="#34d399" font-size="10">sign = -1,  i advances to index 4  →  s[4] = '4'</text>
+
+  <!-- Phase 3: digits -->
+  <rect x="44" y="270" width="370" height="66" rx="6" fill="#111" stroke="#34d399" stroke-width="1"/>
+  <text x="58" y="287" fill="#34d399" font-size="11" font-weight="bold">Phase 3 — Accumulate digits</text>
+  <text x="58" y="303" fill="#64748b" font-size="10">result = 0</text>
+  <text x="58" y="317" fill="#64748b" font-size="10">while i &lt; len(s) and s[i].isdigit():</text>
+  <text x="68" y="329" fill="#64748b" font-size="10">  result = result * 10 + int(s[i]);  i++</text>
+  <text x="58" y="341" fill="#fbbf24" font-size="10">→  0*10+4=4,  4*10+2=42,  stop at 'a'</text>
+
+  <!-- Phase 4: stop -->
+  <rect x="44" y="342" width="370" height="40" rx="6" fill="#111" stroke="#f87171" stroke-width="1"/>
+  <text x="58" y="359" fill="#f87171" font-size="11" font-weight="bold">Phase 4 — Stop at non-digit</text>
+  <text x="58" y="375" fill="#64748b" font-size="10">s[6] = 'a'  not digit  →  break loop immediately</text>
+
+  <!-- Result -->
+  <rect x="44" y="390" width="370" height="34" rx="8" fill="#0d2d1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="229" y="412" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">result = sign × 42 = -42</text>
+
+  <!-- RIGHT: Overflow check -->
+  <text x="685" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Overflow Check Logic</text>
+
+  <!-- INT bounds -->
+  <rect x="470" y="80" width="400" height="36" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="484" y="97" fill="#64748b" font-size="10">INT_MAX = 2147483647</text>
+  <text x="484" y="111" fill="#64748b" font-size="10">INT_MIN = -2147483648</text>
+
+  <!-- Check diagram -->
+  <text x="470" y="134" fill="#64748b" font-size="11">Before  result = result * 10 + digit:</text>
+
+  <!-- Decision tree -->
+  <rect x="570" y="142" width="200" height="34" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="670" y="165" fill="#a78bfa" font-size="12" font-weight="bold" text-anchor="middle">result &gt; INT_MAX // 10 ?</text>
+
+  <!-- Yes path -->
+  <line x1="670" y1="176" x2="670" y2="196" stroke="#f87171" stroke-width="1.5"/>
+  <line x1="670" y1="196" x2="800" y2="196" stroke="#f87171" stroke-width="1.5"/>
+  <line x1="800" y1="196" x2="800" y2="210" stroke="#f87171" stroke-width="1.5"/>
+  <text x="730" y="192" fill="#f87171" font-size="9">YES</text>
+  <rect x="720" y="210" width="160" height="30" rx="5" fill="#2d0d0d" stroke="#f87171" stroke-width="1.5"/>
+  <text x="800" y="230" fill="#f87171" font-size="11" font-weight="bold" text-anchor="middle">return INT_MAX/MIN</text>
+
+  <!-- No path -->
+  <line x1="670" y1="196" x2="540" y2="196" stroke="#34d399" stroke-width="1.5"/>
+  <line x1="540" y1="196" x2="540" y2="210" stroke="#34d399" stroke-width="1.5"/>
+  <text x="600" y="192" fill="#34d399" font-size="9">NO</text>
+  <rect x="470" y="210" width="140" height="30" rx="5" fill="#0d2d1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="540" y="230" fill="#34d399" font-size="11" font-weight="bold" text-anchor="middle">continue safely</text>
+
+  <!-- Also check digit -->
+  <rect x="470" y="254" width="400" height="70" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="484" y="272" fill="#fbbf24" font-size="11" font-weight="bold">Also check digit when result == boundary:</text>
+  <text x="484" y="288" fill="#64748b" font-size="10">if result == INT_MAX // 10 and digit &gt; 7:</text>
+  <text x="494" y="302" fill="#f87171" font-size="10">  return INT_MAX  # positive overflow</text>
+  <text x="484" y="316" fill="#64748b" font-size="10">if result == INT_MAX // 10 and digit &gt; 8 and sign==-1:</text>
+  <text x="494" y="328" fill="#f87171" font-size="10">  return INT_MIN  # negative overflow  (last digit 8 for -)</text>
+
+  <!-- Example overflow -->
+  <rect x="470" y="336" width="400" height="60" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="484" y="354" fill="#5b6abf" font-size="11" font-weight="bold">Example: "9999999999"</text>
+  <text x="484" y="370" fill="#64748b" font-size="10">result reaches 999999999, next digit=9</text>
+  <text x="484" y="384" fill="#64748b" font-size="10">999999999 &gt; 214748364 → clamp to INT_MAX</text>
+  <text x="484" y="396" fill="#34d399" font-size="10">→ return 2147483647</text>
+
+  <!-- Full pseudocode -->
+  <rect x="470" y="408" width="400" height="52" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="484" y="424" fill="#5b6abf" font-size="10" font-weight="bold">atoi(s):  skip → sign → digits → clamp</text>
+  <text x="484" y="438" fill="#64748b" font-size="10">Time O(n) | Space O(1)</text>
+  <text x="484" y="452" fill="#64748b" font-size="10">Edge: empty string, only spaces, only sign, INT boundary</text>
+</svg>

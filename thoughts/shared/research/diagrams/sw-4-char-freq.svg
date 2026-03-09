@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#34d399" font-size="18" font-weight="bold">Character Frequency Matching</text>
+  <text x="450" y="62" text-anchor="middle" fill="#888" font-size="12">Find All Anagrams — s="cbaebabacd", p="abc"</text>
+
+  <!-- Target pattern -->
+  <g transform="translate(60, 80)">
+    <text x="0" y="15" fill="#888" font-size="11">Target p="abc":</text>
+    <rect x="130" y="0" width="35" height="25" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+    <text x="147" y="17" text-anchor="middle" fill="#34d399" font-size="11">a:1</text>
+    <rect x="170" y="0" width="35" height="25" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+    <text x="187" y="17" text-anchor="middle" fill="#34d399" font-size="11">b:1</text>
+    <rect x="210" y="0" width="35" height="25" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+    <text x="227" y="17" text-anchor="middle" fill="#34d399" font-size="11">c:1</text>
+    <text x="270" y="17" fill="#888" font-size="11">required = 3 distinct chars</text>
+  </g>
+
+  <!-- String characters -->
+  <g transform="translate(60, 125)">
+    <rect x="0" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="22" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">c</text>
+    <text x="22" y="-6" text-anchor="middle" fill="#666" font-size="9">0</text>
+
+    <rect x="52" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="74" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">b</text>
+    <text x="74" y="-6" text-anchor="middle" fill="#666" font-size="9">1</text>
+
+    <rect x="104" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="126" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">a</text>
+    <text x="126" y="-6" text-anchor="middle" fill="#666" font-size="9">2</text>
+
+    <rect x="156" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="178" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">e</text>
+    <text x="178" y="-6" text-anchor="middle" fill="#666" font-size="9">3</text>
+
+    <rect x="208" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="230" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">b</text>
+    <text x="230" y="-6" text-anchor="middle" fill="#666" font-size="9">4</text>
+
+    <rect x="260" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="282" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">a</text>
+    <text x="282" y="-6" text-anchor="middle" fill="#666" font-size="9">5</text>
+
+    <rect x="312" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="334" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">b</text>
+    <text x="334" y="-6" text-anchor="middle" fill="#666" font-size="9">6</text>
+
+    <rect x="364" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="386" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">a</text>
+    <text x="386" y="-6" text-anchor="middle" fill="#666" font-size="9">7</text>
+
+    <rect x="416" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="438" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">c</text>
+    <text x="438" y="-6" text-anchor="middle" fill="#666" font-size="9">8</text>
+
+    <rect x="468" y="0" width="45" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="490" y="27" text-anchor="middle" fill="#e0e0e0" font-size="16">d</text>
+    <text x="490" y="-6" text-anchor="middle" fill="#666" font-size="9">9</text>
+  </g>
+
+  <!-- Window slides -->
+  <g transform="translate(60, 185)">
+    <!-- Window 0: "cba" — MATCH -->
+    <rect x="-3" y="0" width="152" height="32" rx="4" fill="none" stroke="#34d399" stroke-width="2.5"/>
+    <text x="550" y="15" fill="#34d399" font-size="11" font-weight="bold">"cba" → {a:1,b:1,c:1} matched=3/3 ✓ idx=0</text>
+
+    <!-- Window 1: "bae" — no match -->
+    <rect x="49" y="38" width="152" height="32" rx="4" fill="none" stroke="#5b6abf" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="550" y="53" fill="#888" font-size="11">"bae" → {b:1,a:1,e:1} matched=2/3 ✗</text>
+
+    <!-- Window 2: "aeb" — no match -->
+    <rect x="101" y="76" width="152" height="32" rx="4" fill="none" stroke="#5b6abf" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="550" y="91" fill="#888" font-size="11">"aeb" → {a:1,e:1,b:1} matched=2/3 ✗</text>
+
+    <!-- Skip indicator -->
+    <text x="300" y="125" fill="#444" font-size="11">... windows 3-5 don't match ...</text>
+
+    <!-- Window 6: "bac" — MATCH -->
+    <rect x="309" y="142" width="152" height="32" rx="4" fill="none" stroke="#34d399" stroke-width="2.5"/>
+    <text x="550" y="157" fill="#34d399" font-size="11" font-weight="bold">"bac" → {b:1,a:1,c:1} matched=3/3 ✓ idx=6</text>
+
+    <!-- Window 7: "acd" — no match -->
+    <rect x="361" y="180" width="152" height="32" rx="4" fill="none" stroke="#5b6abf" stroke-width="1.5" stroke-dasharray="5,3"/>
+    <text x="550" y="195" fill="#888" font-size="11">"acd" → {a:1,c:1,d:1} matched=2/3 ✗</text>
+  </g>
+
+  <!-- Result -->
+  <text x="80" y="415" fill="#888" font-size="12">Result:</text>
+  <text x="150" y="415" fill="#34d399" font-size="14" font-weight="bold">[0, 6]</text>
+
+  <!-- Key insight box -->
+  <rect x="60" y="430" width="780" height="55" rx="8" fill="#111" stroke="#34d399" stroke-width="1"/>
+  <text x="450" y="452" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">The "matched" Counter Trick</text>
+  <text x="450" y="472" text-anchor="middle" fill="#ccc" font-size="12">Track how many chars have exact required frequency. When matched == required → anagram found. O(1) check per slide.</text>
+
+  <!-- Legend -->
+  <g transform="translate(680, 80)">
+    <rect x="0" y="0" width="15" height="15" rx="3" fill="none" stroke="#34d399" stroke-width="2"/>
+    <text x="22" y="12" fill="#34d399" font-size="10">Anagram match</text>
+    <rect x="0" y="22" width="15" height="15" rx="3" fill="none" stroke="#5b6abf" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <text x="22" y="34" fill="#5b6abf" font-size="10">No match</text>
+  </g>
+</svg>

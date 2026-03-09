@@ -1,0 +1,139 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" fill="#0a0a0a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" fill="#e2e8f0" font-size="17" font-weight="bold" text-anchor="middle">Merge Sorted Array — Three Pointers, Fill From End</text>
+  <text x="450" y="57" fill="#64748b" font-size="12" text-anchor="middle">nums1=[1,2,3,0,0,0] m=3  |  nums2=[2,5,6] n=3  →  merge in-place right-to-left, O(m+n) time O(1) space</text>
+
+  <!-- ─── Initial state ─── -->
+  <text x="30" y="85" fill="#a78bfa" font-size="12" font-weight="bold">Initial Setup</text>
+
+  <!-- nums1 cells (6 cells) -->
+  <text x="30" y="108" fill="#5b6abf" font-size="11">nums1</text>
+  <rect x="80"  y="92" width="62" height="44" fill="#1a1a2e" rx="5" stroke="#5b6abf" stroke-width="1.5"/>
+  <rect x="152" y="92" width="62" height="44" fill="#1a1a2e" rx="5" stroke="#5b6abf" stroke-width="1.5"/>
+  <rect x="224" y="92" width="62" height="44" fill="#1a1a2e" rx="5" stroke="#5b6abf" stroke-width="1.5"/>
+  <rect x="296" y="92" width="62" height="44" fill="#111" rx="5" stroke="#333" stroke-width="1" stroke-dasharray="4,2"/>
+  <rect x="368" y="92" width="62" height="44" fill="#111" rx="5" stroke="#333" stroke-width="1" stroke-dasharray="4,2"/>
+  <rect x="440" y="92" width="62" height="44" fill="#111" rx="5" stroke="#333" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="111" y="121" fill="#e2e8f0" font-size="20" text-anchor="middle" font-weight="bold">1</text>
+  <text x="183" y="121" fill="#e2e8f0" font-size="20" text-anchor="middle" font-weight="bold">2</text>
+  <text x="255" y="121" fill="#e2e8f0" font-size="20" text-anchor="middle" font-weight="bold">3</text>
+  <text x="327" y="121" fill="#64748b" font-size="20" text-anchor="middle">0</text>
+  <text x="399" y="121" fill="#64748b" font-size="20" text-anchor="middle">0</text>
+  <text x="471" y="121" fill="#64748b" font-size="20" text-anchor="middle">0</text>
+
+  <!-- index labels -->
+  <text x="111" y="147" fill="#64748b" font-size="10" text-anchor="middle">[0]</text>
+  <text x="183" y="147" fill="#64748b" font-size="10" text-anchor="middle">[1]</text>
+  <text x="255" y="147" fill="#64748b" font-size="10" text-anchor="middle">[2]</text>
+  <text x="327" y="147" fill="#64748b" font-size="10" text-anchor="middle">[3]</text>
+  <text x="399" y="147" fill="#64748b" font-size="10" text-anchor="middle">[4]</text>
+  <text x="471" y="147" fill="#64748b" font-size="10" text-anchor="middle">[5]</text>
+
+  <!-- nums2 cells -->
+  <text x="30" y="178" fill="#34d399" font-size="11">nums2</text>
+  <rect x="80"  y="162" width="62" height="44" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="152" y="162" width="62" height="44" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="224" y="162" width="62" height="44" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <text x="111" y="191" fill="#34d399" font-size="20" text-anchor="middle" font-weight="bold">2</text>
+  <text x="183" y="191" fill="#34d399" font-size="20" text-anchor="middle" font-weight="bold">5</text>
+  <text x="255" y="191" fill="#34d399" font-size="20" text-anchor="middle" font-weight="bold">6</text>
+  <text x="111" y="217" fill="#64748b" font-size="10" text-anchor="middle">[0]</text>
+  <text x="183" y="217" fill="#64748b" font-size="10" text-anchor="middle">[1]</text>
+  <text x="255" y="217" fill="#64748b" font-size="10" text-anchor="middle">[2]</text>
+
+  <!-- Pointer labels initial -->
+  <text x="580" y="105" fill="#5b6abf" font-size="12" font-weight="bold">Pointers (start)</text>
+  <text x="580" y="123" fill="#5b6abf" font-size="12">p1 = m-1 = 2  →  nums1[2]=3</text>
+  <text x="580" y="141" fill="#34d399" font-size="12">p2 = n-1 = 2  →  nums2[2]=6</text>
+  <text x="580" y="159" fill="#fbbf24" font-size="12">p  = m+n-1 = 5  →  write head</text>
+
+  <!-- pointer arrows on initial -->
+  <polygon points="255,88 248,78 262,78" fill="#5b6abf"/>
+  <text x="255" y="74" fill="#5b6abf" font-size="10" text-anchor="middle">p1</text>
+  <polygon points="255,158 248,168 262,168" fill="#34d399"/>
+  <text x="255" y="224" fill="#34d399" font-size="10" text-anchor="middle">p2</text>
+  <polygon points="471,88 464,78 478,78" fill="#fbbf24"/>
+  <text x="471" y="74" fill="#fbbf24" font-size="10" text-anchor="middle">p</text>
+
+  <!-- ─── Step-by-step table ─── -->
+  <rect x="30" y="235" width="840" height="170" fill="#111" rx="8" stroke="#222" stroke-width="1.5"/>
+  <text x="50" y="257" fill="#a78bfa" font-size="12" font-weight="bold">Step-by-Step Execution</text>
+
+  <!-- Header -->
+  <text x="55"  y="275" fill="#64748b" font-size="11" font-weight="bold">Step</text>
+  <text x="120" y="275" fill="#64748b" font-size="11" font-weight="bold">nums1[p1]</text>
+  <text x="230" y="275" fill="#64748b" font-size="11" font-weight="bold">nums2[p2]</text>
+  <text x="340" y="275" fill="#64748b" font-size="11" font-weight="bold">Compare</text>
+  <text x="455" y="275" fill="#64748b" font-size="11" font-weight="bold">Place at p</text>
+  <text x="570" y="275" fill="#64748b" font-size="11" font-weight="bold">Decrement</text>
+  <text x="700" y="275" fill="#64748b" font-size="11" font-weight="bold">nums1 state</text>
+  <line x1="40" y1="280" x2="860" y2="280" stroke="#333" stroke-width="1"/>
+
+  <!-- Step 1 -->
+  <text x="55"  y="296" fill="#e2e8f0" font-size="11">1</text>
+  <text x="120" y="296" fill="#5b6abf" font-size="11">3  (p1=2)</text>
+  <text x="230" y="296" fill="#34d399" font-size="11">6  (p2=2)</text>
+  <text x="340" y="296" fill="#e2e8f0" font-size="11">6 &gt; 3</text>
+  <text x="455" y="296" fill="#fbbf24" font-size="11">nums1[5] = 6</text>
+  <text x="570" y="296" fill="#e2e8f0" font-size="11">p2--, p--</text>
+  <text x="700" y="296" fill="#64748b" font-size="11">[1,2,3,0,0,6]</text>
+
+  <!-- Step 2 -->
+  <text x="55"  y="314" fill="#e2e8f0" font-size="11">2</text>
+  <text x="120" y="314" fill="#5b6abf" font-size="11">3  (p1=2)</text>
+  <text x="230" y="314" fill="#34d399" font-size="11">5  (p2=1)</text>
+  <text x="340" y="314" fill="#e2e8f0" font-size="11">5 &gt; 3</text>
+  <text x="455" y="314" fill="#fbbf24" font-size="11">nums1[4] = 5</text>
+  <text x="570" y="314" fill="#e2e8f0" font-size="11">p2--, p--</text>
+  <text x="700" y="314" fill="#64748b" font-size="11">[1,2,3,0,5,6]</text>
+
+  <!-- Step 3 -->
+  <text x="55"  y="332" fill="#e2e8f0" font-size="11">3</text>
+  <text x="120" y="332" fill="#5b6abf" font-size="11">3  (p1=2)</text>
+  <text x="230" y="332" fill="#34d399" font-size="11">2  (p2=0)</text>
+  <text x="340" y="332" fill="#e2e8f0" font-size="11">3 &gt;= 2</text>
+  <text x="455" y="332" fill="#fbbf24" font-size="11">nums1[3] = 3</text>
+  <text x="570" y="332" fill="#e2e8f0" font-size="11">p1--, p--</text>
+  <text x="700" y="332" fill="#64748b" font-size="11">[1,2,3,3,5,6]</text>
+
+  <!-- Step 4 -->
+  <text x="55"  y="350" fill="#e2e8f0" font-size="11">4</text>
+  <text x="120" y="350" fill="#5b6abf" font-size="11">2  (p1=1)</text>
+  <text x="230" y="350" fill="#34d399" font-size="11">2  (p2=0)</text>
+  <text x="340" y="350" fill="#e2e8f0" font-size="11">2 &gt;= 2</text>
+  <text x="455" y="350" fill="#fbbf24" font-size="11">nums1[2] = 2</text>
+  <text x="570" y="350" fill="#e2e8f0" font-size="11">p1--, p--</text>
+  <text x="700" y="350" fill="#64748b" font-size="11">[1,2,2,3,5,6]</text>
+
+  <!-- Step 5 -->
+  <text x="55"  y="368" fill="#e2e8f0" font-size="11">5</text>
+  <text x="120" y="368" fill="#5b6abf" font-size="11">1  (p1=0)</text>
+  <text x="230" y="368" fill="#34d399" font-size="11">2  (p2=0)</text>
+  <text x="340" y="368" fill="#e2e8f0" font-size="11">2 &gt; 1</text>
+  <text x="455" y="368" fill="#fbbf24" font-size="11">nums1[1] = 2</text>
+  <text x="570" y="368" fill="#e2e8f0" font-size="11">p2--, p--</text>
+  <text x="700" y="368" fill="#64748b" font-size="11">[1,2,2,3,5,6]</text>
+
+  <line x1="40" y1="375" x2="860" y2="375" stroke="#333" stroke-width="1"/>
+  <text x="55" y="393" fill="#34d399" font-size="11">Done: p2 &lt; 0, loop exits. nums1[0]=1 already in place.</text>
+  <text x="55" y="408" fill="#64748b" font-size="11">If p2&gt;=0 after p1 exhausted: copy remaining nums2 elements into nums1[0..p]</text>
+
+  <!-- ─── Final result ─── -->
+  <rect x="30" y="418" width="840" height="50" fill="#111" rx="8" stroke="#222" stroke-width="1.5"/>
+  <text x="50" y="440" fill="#a78bfa" font-size="13" font-weight="bold">Result</text>
+  <rect x="130" y="425" width="60" height="36" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="200" y="425" width="60" height="36" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="270" y="425" width="60" height="36" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="340" y="425" width="60" height="36" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="410" y="425" width="60" height="36" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="480" y="425" width="60" height="36" fill="#0d2b1e" rx="5" stroke="#34d399" stroke-width="1.5"/>
+  <text x="160" y="449" fill="#34d399" font-size="18" text-anchor="middle">1</text>
+  <text x="230" y="449" fill="#34d399" font-size="18" text-anchor="middle">2</text>
+  <text x="300" y="449" fill="#34d399" font-size="18" text-anchor="middle">2</text>
+  <text x="370" y="449" fill="#34d399" font-size="18" text-anchor="middle">3</text>
+  <text x="440" y="449" fill="#34d399" font-size="18" text-anchor="middle">5</text>
+  <text x="510" y="449" fill="#34d399" font-size="18" text-anchor="middle">6</text>
+  <text x="600" y="449" fill="#64748b" font-size="12">Key insight: writing from end never overwrites unread nums1 values</text>
+</svg>

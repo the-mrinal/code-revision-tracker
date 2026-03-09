@@ -1,0 +1,81 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 480" font-family="SF Mono, Menlo, monospace">
+  <rect width="1100" height="480" rx="12" fill="#0a0a0a"/>
+  <text x="550" y="32" text-anchor="middle" fill="#38bdf8" font-size="16" font-weight="700">Bitwise AND — The n &amp; (n-1) Trick</text>
+  <text x="550" y="52" text-anchor="middle" fill="#777" font-size="11">n &amp; (n-1) removes the lowest set bit  |  Used for counting bits and power checks</text>
+
+  <!-- n & (n-1) visualization -->
+  <rect x="60" y="75" width="500" height="200" rx="8" fill="#111" stroke="#222"/>
+  <text x="310" y="100" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="600">How n &amp; (n-1) Works</text>
+
+  <text x="100" y="135" fill="#ddd" font-size="14">n     = 12 =</text>
+  <text x="280" y="135" fill="#38bdf8" font-size="16" font-weight="700">1</text>
+  <text x="300" y="135" fill="#38bdf8" font-size="16" font-weight="700">1</text>
+  <text x="320" y="135" fill="#fbbf24" font-size="16" font-weight="700">0</text>
+  <text x="340" y="135" fill="#fbbf24" font-size="16" font-weight="700">0</text>
+
+  <text x="100" y="165" fill="#ddd" font-size="14">n - 1 = 11 =</text>
+  <text x="280" y="165" fill="#38bdf8" font-size="16" font-weight="700">1</text>
+  <text x="300" y="165" fill="#38bdf8" font-size="16" font-weight="700">0</text>
+  <text x="320" y="165" fill="#f87171" font-size="16" font-weight="700">1</text>
+  <text x="340" y="165" fill="#f87171" font-size="16" font-weight="700">1</text>
+
+  <line x1="260" y1="175" x2="360" y2="175" stroke="#555" stroke-width="1"/>
+  <text x="100" y="195" fill="#ddd" font-size="14">n &amp; (n-1) =</text>
+  <text x="228" y="195" fill="#ddd" font-size="14"> 8 =</text>
+  <text x="280" y="195" fill="#34d399" font-size="16" font-weight="700">1</text>
+  <text x="300" y="195" fill="#34d399" font-size="16" font-weight="700">0</text>
+  <text x="320" y="195" fill="#34d399" font-size="16" font-weight="700">0</text>
+  <text x="340" y="195" fill="#34d399" font-size="16" font-weight="700">0</text>
+
+  <text x="400" y="195" fill="#34d399" font-size="11">lowest set bit removed!</text>
+
+  <text x="100" y="235" fill="#777" font-size="11">Subtracting 1 flips everything from the</text>
+  <text x="100" y="255" fill="#777" font-size="11">lowest set bit downward. AND clears them.</text>
+
+  <!-- #191 counting bits walkthrough -->
+  <rect x="600" y="75" width="440" height="200" rx="8" fill="#111" stroke="#222"/>
+  <text x="820" y="100" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="600">#191 Count Set Bits of n = 11 (1011)</text>
+
+  <text x="630" y="135" fill="#ddd" font-size="12">Step 1:  1011 &amp; 1010 = 1010</text>
+  <text x="900" y="135" fill="#34d399" font-size="12">count = 1</text>
+
+  <text x="630" y="165" fill="#ddd" font-size="12">Step 2:  1010 &amp; 1001 = 1000</text>
+  <text x="900" y="165" fill="#34d399" font-size="12">count = 2</text>
+
+  <text x="630" y="195" fill="#ddd" font-size="12">Step 3:  1000 &amp; 0111 = 0000</text>
+  <text x="900" y="195" fill="#34d399" font-size="12">count = 3</text>
+
+  <text x="630" y="225" fill="#fbbf24" font-size="12">n = 0, stop. Answer = 3</text>
+  <text x="630" y="250" fill="#555" font-size="10">Only 3 iterations (not 32!) — one per set bit</text>
+
+  <!-- #477 Total Hamming Distance -->
+  <rect x="60" y="300" width="980" height="160" rx="8" fill="#111" stroke="#222"/>
+  <text x="550" y="325" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="600">#477 Total Hamming Distance — nums = [4, 14, 2]</text>
+
+  <text x="100" y="355" fill="#777" font-size="12">Binary:  4 = 0100,  14 = 1110,  2 = 0010</text>
+
+  <!-- Bit position columns -->
+  <text x="200" y="390" text-anchor="middle" fill="#555" font-size="11">bit 3</text>
+  <text x="360" y="390" text-anchor="middle" fill="#555" font-size="11">bit 2</text>
+  <text x="520" y="390" text-anchor="middle" fill="#555" font-size="11">bit 1</text>
+  <text x="680" y="390" text-anchor="middle" fill="#555" font-size="11">bit 0</text>
+
+  <text x="200" y="415" text-anchor="middle" fill="#ddd" font-size="12">0, 1, 0</text>
+  <text x="360" y="415" text-anchor="middle" fill="#ddd" font-size="12">1, 1, 0</text>
+  <text x="520" y="415" text-anchor="middle" fill="#ddd" font-size="12">0, 1, 1</text>
+  <text x="680" y="415" text-anchor="middle" fill="#ddd" font-size="12">0, 0, 0</text>
+
+  <text x="200" y="440" text-anchor="middle" fill="#38bdf8" font-size="11">1s=1, 0s=2</text>
+  <text x="360" y="440" text-anchor="middle" fill="#38bdf8" font-size="11">1s=2, 0s=1</text>
+  <text x="520" y="440" text-anchor="middle" fill="#38bdf8" font-size="11">1s=2, 0s=1</text>
+  <text x="680" y="440" text-anchor="middle" fill="#38bdf8" font-size="11">1s=0, 0s=3</text>
+
+  <text x="200" y="455" text-anchor="middle" fill="#34d399" font-size="11">1×2 = 2</text>
+  <text x="360" y="455" text-anchor="middle" fill="#34d399" font-size="11">2×1 = 2</text>
+  <text x="520" y="455" text-anchor="middle" fill="#34d399" font-size="11">2×1 = 2</text>
+  <text x="680" y="455" text-anchor="middle" fill="#34d399" font-size="11">0×3 = 0</text>
+
+  <text x="870" y="415" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700">Total = 6</text>
+  <text x="870" y="440" text-anchor="middle" fill="#777" font-size="10">Each bit position:</text>
+  <text x="870" y="455" text-anchor="middle" fill="#777" font-size="10">ones × zeros</text>
+</svg>

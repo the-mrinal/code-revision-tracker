@@ -1,0 +1,101 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 560" font-family="SF Mono, Menlo, monospace">
+  <rect width="1100" height="560" rx="12" fill="#0a0a0a"/>
+  <text x="550" y="32" text-anchor="middle" fill="#a78bfa" font-size="16" font-weight="700">Permutations Pattern — Decision Tree for [1, 2, 3]</text>
+  <text x="550" y="52" text-anchor="middle" fill="#777" font-size="11">Each level: pick ANY unused element. Only leaves (full length) are results.</text>
+
+  <!-- Level 0 -->
+  <rect x="480" y="72" width="140" height="34" rx="6" fill="#1a1a2e" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="550" y="94" text-anchor="middle" fill="#ddd" font-size="13">[ ]  avail: {1,2,3}</text>
+
+  <!-- Level 1 label -->
+  <text x="30" y="167" fill="#fbbf24" font-size="11" font-weight="600">position 1</text>
+
+  <!-- Level 1: pick first element -->
+  <rect x="100" y="152" width="100" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="150" y="172" text-anchor="middle" fill="#a78bfa" font-size="12">[1]</text>
+
+  <rect x="500" y="152" width="100" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="550" y="172" text-anchor="middle" fill="#a78bfa" font-size="12">[2]</text>
+
+  <rect x="900" y="152" width="100" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.2"/>
+  <text x="950" y="172" text-anchor="middle" fill="#a78bfa" font-size="12">[3]</text>
+
+  <line x1="510" y1="106" x2="180" y2="152" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="550" y1="106" x2="550" y2="152" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="590" y1="106" x2="920" y2="152" stroke="#a78bfa" stroke-width="1"/>
+
+  <!-- Level 2 label -->
+  <text x="30" y="252" fill="#fbbf24" font-size="11" font-weight="600">position 2</text>
+
+  <!-- From [1]: pick 2 or 3 -->
+  <rect x="40" y="237" width="90" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="85" y="257" text-anchor="middle" fill="#a78bfa" font-size="11">[1, 2]</text>
+  <rect x="180" y="237" width="90" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="225" y="257" text-anchor="middle" fill="#a78bfa" font-size="11">[1, 3]</text>
+
+  <!-- From [2]: pick 1 or 3 -->
+  <rect x="440" y="237" width="90" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="485" y="257" text-anchor="middle" fill="#a78bfa" font-size="11">[2, 1]</text>
+  <rect x="580" y="237" width="90" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="625" y="257" text-anchor="middle" fill="#a78bfa" font-size="11">[2, 3]</text>
+
+  <!-- From [3]: pick 1 or 2 -->
+  <rect x="840" y="237" width="90" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="885" y="257" text-anchor="middle" fill="#a78bfa" font-size="11">[3, 1]</text>
+  <rect x="980" y="237" width="90" height="30" rx="6" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1"/>
+  <text x="1025" y="257" text-anchor="middle" fill="#a78bfa" font-size="11">[3, 2]</text>
+
+  <line x1="130" y1="182" x2="95" y2="237" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="170" y1="182" x2="215" y2="237" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="530" y1="182" x2="495" y2="237" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="570" y1="182" x2="615" y2="237" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="930" y1="182" x2="895" y2="237" stroke="#a78bfa" stroke-width="1"/>
+  <line x1="970" y1="182" x2="1015" y2="237" stroke="#a78bfa" stroke-width="1"/>
+
+  <!-- Level 3 label -->
+  <text x="30" y="335" fill="#fbbf24" font-size="11" font-weight="600">position 3</text>
+
+  <!-- Level 3: only one left — RESULTS -->
+  <rect x="30" y="320" width="110" height="30" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="85" y="340" text-anchor="middle" fill="#34d399" font-size="11">[1, 2, 3]</text>
+
+  <rect x="170" y="320" width="110" height="30" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="225" y="340" text-anchor="middle" fill="#34d399" font-size="11">[1, 3, 2]</text>
+
+  <rect x="430" y="320" width="110" height="30" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="485" y="340" text-anchor="middle" fill="#34d399" font-size="11">[2, 1, 3]</text>
+
+  <rect x="570" y="320" width="110" height="30" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="625" y="340" text-anchor="middle" fill="#34d399" font-size="11">[2, 3, 1]</text>
+
+  <rect x="830" y="320" width="110" height="30" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="885" y="340" text-anchor="middle" fill="#34d399" font-size="11">[3, 1, 2]</text>
+
+  <rect x="970" y="320" width="110" height="30" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="1025" y="340" text-anchor="middle" fill="#34d399" font-size="11">[3, 2, 1]</text>
+
+  <line x1="85" y1="267" x2="85" y2="320" stroke="#34d399" stroke-width="1"/>
+  <line x1="225" y1="267" x2="225" y2="320" stroke="#34d399" stroke-width="1"/>
+  <line x1="485" y1="267" x2="485" y2="320" stroke="#34d399" stroke-width="1"/>
+  <line x1="625" y1="267" x2="625" y2="320" stroke="#34d399" stroke-width="1"/>
+  <line x1="885" y1="267" x2="885" y2="320" stroke="#34d399" stroke-width="1"/>
+  <line x1="1025" y1="267" x2="1025" y2="320" stroke="#34d399" stroke-width="1"/>
+
+  <!-- Comparison box -->
+  <rect x="60" y="380" width="980" height="160" rx="8" fill="#111" stroke="#222"/>
+  <text x="550" y="408" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="600">Subsets vs Permutations — The Key Difference</text>
+
+  <!-- Subsets side -->
+  <rect x="80" y="425" width="420" height="100" rx="6" fill="#0d0d0d" stroke="#34d399" stroke-width="1"/>
+  <text x="290" y="448" text-anchor="middle" fill="#34d399" font-size="13" font-weight="600">Subsets</text>
+  <text x="290" y="470" text-anchor="middle" fill="#777" font-size="11">for i from START to n</text>
+  <text x="290" y="490" text-anchor="middle" fill="#777" font-size="11">[1,2] and [2,1] are the SAME subset</text>
+  <text x="290" y="510" text-anchor="middle" fill="#777" font-size="11">Result count: 2^n = 8</text>
+
+  <!-- Permutations side -->
+  <rect x="600" y="425" width="420" height="100" rx="6" fill="#0d0d0d" stroke="#a78bfa" stroke-width="1"/>
+  <text x="810" y="448" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="600">Permutations</text>
+  <text x="810" y="470" text-anchor="middle" fill="#777" font-size="11">for i from 0 to n (skip if used)</text>
+  <text x="810" y="490" text-anchor="middle" fill="#777" font-size="11">[1,2] and [2,1] are DIFFERENT orderings</text>
+  <text x="810" y="510" text-anchor="middle" fill="#777" font-size="11">Result count: n! = 6</text>
+</svg>

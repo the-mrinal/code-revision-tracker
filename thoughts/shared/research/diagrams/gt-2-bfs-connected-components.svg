@@ -1,0 +1,122 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+  <text x="450" y="35" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">BFS Connected Components — Multi-Source BFS</text>
+
+  <!-- Rotting Oranges Grid Progression -->
+  <g transform="translate(30, 55)">
+    <text x="0" y="0" fill="#888" font-size="12">Rotting Oranges (994) — minute-by-minute spread</text>
+
+    <!-- t=0 -->
+    <g transform="translate(0, 20)">
+      <text x="42" y="0" text-anchor="middle" fill="#a78bfa" font-size="11">t=0</text>
+      <rect x="0" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="14" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="30" y="8" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="44" y="28" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="60" y="8" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="74" y="28" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="0" y="38" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="14" y="58" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="30" y="38" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="44" y="58" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="60" y="38" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="74" y="58" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="0" y="68" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="14" y="88" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="30" y="68" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="44" y="88" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="60" y="68" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="74" y="88" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+    </g>
+
+    <!-- Arrow -->
+    <text x="105" y="75" fill="#5b6abf" font-size="18">→</text>
+
+    <!-- t=1 -->
+    <g transform="translate(120, 20)">
+      <text x="42" y="0" text-anchor="middle" fill="#a78bfa" font-size="11">t=1</text>
+      <rect x="0" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="14" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="30" y="8" width="28" height="28" rx="4" fill="#3a2a1a" stroke="#fbbf24" stroke-width="1.5"/><text x="44" y="28" text-anchor="middle" fill="#fbbf24" font-size="13">2</text>
+      <rect x="60" y="8" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="74" y="28" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="0" y="38" width="28" height="28" rx="4" fill="#3a2a1a" stroke="#fbbf24" stroke-width="1.5"/><text x="14" y="58" text-anchor="middle" fill="#fbbf24" font-size="13">2</text>
+      <rect x="30" y="38" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="44" y="58" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="60" y="38" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="74" y="58" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="0" y="68" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="14" y="88" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="30" y="68" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="44" y="88" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="60" y="68" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="74" y="88" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+    </g>
+
+    <text x="225" y="75" fill="#5b6abf" font-size="18">→</text>
+
+    <!-- t=2 -->
+    <g transform="translate(240, 20)">
+      <text x="42" y="0" text-anchor="middle" fill="#a78bfa" font-size="11">t=2</text>
+      <rect x="0" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="14" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="30" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="44" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="60" y="8" width="28" height="28" rx="4" fill="#3a2a1a" stroke="#fbbf24" stroke-width="1.5"/><text x="74" y="28" text-anchor="middle" fill="#fbbf24" font-size="13">2</text>
+      <rect x="0" y="38" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="14" y="58" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="30" y="38" width="28" height="28" rx="4" fill="#3a2a1a" stroke="#fbbf24" stroke-width="1.5"/><text x="44" y="58" text-anchor="middle" fill="#fbbf24" font-size="13">2</text>
+      <rect x="60" y="38" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="74" y="58" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="0" y="68" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="14" y="88" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="30" y="68" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="44" y="88" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+      <rect x="60" y="68" width="28" height="28" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1"/><text x="74" y="88" text-anchor="middle" fill="#34d399" font-size="13">1</text>
+    </g>
+
+    <text x="345" y="75" fill="#5b6abf" font-size="18">→</text>
+
+    <!-- t=4 (final) -->
+    <g transform="translate(360, 20)">
+      <text x="42" y="0" text-anchor="middle" fill="#a78bfa" font-size="11">t=4 ✓</text>
+      <rect x="0" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="14" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="30" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="44" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="60" y="8" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="74" y="28" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="0" y="38" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="14" y="58" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="30" y="38" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="44" y="58" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="60" y="38" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="74" y="58" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="0" y="68" width="28" height="28" rx="4" fill="#1a1a1a" stroke="#333"/><text x="14" y="88" text-anchor="middle" fill="#555" font-size="13">0</text>
+      <rect x="30" y="68" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="44" y="88" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+      <rect x="60" y="68" width="28" height="28" rx="4" fill="#3a1a1a" stroke="#f87171" stroke-width="1.5"/><text x="74" y="88" text-anchor="middle" fill="#f87171" font-size="13">2</text>
+    </g>
+  </g>
+
+  <!-- BFS Queue visualization -->
+  <g transform="translate(500, 55)">
+    <text x="0" y="0" fill="#888" font-size="12">BFS Queue (level = minutes)</text>
+    <rect x="0" y="12" width="370" height="130" rx="8" fill="#111" stroke="#222"/>
+    <text x="15" y="35" fill="#fbbf24" font-size="11">Level 0: [(0,0)]</text>
+    <text x="200" y="35" fill="#555" font-size="11">← initial rotten</text>
+    <text x="15" y="55" fill="#fbbf24" font-size="11">Level 1: [(0,1), (1,0)]</text>
+    <text x="200" y="55" fill="#555" font-size="11">← rot neighbors</text>
+    <text x="15" y="75" fill="#fbbf24" font-size="11">Level 2: [(0,2), (1,1)]</text>
+    <text x="15" y="95" fill="#fbbf24" font-size="11">Level 3: [(2,1)]</text>
+    <text x="15" y="115" fill="#fbbf24" font-size="11">Level 4: [(2,2)]</text>
+    <text x="200" y="115" fill="#34d399" font-size="11">← all rotten! ans=4</text>
+  </g>
+
+  <!-- Concentric rings diagram -->
+  <g transform="translate(550, 210)">
+    <text x="100" y="0" text-anchor="middle" fill="#888" font-size="12">BFS = concentric ripples</text>
+    <circle cx="100" cy="95" r="85" fill="none" stroke="#f87171" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+    <circle cx="100" cy="95" r="65" fill="none" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+    <circle cx="100" cy="95" r="45" fill="none" stroke="#a78bfa" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+    <circle cx="100" cy="95" r="25" fill="none" stroke="#5b6abf" stroke-width="1.5"/>
+    <circle cx="100" cy="95" r="6" fill="#5b6abf"/>
+    <text x="100" y="99" text-anchor="middle" fill="#fff" font-size="8">S</text>
+    <text x="135" y="99" fill="#5b6abf" font-size="10">d=1</text>
+    <text x="155" y="99" fill="#a78bfa" font-size="10">d=2</text>
+    <text x="175" y="99" fill="#fbbf24" font-size="10">d=3</text>
+    <text x="195" y="99" fill="#f87171" font-size="10">d=4</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(30, 395)">
+    <rect x="0" y="0" width="840" height="45" rx="8" fill="#111" stroke="#222"/>
+    <rect x="20" y="13" width="14" height="14" rx="3" fill="#3a1a1a" stroke="#f87171"/>
+    <text x="42" y="24" fill="#ccc" font-size="11">Rotten</text>
+    <rect x="110" y="13" width="14" height="14" rx="3" fill="#3a2a1a" stroke="#fbbf24"/>
+    <text x="132" y="24" fill="#ccc" font-size="11">Just rotted</text>
+    <rect x="230" y="13" width="14" height="14" rx="3" fill="#1a2a1a" stroke="#34d399"/>
+    <text x="252" y="24" fill="#ccc" font-size="11">Fresh</text>
+    <rect x="330" y="13" width="14" height="14" rx="3" fill="#1a1a1a" stroke="#333"/>
+    <text x="352" y="24" fill="#ccc" font-size="11">Empty</text>
+    <text x="450" y="24" fill="#888" font-size="11">Multi-source: all sources in queue at t=0 → single O(m×n) pass</text>
+  </g>
+
+  <!-- Summary box -->
+  <g transform="translate(30, 450)">
+    <rect x="0" y="0" width="840" height="40" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="20" y="25" fill="#5b6abf" font-size="13" font-weight="bold">Key:</text>
+    <text x="65" y="25" fill="#ccc" font-size="12">BFS guarantees shortest distance (FIFO). Multi-source BFS = drop ALL starting points at t=0. Level = distance.</text>
+  </g>
+</svg>

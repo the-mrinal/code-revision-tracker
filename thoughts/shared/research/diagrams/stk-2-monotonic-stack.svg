@@ -1,0 +1,244 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="SF Mono, Menlo, monospace">
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" fill="#e2e8f0" font-size="15" font-weight="bold">Monotonic Stack — Daily Temperatures</text>
+
+  <!-- ===== BAR CHART ===== -->
+  <!-- Bars: temps = [73, 74, 75, 71, 69, 72, 76, 73] -->
+  <!-- Scale: min 69, max 76. Bar area y: 50-155. Max bar height ~95. Base y=155. -->
+  <!-- Each bar width=50, gap=12, total=8*50+7*12=484, start x=(900-484)/2=208 -->
+
+  <!-- Index labels -->
+  <text x="233" y="170" text-anchor="middle" fill="#6b7280" font-size="9">0</text>
+  <text x="295" y="170" text-anchor="middle" fill="#6b7280" font-size="9">1</text>
+  <text x="357" y="170" text-anchor="middle" fill="#6b7280" font-size="9">2</text>
+  <text x="419" y="170" text-anchor="middle" fill="#6b7280" font-size="9">3</text>
+  <text x="481" y="170" text-anchor="middle" fill="#6b7280" font-size="9">4</text>
+  <text x="543" y="170" text-anchor="middle" fill="#6b7280" font-size="9">5</text>
+  <text x="605" y="170" text-anchor="middle" fill="#6b7280" font-size="9">6</text>
+  <text x="667" y="170" text-anchor="middle" fill="#6b7280" font-size="9">7</text>
+
+  <!-- Bar heights: map 69->10, 70->23.6, 71->37.1, 72->50.7, 73->64.3, 74->77.9, 75->91.4, 76->105 -->
+  <!-- 73: h=64.3, y=155-64.3=90.7 -->
+  <rect x="208" y="90.7" width="50" height="64.3" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="233" y="85" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">73</text>
+
+  <!-- 74: h=77.9, y=77.1 -->
+  <rect x="270" y="77.1" width="50" height="77.9" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="295" y="71" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">74</text>
+
+  <!-- 75: h=91.4, y=63.6 -->
+  <rect x="332" y="63.6" width="50" height="91.4" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="357" y="58" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">75</text>
+
+  <!-- 71: h=37.1, y=117.9 -->
+  <rect x="394" y="117.9" width="50" height="37.1" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="419" y="112" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">71</text>
+
+  <!-- 69: h=10, y=145 -->
+  <rect x="456" y="145" width="50" height="10" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="481" y="139" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">69</text>
+
+  <!-- 72: h=50.7, y=104.3 -->
+  <rect x="518" y="104.3" width="50" height="50.7" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="543" y="98" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">72</text>
+
+  <!-- 76: h=105, y=50 -->
+  <rect x="580" y="50" width="50" height="105" rx="3" fill="#34d399" opacity="0.85"/>
+  <text x="605" y="44" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">76</text>
+
+  <!-- 73: h=64.3, y=90.7 — waiting (yellow) -->
+  <rect x="642" y="90.7" width="50" height="64.3" rx="3" fill="#fbbf24" opacity="0.7"/>
+  <text x="667" y="85" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">73</text>
+
+  <!-- 76 at index 7 also waiting -->
+  <!-- Actually 76 resolves everything before it, but 76 and 73 (last) remain unresolved -->
+
+  <!-- Recolor: resolved bars green, unresolved yellow -->
+  <!-- Indices 0-5 are resolved (green). Index 6 (76) and 7 (73) are unresolved (yellow). -->
+  <!-- Let me redo bar 6 (76) as yellow since it never gets popped -->
+  <rect x="580" y="50" width="50" height="105" rx="3" fill="#fbbf24" opacity="0.7"/>
+  <text x="605" y="44" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">76</text>
+
+  <!-- ===== RESOLUTION ARROWS ===== -->
+  <!-- 0(73)->1(74): answer=1 -->
+  <path d="M233,88 Q264,60 295,75" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)" opacity="0.7"/>
+
+  <!-- 1(74)->2(75): answer=1 -->
+  <path d="M295,75 Q326,48 357,62" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)" opacity="0.7"/>
+
+  <!-- 2(75)->6(76): answer=4 -->
+  <path d="M357,61 Q480,22 605,48" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)" opacity="0.7"/>
+
+  <!-- 3(71)->5(72): answer=2 -->
+  <path d="M419,115 Q480,95 543,102" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)" opacity="0.7"/>
+
+  <!-- 4(69)->5(72): answer=1 -->
+  <path d="M481,143 Q512,120 543,102" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)" opacity="0.7"/>
+
+  <!-- 5(72)->6(76): answer=1 -->
+  <path d="M543,102 Q574,78 605,48" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)" opacity="0.7"/>
+
+  <!-- ===== STACK EVOLUTION ===== -->
+  <text x="450" y="198" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">Stack Evolution (indices shown)</text>
+
+  <!-- 8 step boxes -->
+  <!-- Each step: x offset, step width ~96, gap 8, total=8*96+7*8=824, start=(900-824)/2=38 -->
+  <!-- Step 0 -->
+  <rect x="38" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="86" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 0</text>
+  <text x="86" y="238" text-anchor="middle" fill="#6b7280" font-size="8">push 73</text>
+  <text x="86" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="66" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="86" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">0</text>
+  <text x="86" y="318" text-anchor="middle" fill="#6b7280" font-size="8">ans: [_]</text>
+
+  <!-- Step 1 -->
+  <rect x="142" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="190" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 1</text>
+  <text x="190" y="238" text-anchor="middle" fill="#6b7280" font-size="8">74>73, pop 0</text>
+  <text x="190" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="170" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="190" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">1</text>
+  <rect x="170" y="288" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+  <text x="190" y="302" text-anchor="middle" fill="#34d399" font-size="8" opacity="0.5">0</text>
+  <text x="190" y="318" text-anchor="middle" fill="#34d399" font-size="8">ans[0]=1</text>
+
+  <!-- Step 2 -->
+  <rect x="246" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="294" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 2</text>
+  <text x="294" y="238" text-anchor="middle" fill="#6b7280" font-size="8">75>74, pop 1</text>
+  <text x="294" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="274" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="294" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">2</text>
+  <rect x="274" y="288" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+  <text x="294" y="302" text-anchor="middle" fill="#34d399" font-size="8" opacity="0.5">1</text>
+  <text x="294" y="318" text-anchor="middle" fill="#34d399" font-size="8">ans[1]=1</text>
+
+  <!-- Step 3 -->
+  <rect x="350" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="398" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 3</text>
+  <text x="398" y="238" text-anchor="middle" fill="#6b7280" font-size="8">71<75, push</text>
+  <text x="398" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="378" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="398" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">3</text>
+  <rect x="378" y="288" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="398" y="302" text-anchor="middle" fill="#fbbf24" font-size="9">2</text>
+  <text x="398" y="318" text-anchor="middle" fill="#6b7280" font-size="8">no pop</text>
+
+  <!-- Step 4 -->
+  <rect x="454" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="502" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 4</text>
+  <text x="502" y="238" text-anchor="middle" fill="#6b7280" font-size="8">69<71, push</text>
+  <text x="502" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="482" y="248" width="40" height="18" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="502" y="261" text-anchor="middle" fill="#fbbf24" font-size="9">4</text>
+  <rect x="482" y="270" width="40" height="18" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="502" y="283" text-anchor="middle" fill="#fbbf24" font-size="9">3</text>
+  <rect x="482" y="292" width="40" height="18" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="502" y="305" text-anchor="middle" fill="#fbbf24" font-size="9">2</text>
+  <text x="502" y="322" text-anchor="middle" fill="#6b7280" font-size="8">no pop</text>
+
+  <!-- Step 5 -->
+  <rect x="558" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="606" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 5</text>
+  <text x="606" y="238" text-anchor="middle" fill="#6b7280" font-size="8">72>69,71 pop</text>
+  <text x="606" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="586" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="606" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">5</text>
+  <rect x="586" y="288" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="606" y="302" text-anchor="middle" fill="#fbbf24" font-size="9">2</text>
+  <text x="606" y="318" text-anchor="middle" fill="#34d399" font-size="7">ans[4]=1,ans[3]=2</text>
+
+  <!-- Step 6 -->
+  <rect x="662" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="710" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 6</text>
+  <text x="710" y="238" text-anchor="middle" fill="#6b7280" font-size="8">76>72,75 pop</text>
+  <text x="710" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="690" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="710" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">6</text>
+  <rect x="690" y="288" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#34d399" stroke-width="1" stroke-dasharray="3,2" opacity="0.5"/>
+  <text x="710" y="302" text-anchor="middle" fill="#34d399" font-size="8" opacity="0.5">5,2</text>
+  <text x="710" y="318" text-anchor="middle" fill="#34d399" font-size="7">ans[5]=1,ans[2]=4</text>
+
+  <!-- Step 7 -->
+  <rect x="766" y="208" width="96" height="120" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="814" y="224" text-anchor="middle" fill="#e2e8f0" font-size="9" font-weight="bold">Step 7</text>
+  <text x="814" y="238" text-anchor="middle" fill="#6b7280" font-size="8">73<76, push</text>
+  <text x="814" y="258" text-anchor="middle" fill="#5b6abf" font-size="9">Stack:</text>
+  <rect x="794" y="264" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="814" y="278" text-anchor="middle" fill="#fbbf24" font-size="9">7</text>
+  <rect x="794" y="288" width="40" height="20" rx="3" fill="#1a1a2e" stroke="#fbbf24" stroke-width="1"/>
+  <text x="814" y="302" text-anchor="middle" fill="#fbbf24" font-size="9">6</text>
+  <text x="814" y="318" text-anchor="middle" fill="#6b7280" font-size="8">no pop</text>
+
+  <!-- ===== ANSWER ARRAY ===== -->
+  <text x="450" y="358" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="bold">Answer Array</text>
+
+  <!-- Answer boxes -->
+  <g transform="translate(208, 368)">
+    <!-- idx 0 -->
+    <rect x="0" y="0" width="50" height="28" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="25" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=0</text>
+    <text x="25" y="24" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">1</text>
+    <!-- idx 1 -->
+    <rect x="62" y="0" width="50" height="28" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="87" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=1</text>
+    <text x="87" y="24" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">1</text>
+    <!-- idx 2 -->
+    <rect x="124" y="0" width="50" height="28" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="149" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=2</text>
+    <text x="149" y="24" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">4</text>
+    <!-- idx 3 -->
+    <rect x="186" y="0" width="50" height="28" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="211" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=3</text>
+    <text x="211" y="24" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">2</text>
+    <!-- idx 4 -->
+    <rect x="248" y="0" width="50" height="28" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="273" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=4</text>
+    <text x="273" y="24" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">1</text>
+    <!-- idx 5 -->
+    <rect x="310" y="0" width="50" height="28" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="335" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=5</text>
+    <text x="335" y="24" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">1</text>
+    <!-- idx 6 -->
+    <rect x="372" y="0" width="50" height="28" rx="4" fill="#111" stroke="#f87171" stroke-width="1.5"/>
+    <text x="397" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=6</text>
+    <text x="397" y="24" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold">0</text>
+    <!-- idx 7 -->
+    <rect x="434" y="0" width="50" height="28" rx="4" fill="#111" stroke="#f87171" stroke-width="1.5"/>
+    <text x="459" y="12" text-anchor="middle" fill="#6b7280" font-size="8">i=7</text>
+    <text x="459" y="24" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold">0</text>
+  </g>
+
+  <!-- ===== LEGEND ===== -->
+  <rect x="38" y="420" width="400" height="80" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="58" y="442" fill="#e2e8f0" font-size="11" font-weight="bold">Legend</text>
+
+  <!-- Yellow swatch -->
+  <rect x="58" y="452" width="14" height="14" rx="2" fill="#fbbf24" opacity="0.7"/>
+  <text x="80" y="464" fill="#fbbf24" font-size="10">In stack (waiting for warmer day)</text>
+
+  <!-- Green swatch -->
+  <rect x="58" y="472" width="14" height="14" rx="2" fill="#34d399" opacity="0.85"/>
+  <text x="80" y="484" fill="#34d399" font-size="10">Resolved (popped, answer found)</text>
+
+  <!-- Red swatch -->
+  <rect x="290" y="452" width="14" height="14" rx="2" fill="#f87171" opacity="0.7"/>
+  <text x="312" y="464" fill="#f87171" font-size="10">No warmer day (ans = 0)</text>
+
+  <!-- ===== INSIGHT BOX ===== -->
+  <rect x="462" y="420" width="400" height="80" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="482" y="442" fill="#5b6abf" font-size="11" font-weight="bold">Decreasing Stack Invariant</text>
+  <text x="482" y="460" fill="#a78bfa" font-size="10">Pop when a warmer day is found: ans[popped] = i - popped</text>
+  <text x="482" y="478" fill="#a78bfa" font-size="10">Stack always holds indices in decreasing temp order.</text>
+  <text x="482" y="496" fill="#34d399" font-size="10" font-weight="bold">Each element pushed/popped at most once -> O(n)</text>
+</svg>

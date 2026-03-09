@@ -1,0 +1,141 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" fill="#0a0a0a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" fill="#a78bfa" font-size="17" font-weight="bold" text-anchor="middle">Roman Numeral Conversion</text>
+
+  <!-- Section divider -->
+  <line x1="450" y1="50" x2="450" y2="460" stroke="#222" stroke-width="1.5"/>
+
+  <!-- LEFT: Integer to Roman (1994) -->
+  <text x="220" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Integer → Roman: 1994</text>
+
+  <!-- Value table -->
+  <text x="44" y="88" fill="#64748b" font-size="11">Value table (greedy):</text>
+  <rect x="44" y="94" width="370" height="30" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="62" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">1000</text>
+  <text x="62" y="123" fill="#34d399" font-size="10" text-anchor="middle">M</text>
+  <line x1="90" y1="97" x2="90" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="108" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">900</text>
+  <text x="108" y="123" fill="#34d399" font-size="10" text-anchor="middle">CM</text>
+  <line x1="128" y1="97" x2="128" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="148" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">500</text>
+  <text x="148" y="123" fill="#34d399" font-size="10" text-anchor="middle">D</text>
+  <line x1="168" y1="97" x2="168" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="188" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">400</text>
+  <text x="188" y="123" fill="#34d399" font-size="10" text-anchor="middle">CD</text>
+  <line x1="208" y1="97" x2="208" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="228" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">100</text>
+  <text x="228" y="123" fill="#34d399" font-size="10" text-anchor="middle">C</text>
+  <line x1="248" y1="97" x2="248" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="268" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">90</text>
+  <text x="268" y="123" fill="#34d399" font-size="10" text-anchor="middle">XC</text>
+  <line x1="288" y1="97" x2="288" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="308" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">50</text>
+  <text x="308" y="123" fill="#34d399" font-size="10" text-anchor="middle">L</text>
+  <line x1="328" y1="97" x2="328" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="348" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">9</text>
+  <text x="348" y="123" fill="#34d399" font-size="10" text-anchor="middle">IX</text>
+  <line x1="368" y1="97" x2="368" y2="121" stroke="#333" stroke-width="1"/>
+  <text x="398" y="113" fill="#fbbf24" font-size="10" text-anchor="middle">4</text>
+  <text x="398" y="123" fill="#34d399" font-size="10" text-anchor="middle">IV</text>
+
+  <!-- Step 1: 1994 >= 1000 -->
+  <rect x="44" y="134" width="370" height="40" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="58" y="150" fill="#64748b" font-size="11">Step 1: num=1994  ≥ 1000</text>
+  <text x="58" y="166" fill="#fbbf24" font-size="12" font-weight="bold">append "M",  num = 1994 - 1000 = 994</text>
+  <text x="390" y="157" fill="#34d399" font-size="13" font-weight="bold" text-anchor="end">result: "M"</text>
+
+  <!-- Step 2: 994 >= 900 -->
+  <rect x="44" y="180" width="370" height="40" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="58" y="196" fill="#64748b" font-size="11">Step 2: num=994  ≥ 900</text>
+  <text x="58" y="212" fill="#fbbf24" font-size="12" font-weight="bold">append "CM",  num = 994 - 900 = 94</text>
+  <text x="390" y="203" fill="#34d399" font-size="13" font-weight="bold" text-anchor="end">result: "MCM"</text>
+
+  <!-- Step 3: 94 >= 90 -->
+  <rect x="44" y="226" width="370" height="40" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="58" y="242" fill="#64748b" font-size="11">Step 3: num=94  ≥ 90</text>
+  <text x="58" y="258" fill="#fbbf24" font-size="12" font-weight="bold">append "XC",  num = 94 - 90 = 4</text>
+  <text x="390" y="249" fill="#34d399" font-size="13" font-weight="bold" text-anchor="end">result: "MCMXC"</text>
+
+  <!-- Step 4: 4 >= 4 -->
+  <rect x="44" y="272" width="370" height="40" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="58" y="288" fill="#64748b" font-size="11">Step 4: num=4  ≥ 4</text>
+  <text x="58" y="304" fill="#fbbf24" font-size="12" font-weight="bold">append "IV",  num = 4 - 4 = 0</text>
+  <text x="390" y="295" fill="#34d399" font-size="13" font-weight="bold" text-anchor="end">result: "MCMXCIV"</text>
+
+  <!-- Result box -->
+  <rect x="44" y="322" width="370" height="40" rx="8" fill="#0d2d1a" stroke="#34d399" stroke-width="2"/>
+  <text x="229" y="347" fill="#34d399" font-size="16" font-weight="bold" text-anchor="middle">1994  →  "MCMXCIV"</text>
+
+  <!-- Pseudocode -->
+  <rect x="44" y="372" width="370" height="88" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="58" y="390" fill="#5b6abf" font-size="11" font-weight="bold">Integer → Roman (greedy):</text>
+  <text x="58" y="406" fill="#64748b" font-size="10">vals = [1000,900,500,400,100,90,50,40,9,4,1]</text>
+  <text x="58" y="420" fill="#64748b" font-size="10">syms = ["M","CM","D","CD","C","XC","L","XL","IX","IV","I"]</text>
+  <text x="58" y="434" fill="#64748b" font-size="10">for v, s in zip(vals, syms):</text>
+  <text x="68" y="448" fill="#64748b" font-size="10">  while num &gt;= v:  result += s;  num -= v</text>
+  <text x="58" y="458" fill="#34d399" font-size="10">O(1) — bounded by max value</text>
+
+  <!-- RIGHT: Roman to Integer -->
+  <text x="685" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Roman → Integer: "MCMXCIV"</text>
+
+  <!-- Characters -->
+  <text x="470" y="88" fill="#64748b" font-size="11">Rule: if s[i] &lt; s[i+1]  →  subtract, else add</text>
+
+  <!-- The string -->
+  <g>
+    <rect x="470" y="98" width="40" height="38" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="490" y="122" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">M</text>
+    <rect x="516" y="98" width="40" height="38" rx="6" fill="#111" stroke="#f87171" stroke-width="2"/>
+    <text x="536" y="122" fill="#f87171" font-size="15" font-weight="bold" text-anchor="middle">C</text>
+    <rect x="562" y="98" width="40" height="38" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="582" y="122" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">M</text>
+    <rect x="608" y="98" width="40" height="38" rx="6" fill="#111" stroke="#f87171" stroke-width="2"/>
+    <text x="628" y="122" fill="#f87171" font-size="15" font-weight="bold" text-anchor="middle">X</text>
+    <rect x="654" y="98" width="40" height="38" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="674" y="122" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">C</text>
+    <rect x="700" y="98" width="40" height="38" rx="6" fill="#111" stroke="#f87171" stroke-width="2"/>
+    <text x="720" y="122" fill="#f87171" font-size="15" font-weight="bold" text-anchor="middle">I</text>
+    <rect x="746" y="98" width="40" height="38" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="766" y="122" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">V</text>
+  </g>
+
+  <!-- Subtraction indicators -->
+  <text x="536" y="148" fill="#f87171" font-size="9" text-anchor="middle">C&lt;M</text>
+  <text x="536" y="158" fill="#f87171" font-size="9" text-anchor="middle">-100</text>
+  <text x="628" y="148" fill="#f87171" font-size="9" text-anchor="middle">X&lt;C</text>
+  <text x="628" y="158" fill="#f87171" font-size="9" text-anchor="middle">-10</text>
+  <text x="720" y="148" fill="#f87171" font-size="9" text-anchor="middle">I&lt;V</text>
+  <text x="720" y="158" fill="#f87171" font-size="9" text-anchor="middle">-1</text>
+
+  <!-- Add indicators -->
+  <text x="490" y="148" fill="#34d399" font-size="9" text-anchor="middle">+1000</text>
+  <text x="582" y="148" fill="#34d399" font-size="9" text-anchor="middle">+1000</text>
+  <text x="674" y="148" fill="#34d399" font-size="9" text-anchor="middle">+100</text>
+  <text x="766" y="148" fill="#34d399" font-size="9" text-anchor="middle">+5</text>
+
+  <!-- Running total -->
+  <rect x="470" y="170" width="370" height="140" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="484" y="188" fill="#64748b" font-size="10" font-weight="bold">Running total:</text>
+  <text x="484" y="206" fill="#f1f5f9" font-size="11">M       → total = 0 + 1000 = <tspan fill="#34d399" font-weight="bold">1000</tspan></text>
+  <text x="484" y="222" fill="#f87171" font-size="11">C (C&lt;M) → total = 1000 - 100 = <tspan fill="#34d399" font-weight="bold">900</tspan></text>
+  <text x="484" y="238" fill="#f1f5f9" font-size="11">M       → total = 900 + 1000 = <tspan fill="#34d399" font-weight="bold">1900</tspan></text>
+  <text x="484" y="254" fill="#f87171" font-size="11">X (X&lt;C) → total = 1900 - 10 = <tspan fill="#34d399" font-weight="bold">1890</tspan></text>
+  <text x="484" y="270" fill="#f1f5f9" font-size="11">C       → total = 1890 + 100 = <tspan fill="#34d399" font-weight="bold">1990</tspan></text>
+  <text x="484" y="286" fill="#f87171" font-size="11">I (I&lt;V) → total = 1990 - 1 = <tspan fill="#34d399" font-weight="bold">1989</tspan></text>
+  <text x="484" y="302" fill="#f1f5f9" font-size="11">V       → total = 1989 + 5 = <tspan fill="#34d399" font-weight="bold">1994</tspan></text>
+
+  <!-- Result -->
+  <rect x="470" y="322" width="370" height="40" rx="8" fill="#0d2d1a" stroke="#34d399" stroke-width="2"/>
+  <text x="655" y="347" fill="#34d399" font-size="16" font-weight="bold" text-anchor="middle">"MCMXCIV"  →  1994</text>
+
+  <!-- Pseudocode -->
+  <rect x="470" y="372" width="370" height="88" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="484" y="390" fill="#5b6abf" font-size="11" font-weight="bold">Roman → Integer:</text>
+  <text x="484" y="406" fill="#64748b" font-size="10">vals = {'I':1,'V':5,'X':10,'L':50,'C':100,'D':500,'M':1000}</text>
+  <text x="484" y="420" fill="#64748b" font-size="10">total = 0</text>
+  <text x="484" y="434" fill="#64748b" font-size="10">for i in range(len(s)):</text>
+  <text x="494" y="448" fill="#64748b" font-size="10">  if i+1&lt;len(s) and vals[s[i]]&lt;vals[s[i+1]]:</text>
+  <text x="504" y="458" fill="#64748b" font-size="10">    total -= vals[s[i]]  else: total += vals[s[i]]</text>
+</svg>

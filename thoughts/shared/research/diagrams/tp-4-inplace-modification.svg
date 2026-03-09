@@ -1,0 +1,249 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="38" text-anchor="middle" fill="#34d399" font-size="18" font-weight="bold">In-place Array Modification</text>
+  <text x="450" y="58" text-anchor="middle" fill="#888" font-size="12">Remove Duplicates — [1, 1, 2, 2, 3]</text>
+
+  <!-- ── Section labels ── -->
+  <text x="38" y="88" fill="#666" font-size="10">STEP</text>
+  <text x="120" y="88" fill="#666" font-size="10">ARRAY STATE</text>
+  <text x="490" y="88" fill="#666" font-size="10">ACTION</text>
+
+  <!-- ════════════════════════════════════════════
+       STEP 1 — R=1: arr[R]==arr[W], skip
+       ════════════════════════════════════════════ -->
+  <g transform="translate(0, 100)">
+    <!-- Step label -->
+    <text x="52" y="32" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">1</text>
+
+    <!-- Array boxes -->
+    <!-- index 0 — value 1, W pointer -->
+    <rect x="115" y="8" width="48" height="40" rx="6" fill="#1a1f3a" stroke="#5b6abf" stroke-width="2"/>
+    <text x="139" y="33" text-anchor="middle" fill="#e0e0e0" font-size="16">1</text>
+    <text x="139" y="6" text-anchor="middle" fill="#666" font-size="9">0</text>
+    <!-- W label -->
+    <text x="139" y="62" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">W</text>
+    <line x1="139" y1="48" x2="139" y2="55" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+    <!-- index 1 — value 1, R pointer — SKIP (red) -->
+    <rect x="169" y="8" width="48" height="40" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="2"/>
+    <text x="193" y="33" text-anchor="middle" fill="#f87171" font-size="16">1</text>
+    <text x="193" y="6" text-anchor="middle" fill="#666" font-size="9">1</text>
+    <!-- R label -->
+    <text x="193" y="62" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold">R</text>
+    <line x1="193" y1="48" x2="193" y2="55" stroke="#f87171" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+    <!-- index 2 -->
+    <rect x="223" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="247" y="33" text-anchor="middle" fill="#888" font-size="16">2</text>
+    <text x="247" y="6" text-anchor="middle" fill="#666" font-size="9">2</text>
+
+    <!-- index 3 -->
+    <rect x="277" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="301" y="33" text-anchor="middle" fill="#888" font-size="16">2</text>
+    <text x="301" y="6" text-anchor="middle" fill="#666" font-size="9">3</text>
+
+    <!-- index 4 -->
+    <rect x="331" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="355" y="33" text-anchor="middle" fill="#888" font-size="16">3</text>
+    <text x="355" y="6" text-anchor="middle" fill="#666" font-size="9">4</text>
+
+    <!-- Action description -->
+    <rect x="490" y="6" width="370" height="42" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="1"/>
+    <text x="675" y="23" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold">arr[R]=1 == arr[W]=1  →  SKIP</text>
+    <text x="675" y="40" text-anchor="middle" fill="#888" font-size="11">R advances, W stays. Duplicate found.</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════
+       STEP 2 — R=2: arr[R]!=arr[W], copy
+       ════════════════════════════════════════════ -->
+  <g transform="translate(0, 180)">
+    <text x="52" y="32" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">2</text>
+
+    <!-- index 0 — value 1 -->
+    <rect x="115" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="139" y="33" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+    <text x="139" y="6" text-anchor="middle" fill="#666" font-size="9">0</text>
+
+    <!-- index 1 — value 1, W pointer -->
+    <rect x="169" y="8" width="48" height="40" rx="6" fill="#1a1f3a" stroke="#5b6abf" stroke-width="2"/>
+    <text x="193" y="33" text-anchor="middle" fill="#e0e0e0" font-size="16">1</text>
+    <text x="193" y="6" text-anchor="middle" fill="#666" font-size="9">1</text>
+    <text x="193" y="62" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">W</text>
+    <line x1="193" y1="48" x2="193" y2="55" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+    <!-- index 2 — value 2, R pointer — COPY (green) -->
+    <rect x="223" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+    <text x="247" y="33" text-anchor="middle" fill="#34d399" font-size="16">2</text>
+    <text x="247" y="6" text-anchor="middle" fill="#666" font-size="9">2</text>
+    <text x="247" y="62" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">R</text>
+    <line x1="247" y1="48" x2="247" y2="55" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+    <!-- copy arrow from R to W -->
+    <path d="M247,8 C247,-10 193,-10 193,8" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGreen)"/>
+
+    <!-- index 3 -->
+    <rect x="277" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="301" y="33" text-anchor="middle" fill="#888" font-size="16">2</text>
+    <text x="301" y="6" text-anchor="middle" fill="#666" font-size="9">3</text>
+
+    <!-- index 4 -->
+    <rect x="331" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="355" y="33" text-anchor="middle" fill="#888" font-size="16">3</text>
+    <text x="355" y="6" text-anchor="middle" fill="#666" font-size="9">4</text>
+
+    <!-- Action -->
+    <rect x="490" y="6" width="370" height="42" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+    <text x="675" y="23" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">arr[R]=2 != arr[W-1]=1  →  COPY &amp; W++</text>
+    <text x="675" y="40" text-anchor="middle" fill="#888" font-size="11">arr[W]=arr[R], then W advances. Unique!</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════
+       STEP 3 — R=3: arr[R]==arr[W-1], skip
+       ════════════════════════════════════════════ -->
+  <g transform="translate(0, 260)">
+    <text x="52" y="32" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">3</text>
+
+    <!-- index 0 -->
+    <rect x="115" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="139" y="33" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+    <text x="139" y="6" text-anchor="middle" fill="#666" font-size="9">0</text>
+
+    <!-- index 1 — value 2 (written) -->
+    <rect x="169" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="193" y="33" text-anchor="middle" fill="#34d399" font-size="16">2</text>
+    <text x="193" y="6" text-anchor="middle" fill="#666" font-size="9">1</text>
+
+    <!-- index 2 — value 2, W pointer -->
+    <rect x="223" y="8" width="48" height="40" rx="6" fill="#1a1f3a" stroke="#5b6abf" stroke-width="2"/>
+    <text x="247" y="33" text-anchor="middle" fill="#e0e0e0" font-size="16">2</text>
+    <text x="247" y="6" text-anchor="middle" fill="#666" font-size="9">2</text>
+    <text x="247" y="62" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">W</text>
+    <line x1="247" y1="48" x2="247" y2="55" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+    <!-- index 3 — value 2, R pointer — SKIP (red) -->
+    <rect x="277" y="8" width="48" height="40" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="2"/>
+    <text x="301" y="33" text-anchor="middle" fill="#f87171" font-size="16">2</text>
+    <text x="301" y="6" text-anchor="middle" fill="#666" font-size="9">3</text>
+    <text x="301" y="62" text-anchor="middle" fill="#f87171" font-size="11" font-weight="bold">R</text>
+    <line x1="301" y1="48" x2="301" y2="55" stroke="#f87171" stroke-width="1.5" marker-end="url(#arrowRed)"/>
+
+    <!-- index 4 -->
+    <rect x="331" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="355" y="33" text-anchor="middle" fill="#888" font-size="16">3</text>
+    <text x="355" y="6" text-anchor="middle" fill="#666" font-size="9">4</text>
+
+    <!-- Action -->
+    <rect x="490" y="6" width="370" height="42" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="1"/>
+    <text x="675" y="23" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold">arr[R]=2 == arr[W-1]=2  →  SKIP</text>
+    <text x="675" y="40" text-anchor="middle" fill="#888" font-size="11">R advances, W stays. Duplicate found.</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════
+       STEP 4 — R=4: arr[R]!=arr[W-1], copy
+       ════════════════════════════════════════════ -->
+  <g transform="translate(0, 340)">
+    <text x="52" y="32" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">4</text>
+
+    <!-- index 0 -->
+    <rect x="115" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="139" y="33" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+    <text x="139" y="6" text-anchor="middle" fill="#666" font-size="9">0</text>
+
+    <!-- index 1 -->
+    <rect x="169" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="193" y="33" text-anchor="middle" fill="#34d399" font-size="16">2</text>
+    <text x="193" y="6" text-anchor="middle" fill="#666" font-size="9">1</text>
+
+    <!-- index 2 — value 2, W pointer -->
+    <rect x="223" y="8" width="48" height="40" rx="6" fill="#1a1f3a" stroke="#5b6abf" stroke-width="2"/>
+    <text x="247" y="33" text-anchor="middle" fill="#e0e0e0" font-size="16">2</text>
+    <text x="247" y="6" text-anchor="middle" fill="#666" font-size="9">2</text>
+    <text x="247" y="62" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">W</text>
+    <line x1="247" y1="48" x2="247" y2="55" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+    <!-- index 3 -->
+    <rect x="277" y="8" width="48" height="40" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="301" y="33" text-anchor="middle" fill="#888" font-size="16">2</text>
+    <text x="301" y="6" text-anchor="middle" fill="#666" font-size="9">3</text>
+
+    <!-- index 4 — value 3, R pointer — COPY (green) -->
+    <rect x="331" y="8" width="48" height="40" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+    <text x="355" y="33" text-anchor="middle" fill="#34d399" font-size="16">3</text>
+    <text x="355" y="6" text-anchor="middle" fill="#666" font-size="9">4</text>
+    <text x="355" y="62" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">R</text>
+    <line x1="355" y1="48" x2="355" y2="55" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+    <!-- copy arc from R to W -->
+    <path d="M355,8 C355,-14 247,-14 247,8" fill="none" stroke="#34d399" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowGreen)"/>
+
+    <!-- Action -->
+    <rect x="490" y="6" width="370" height="42" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+    <text x="675" y="23" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">arr[R]=3 != arr[W-1]=2  →  COPY &amp; W++</text>
+    <text x="675" y="40" text-anchor="middle" fill="#888" font-size="11">arr[W]=arr[R], then W advances. Unique!</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════
+       FINAL RESULT
+       ════════════════════════════════════════════ -->
+  <g transform="translate(0, 418)">
+    <text x="52" y="20" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">DONE</text>
+
+    <!-- Result boxes — first 3 highlighted green, last 2 dim -->
+    <rect x="115" y="2" width="48" height="36" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+    <text x="139" y="25" text-anchor="middle" fill="#34d399" font-size="15" font-weight="bold">1</text>
+
+    <rect x="169" y="2" width="48" height="36" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+    <text x="193" y="25" text-anchor="middle" fill="#34d399" font-size="15" font-weight="bold">2</text>
+
+    <rect x="223" y="2" width="48" height="36" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+    <text x="247" y="25" text-anchor="middle" fill="#34d399" font-size="15" font-weight="bold">3</text>
+
+    <!-- ignored tail -->
+    <rect x="277" y="2" width="48" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1" opacity="0.5"/>
+    <text x="301" y="25" text-anchor="middle" fill="#444" font-size="15">_</text>
+
+    <rect x="331" y="2" width="48" height="36" rx="6" fill="#111" stroke="#333" stroke-width="1" opacity="0.5"/>
+    <text x="355" y="25" text-anchor="middle" fill="#444" font-size="15">_</text>
+
+    <!-- result label -->
+    <text x="410" y="22" fill="#34d399" font-size="13" font-weight="bold">[1, 2, 3, _, _]  — length = 3</text>
+  </g>
+
+  <!-- ════════════════════════════════════════════
+       LEGEND + SUMMARY bottom bar
+       ════════════════════════════════════════════ -->
+  <rect x="38" y="462" width="824" height="1" fill="#222"/>
+
+  <!-- Legend row -->
+  <!-- Read pointer swatch -->
+  <rect x="490" y="100" width="12" height="12" rx="3" fill="#2e1a1a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="508" y="111" fill="#f87171" font-size="10">R — reads every element</text>
+
+  <!-- Write pointer swatch -->
+  <rect x="490" y="118" width="12" height="12" rx="3" fill="#1a1f3a" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="508" y="129" fill="#5b6abf" font-size="10">W — advances only for unique values</text>
+
+  <!-- Done swatch -->
+  <rect x="490" y="136" width="12" height="12" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="508" y="147" fill="#34d399" font-size="10">Written / kept</text>
+
+  <!-- ── Summary box ── -->
+  <rect x="38" y="432" width="824" height="44" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="450" y="450" text-anchor="middle" fill="#888" font-size="11">Read scans everything  |  Write advances only for keepers  |  write ≤ read always</text>
+  <text x="450" y="468" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">Read/Write pointer pattern: O(n) in-place modification without extra space</text>
+
+  <!-- ── Arrow marker defs ── -->
+  <defs>
+    <marker id="arrowBlue" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#5b6abf"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#f87171"/>
+    </marker>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L8,3 z" fill="#34d399"/>
+    </marker>
+  </defs>
+</svg>

@@ -1,0 +1,159 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" fill="#0a0a0a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" fill="#a78bfa" font-size="17" font-weight="bold" text-anchor="middle">Anagram Check — Frequency Counting</text>
+
+  <!-- Section divider -->
+  <line x1="450" y1="50" x2="450" y2="460" stroke="#222" stroke-width="1.5"/>
+
+  <!-- LEFT: Character Frequency -->
+  <text x="220" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Valid Anagram — "anagram" vs "nagaram"</text>
+
+  <!-- s1 = "anagram" -->
+  <text x="45" y="90" fill="#fbbf24" font-size="12" font-weight="bold">s1 = "anagram"</text>
+  <g>
+    <rect x="44" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="62" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="84" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="102" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">n</text>
+    <rect x="124" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="142" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="164" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="182" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">g</text>
+    <rect x="204" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="222" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">r</text>
+    <rect x="244" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="262" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="284" y="98" width="36" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="302" y="120" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">m</text>
+  </g>
+
+  <!-- arrows down to freq table -->
+  <line x1="62" y1="134" x2="62" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="102" y1="134" x2="102" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="142" y1="134" x2="142" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="182" y1="134" x2="182" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="222" y1="134" x2="222" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="262" y1="134" x2="262" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="302" y1="134" x2="302" y2="150" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+
+  <!-- Frequency table s1 -->
+  <text x="45" y="165" fill="#64748b" font-size="10">count[s1]:</text>
+  <rect x="44" y="170" width="300" height="36" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="62" y="193" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">a:3</text>
+  <text x="102" y="193" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">n:1</text>
+  <text x="142" y="193" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">g:1</text>
+  <text x="182" y="193" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">r:1</text>
+  <text x="222" y="193" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">m:1</text>
+  <text x="302" y="193" fill="#64748b" font-size="12" text-anchor="middle">...</text>
+
+  <!-- s2 = "nagaram" -->
+  <text x="45" y="226" fill="#a78bfa" font-size="12" font-weight="bold">s2 = "nagaram"</text>
+  <g>
+    <rect x="44" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="62" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">n</text>
+    <rect x="84" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="102" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="124" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="142" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">g</text>
+    <rect x="164" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="182" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="204" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="222" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">r</text>
+    <rect x="244" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="262" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="284" y="234" width="36" height="36" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="302" y="256" fill="#f1f5f9" font-size="15" font-weight="bold" text-anchor="middle">m</text>
+  </g>
+
+  <!-- Decrement arrows -->
+  <text x="45" y="298" fill="#64748b" font-size="10">count[s2] (decrement):</text>
+  <rect x="44" y="304" width="300" height="36" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="62" y="327" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">a:0</text>
+  <text x="102" y="327" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">n:0</text>
+  <text x="142" y="327" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">g:0</text>
+  <text x="182" y="327" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">r:0</text>
+  <text x="222" y="327" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">m:0</text>
+  <text x="302" y="327" fill="#64748b" font-size="12" text-anchor="middle">...</text>
+
+  <!-- Result -->
+  <rect x="44" y="350" width="300" height="34" rx="8" fill="#0d2d1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="194" y="372" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">All zeros → ANAGRAM ✓</text>
+
+  <!-- Pseudocode -->
+  <rect x="44" y="394" width="300" height="66" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="58" y="411" fill="#5b6abf" font-size="10" font-weight="bold">count = defaultdict(int)</text>
+  <text x="58" y="425" fill="#64748b" font-size="10">for c in s1: count[c] += 1</text>
+  <text x="58" y="439" fill="#64748b" font-size="10">for c in s2: count[c] -= 1</text>
+  <text x="58" y="453" fill="#34d399" font-size="10">return all(v == 0 for v in count.values())</text>
+
+  <!-- RIGHT: Group Anagrams -->
+  <text x="685" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Group Anagrams — sorted key</text>
+
+  <!-- Input words -->
+  <text x="470" y="88" fill="#64748b" font-size="11">Input: ["eat","tea","tan","ate","nat","bat"]</text>
+
+  <!-- Sorted key mapping -->
+  <g>
+    <!-- eat -->
+    <rect x="470" y="100" width="60" height="30" rx="5" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="500" y="119" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">eat</text>
+    <line x1="530" y1="115" x2="560" y2="115" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="560" y="100" width="60" height="30" rx="5" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="590" y="119" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">aet</text>
+    <text x="640" y="119" fill="#64748b" font-size="11">→ key</text>
+
+    <!-- tea -->
+    <rect x="470" y="138" width="60" height="30" rx="5" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="500" y="157" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">tea</text>
+    <line x1="530" y1="153" x2="560" y2="153" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="560" y="138" width="60" height="30" rx="5" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="590" y="157" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">aet</text>
+    <text x="640" y="157" fill="#64748b" font-size="11">→ key</text>
+
+    <!-- ate -->
+    <rect x="470" y="176" width="60" height="30" rx="5" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="500" y="195" fill="#fbbf24" font-size="13" font-weight="bold" text-anchor="middle">ate</text>
+    <line x1="530" y1="191" x2="560" y2="191" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="560" y="176" width="60" height="30" rx="5" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="590" y="195" fill="#34d399" font-size="13" font-weight="bold" text-anchor="middle">aet</text>
+    <text x="640" y="195" fill="#64748b" font-size="11">→ key</text>
+
+    <!-- tan -->
+    <rect x="470" y="214" width="60" height="30" rx="5" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="500" y="233" fill="#a78bfa" font-size="13" font-weight="bold" text-anchor="middle">tan</text>
+    <line x1="530" y1="229" x2="560" y2="229" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="560" y="214" width="60" height="30" rx="5" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+    <text x="590" y="233" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">ant</text>
+    <text x="640" y="233" fill="#64748b" font-size="11">→ key</text>
+
+    <!-- nat -->
+    <rect x="470" y="252" width="60" height="30" rx="5" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="500" y="271" fill="#a78bfa" font-size="13" font-weight="bold" text-anchor="middle">nat</text>
+    <line x1="530" y1="267" x2="560" y2="267" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="560" y="252" width="60" height="30" rx="5" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+    <text x="590" y="271" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">ant</text>
+    <text x="640" y="271" fill="#64748b" font-size="11">→ key</text>
+
+    <!-- bat -->
+    <rect x="470" y="290" width="60" height="30" rx="5" fill="#111" stroke="#f87171" stroke-width="1.5"/>
+    <text x="500" y="309" fill="#f87171" font-size="13" font-weight="bold" text-anchor="middle">bat</text>
+    <line x1="530" y1="305" x2="560" y2="305" stroke="#64748b" stroke-width="1" stroke-dasharray="3,2"/>
+    <rect x="560" y="290" width="60" height="30" rx="5" fill="#111" stroke="#f87171" stroke-width="1.5"/>
+    <text x="590" y="309" fill="#f87171" font-size="13" font-weight="bold" text-anchor="middle">abt</text>
+    <text x="640" y="309" fill="#64748b" font-size="11">→ key</text>
+  </g>
+
+  <!-- Result groups -->
+  <text x="470" y="340" fill="#64748b" font-size="11">HashMap groups:</text>
+  <rect x="470" y="348" width="380" height="34" rx="6" fill="#0d2d1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="480" y="369" fill="#fbbf24" font-size="12" font-weight="bold">"aet":</text>
+  <text x="526" y="369" fill="#34d399" font-size="12">[eat, tea, ate]</text>
+  <rect x="470" y="388" width="380" height="34" rx="6" fill="#0d1a2d" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="480" y="409" fill="#a78bfa" font-size="12" font-weight="bold">"ant":</text>
+  <text x="524" y="409" fill="#5b6abf" font-size="12">[tan, nat]</text>
+  <rect x="470" y="428" width="380" height="34" rx="6" fill="#2d0d0d" stroke="#f87171" stroke-width="1.5"/>
+  <text x="480" y="449" fill="#f87171" font-size="12" font-weight="bold">"abt":</text>
+  <text x="524" y="449" fill="#f87171" font-size="12">[bat]</text>
+</svg>

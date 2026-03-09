@@ -1,0 +1,170 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      text { font-family: 'SF Mono', Menlo, monospace; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" fill="#5b6abf" font-size="16" font-weight="bold">Augmented Stack Design Patterns</text>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- LEFT SECTION: Min Stack (LC 155)            -->
+  <!-- ════════════════════════════════════════════ -->
+  <rect x="20" y="48" width="420" height="400" rx="10" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="230" y="72" text-anchor="middle" fill="#5b6abf" font-size="13" font-weight="bold">Min Stack (155)</text>
+
+  <!-- Push phase label -->
+  <text x="75" y="98" fill="#888" font-size="10">PUSH 5, 3, 7, 1</text>
+
+  <!-- Stack after all pushes: bottom to top = (5,5), (3,3), (7,3), (1,1) -->
+  <!-- Draw stack frame -->
+  <rect x="50" y="108" width="150" height="160" rx="6" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="125" y="126" text-anchor="middle" fill="#666" font-size="9">TOP</text>
+
+  <!-- Entry 4 (top): (1, 1) -->
+  <rect x="60" y="132" width="130" height="28" rx="4" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1"/>
+  <text x="90" y="150" text-anchor="middle" fill="#e0e0e0" font-size="11">val=1</text>
+  <text x="155" y="150" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">min=1</text>
+
+  <!-- Entry 3: (7, 3) -->
+  <rect x="60" y="164" width="130" height="28" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+  <text x="90" y="182" text-anchor="middle" fill="#e0e0e0" font-size="11">val=7</text>
+  <text x="155" y="182" text-anchor="middle" fill="#fbbf24" font-size="11">min=3</text>
+
+  <!-- Entry 2: (3, 3) -->
+  <rect x="60" y="196" width="130" height="28" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+  <text x="90" y="214" text-anchor="middle" fill="#e0e0e0" font-size="11">val=3</text>
+  <text x="155" y="214" text-anchor="middle" fill="#fbbf24" font-size="11">min=3</text>
+
+  <!-- Entry 1 (bottom): (5, 5) -->
+  <rect x="60" y="228" width="130" height="28" rx="4" fill="#1a1a2e" stroke="#333" stroke-width="1"/>
+  <text x="90" y="246" text-anchor="middle" fill="#e0e0e0" font-size="11">val=5</text>
+  <text x="155" y="246" text-anchor="middle" fill="#fbbf24" font-size="11">min=5</text>
+
+  <!-- Arrow showing pop -->
+  <text x="215" y="98" fill="#888" font-size="10">POP 1, POP 7</text>
+
+  <!-- Pop arrow from top entry -->
+  <line x1="195" y1="146" x2="225" y2="146" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <polygon points="225,143 232,146 225,149" fill="#f87171"/>
+  <text x="238" y="140" fill="#f87171" font-size="9">pop()</text>
+  <text x="238" y="152" fill="#f87171" font-size="9">returns 1</text>
+
+  <!-- Pop arrow from second entry -->
+  <line x1="195" y1="178" x2="225" y2="178" stroke="#f87171" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <polygon points="225,175 232,178 225,181" fill="#f87171"/>
+  <text x="238" y="172" fill="#f87171" font-size="9">pop()</text>
+  <text x="238" y="184" fill="#f87171" font-size="9">returns 7</text>
+
+  <!-- Stack after pops -->
+  <rect x="250" y="210" width="170" height="100" rx="6" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="335" y="228" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">AFTER POPS</text>
+
+  <!-- Entry 2: (3, 3) -->
+  <rect x="260" y="236" width="150" height="28" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="300" y="254" text-anchor="middle" fill="#e0e0e0" font-size="11">val=3</text>
+  <text x="370" y="254" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">min=3</text>
+
+  <!-- Entry 1: (5, 5) -->
+  <rect x="260" y="268" width="150" height="28" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="300" y="286" text-anchor="middle" fill="#e0e0e0" font-size="11">val=5</text>
+  <text x="370" y="286" text-anchor="middle" fill="#fbbf24" font-size="11">min=5</text>
+
+  <!-- Restore arrow -->
+  <path d="M 285 195 C 270 200, 260 205, 275 220" fill="none" stroke="#34d399" stroke-width="1.5"/>
+  <polygon points="277,218 275,225 270,218" fill="#34d399"/>
+  <text x="245" y="200" fill="#34d399" font-size="9">min restores</text>
+  <text x="255" y="210" fill="#34d399" font-size="9">to 3!</text>
+
+  <!-- Insight box -->
+  <rect x="40" y="330" width="385" height="50" rx="6" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="232" y="352" text-anchor="middle" fill="#a78bfa" font-size="10">Each entry = snapshot of minimum at that point</text>
+  <text x="232" y="368" text-anchor="middle" fill="#666" font-size="9">getMin() is always O(1) -- just read top.min</text>
+
+  <!-- Key box -->
+  <rect x="40" y="390" width="385" height="46" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="55" y="408" fill="#fbbf24" font-size="9">min field</text>
+  <text x="110" y="408" fill="#666" font-size="9">= min(val, prev_top.min)</text>
+  <text x="55" y="424" fill="#34d399" font-size="9">On pop</text>
+  <text x="100" y="424" fill="#666" font-size="9">= previous min is already stored below</text>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- RIGHT SECTION: Frequency Stack (LC 895)     -->
+  <!-- ════════════════════════════════════════════ -->
+  <rect x="460" y="48" width="420" height="400" rx="10" fill="#111" stroke="#222" stroke-width="1.5"/>
+  <text x="670" y="72" text-anchor="middle" fill="#5b6abf" font-size="13" font-weight="bold">Frequency Stack (895)</text>
+
+  <text x="480" y="96" fill="#888" font-size="10">PUSH: 5, 7, 5, 7, 4, 5</text>
+
+  <!-- Frequency count box -->
+  <rect x="480" y="106" width="180" height="80" rx="6" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="570" y="122" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">freq count</text>
+  <text x="500" y="142" fill="#e0e0e0" font-size="11">5 -> 3</text>
+  <rect x="548" y="131" width="18" height="14" rx="2" fill="#f87171" opacity="0.3"/>
+  <text x="557" y="142" text-anchor="middle" fill="#f87171" font-size="10" font-weight="bold">3</text>
+  <text x="500" y="160" fill="#e0e0e0" font-size="11">7 -> 2</text>
+  <text x="500" y="178" fill="#e0e0e0" font-size="11">4 -> 1</text>
+
+  <!-- maxFreq indicator -->
+  <rect x="680" y="106" width="180" height="36" rx="6" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="770" y="120" text-anchor="middle" fill="#888" font-size="9">maxFreq</text>
+  <text x="770" y="136" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">3</text>
+
+  <!-- Group stacks -->
+  <text x="480" y="208" fill="#a78bfa" font-size="10" font-weight="bold">group[freq] -> stack</text>
+
+  <!-- group[1] = [5, 7, 4] -->
+  <rect x="480" y="218" width="180" height="52" rx="6" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="490" y="236" fill="#34d399" font-size="10" font-weight="bold">group[1]</text>
+  <rect x="560" y="224" width="28" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="574" y="239" text-anchor="middle" fill="#34d399" font-size="11">5</text>
+  <rect x="594" y="224" width="28" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="608" y="239" text-anchor="middle" fill="#34d399" font-size="11">7</text>
+  <rect x="628" y="224" width="28" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="642" y="239" text-anchor="middle" fill="#34d399" font-size="11">4</text>
+  <text x="490" y="262" fill="#666" font-size="8">items appearing at least 1x</text>
+
+  <!-- group[2] = [5, 7] -->
+  <rect x="480" y="278" width="180" height="52" rx="6" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="490" y="296" fill="#fbbf24" font-size="10" font-weight="bold">group[2]</text>
+  <rect x="560" y="284" width="28" height="22" rx="3" fill="#2e2a1a" stroke="#fbbf24" stroke-width="1"/>
+  <text x="574" y="299" text-anchor="middle" fill="#fbbf24" font-size="11">5</text>
+  <rect x="594" y="284" width="28" height="22" rx="3" fill="#2e2a1a" stroke="#fbbf24" stroke-width="1"/>
+  <text x="608" y="299" text-anchor="middle" fill="#fbbf24" font-size="11">7</text>
+  <text x="490" y="322" fill="#666" font-size="8">items appearing at least 2x</text>
+
+  <!-- group[3] = [5] -->
+  <rect x="480" y="338" width="180" height="52" rx="6" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="490" y="356" fill="#f87171" font-size="10" font-weight="bold">group[3]</text>
+  <rect x="560" y="344" width="28" height="22" rx="3" fill="#2e1a1a" stroke="#f87171" stroke-width="1"/>
+  <text x="574" y="359" text-anchor="middle" fill="#f87171" font-size="11">5</text>
+  <text x="490" y="382" fill="#666" font-size="8">items appearing at least 3x</text>
+
+  <!-- Pop indicator -->
+  <rect x="680" y="155" width="180" height="70" rx="6" fill="#0a0a0a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="770" y="172" text-anchor="middle" fill="#f87171" font-size="10" font-weight="bold">pop()</text>
+  <text x="770" y="192" text-anchor="middle" fill="#e0e0e0" font-size="11">returns 5</text>
+  <text x="770" y="208" text-anchor="middle" fill="#666" font-size="9">most frequent, most recent</text>
+
+  <!-- Arrow from maxFreq to group[3] -->
+  <line x1="770" y1="225" x2="770" y2="350" stroke="#f87171" stroke-width="1" stroke-dasharray="4,3"/>
+  <line x1="770" y1="350" x2="665" y2="350" stroke="#f87171" stroke-width="1.5"/>
+  <polygon points="668,347 660,350 668,353" fill="#f87171"/>
+  <text x="700" y="344" fill="#f87171" font-size="8">pop from</text>
+  <text x="700" y="354" fill="#f87171" font-size="8">group[maxFreq]</text>
+
+  <!-- Insight box -->
+  <rect x="480" y="398" width="385" height="38" rx="6" fill="#1a1a2e" stroke="#5b6abf" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="672" y="416" text-anchor="middle" fill="#a78bfa" font-size="9">Push: add to group[1..freq], update maxFreq</text>
+  <text x="672" y="430" text-anchor="middle" fill="#a78bfa" font-size="9">Pop: remove from group[maxFreq], decrement if empty</text>
+
+  <!-- ════════════════════════════════════════════ -->
+  <!-- BOTTOM LEGEND                               -->
+  <!-- ════════════════════════════════════════════ -->
+  <rect x="20" y="458" width="860" height="32" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="450" y="479" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">Augmented stacks: store metadata alongside values for O(1) queries</text>
+</svg>

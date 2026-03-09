@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 490">
+  <rect width="900" height="490" rx="12" fill="#0a0a0a"/>
+
+  <text x="450" y="32" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="16" font-weight="bold" text-anchor="middle">Interval Merging — Sort by Start, Extend or Append</text>
+
+  <!-- Timeline -->
+  <line x1="60" y1="70" x2="840" y2="70" stroke="#333" stroke-width="1"/>
+  <!-- Tick marks -->
+  <text x="60" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">0</text>
+  <text x="140" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">2</text>
+  <text x="220" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">4</text>
+  <text x="300" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">6</text>
+  <text x="380" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">8</text>
+  <text x="460" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">10</text>
+  <text x="620" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">15</text>
+  <text x="740" y="65" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">18</text>
+
+  <!-- Input intervals -->
+  <text x="40" y="100" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="11">Input</text>
+
+  <!-- [1,3] -->
+  <rect x="100" y="85" width="80" height="18" rx="4" fill="#5b6abf" fill-opacity="0.3" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="140" y="98" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">[1,3]</text>
+
+  <!-- [2,6] -->
+  <rect x="140" y="108" width="160" height="18" rx="4" fill="#a78bfa" fill-opacity="0.3" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="220" y="121" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">[2,6]</text>
+
+  <!-- [8,10] -->
+  <rect x="380" y="85" width="80" height="18" rx="4" fill="#5b6abf" fill-opacity="0.3" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="420" y="98" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">[8,10]</text>
+
+  <!-- [15,18] -->
+  <rect x="620" y="85" width="120" height="18" rx="4" fill="#5b6abf" fill-opacity="0.3" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="680" y="98" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">[15,18]</text>
+
+  <!-- Overlap indicator -->
+  <rect x="140" y="82" width="40" height="48" rx="0" fill="#fbbf24" fill-opacity="0.1" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,2"/>
+  <text x="160" y="145" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">overlap!</text>
+
+  <!-- Merged result -->
+  <text x="40" y="175" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">Merged</text>
+
+  <rect x="100" y="162" width="200" height="22" rx="4" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="2"/>
+  <text x="200" y="178" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">[1,6]</text>
+
+  <rect x="380" y="162" width="80" height="22" rx="4" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="2"/>
+  <text x="420" y="178" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">[8,10]</text>
+
+  <rect x="620" y="162" width="120" height="22" rx="4" fill="#34d399" fill-opacity="0.2" stroke="#34d399" stroke-width="2"/>
+  <text x="680" y="178" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">[15,18]</text>
+
+  <!-- Algorithm steps -->
+  <line x1="30" y1="200" x2="870" y2="200" stroke="#222" stroke-width="1"/>
+
+  <text x="450" y="225" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" font-weight="bold" text-anchor="middle">Algorithm: Sort by Start → Compare with Last Merged</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="240" width="390" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="60" y="260" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Step 1: [1,3]</text>
+  <text x="60" y="278" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">merged = [[1,3]] (first interval, just add)</text>
+
+  <!-- Step 2 -->
+  <rect x="40" y="296" width="390" height="50" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="60" y="316" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Step 2: [2,6] — 2 &lt;= 3? YES → overlap!</text>
+  <text x="60" y="334" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Extend: end = max(3,6) = 6 → merged = [[1,6]]</text>
+
+  <!-- Step 3 -->
+  <rect x="40" y="352" width="390" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="60" y="372" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Step 3: [8,10] — 8 &lt;= 6? NO → new interval</text>
+  <text x="60" y="390" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">merged = [[1,6], [8,10]]</text>
+
+  <!-- Step 4 -->
+  <rect x="40" y="408" width="390" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="60" y="428" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Step 4: [15,18] — 15 &lt;= 10? NO → new interval</text>
+  <text x="60" y="446" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">merged = [[1,6], [8,10], [15,18]]</text>
+
+  <!-- Decision flowchart -->
+  <rect x="480" y="240" width="380" height="220" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="670" y="265" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">Decision Logic</text>
+
+  <!-- Diamond -->
+  <polygon points="670,285 750,310 670,335 590,310" fill="#0a0a0a" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="670" y="313" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">start &lt;= end?</text>
+
+  <!-- YES branch -->
+  <line x1="590" y1="310" x2="540" y2="310" stroke="#34d399" stroke-width="1.5"/>
+  <text x="555" y="305" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">YES</text>
+  <rect x="500" y="340" width="130" height="35" rx="4" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="565" y="355" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">Extend end to</text>
+  <text x="565" y="368" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">max(end, newEnd)</text>
+  <line x1="540" y1="310" x2="540" y2="340" stroke="#34d399" stroke-width="1.5"/>
+
+  <!-- NO branch -->
+  <line x1="750" y1="310" x2="800" y2="310" stroke="#f87171" stroke-width="1.5"/>
+  <text x="780" y="305" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9">NO</text>
+  <rect x="730" y="340" width="110" height="35" rx="4" fill="#0a0a0a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="785" y="355" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">Append new</text>
+  <text x="785" y="368" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">interval</text>
+  <line x1="800" y1="310" x2="800" y2="340" stroke="#f87171" stroke-width="1.5"/>
+
+  <!-- Complexity -->
+  <text x="670" y="420" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">O(n log n) sort + O(n) scan</text>
+  <text x="670" y="440" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">= O(n log n) total</text>
+</svg>

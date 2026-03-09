@@ -1,0 +1,157 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" fill="#0a0a0a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="36" fill="#a78bfa" font-size="17" font-weight="bold" text-anchor="middle">String Matching — Naive Search &amp; Rotate Trick</text>
+
+  <!-- Section divider -->
+  <line x1="450" y1="50" x2="450" y2="460" stroke="#222" stroke-width="1.5"/>
+
+  <!-- LEFT: Naive substring matching -->
+  <text x="220" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Naive Substring Search — "abc" in "xabcy"</text>
+
+  <text x="44" y="88" fill="#64748b" font-size="11">text = "xabcy"   pattern = "abc"</text>
+
+  <!-- Attempt 1: i=0, mismatch at x!=a -->
+  <text x="44" y="106" fill="#64748b" font-size="10">Attempt i=0:  align pattern at index 0</text>
+  <g>
+    <rect x="44" y="112" width="34" height="32" rx="5" fill="#2d0d0d" stroke="#f87171" stroke-width="1.5"/>
+    <text x="61" y="132" fill="#f87171" font-size="14" font-weight="bold" text-anchor="middle">x</text>
+    <rect x="82" y="112" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="99" y="132" fill="#f1f5f9" font-size="14" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="120" y="112" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="137" y="132" fill="#f1f5f9" font-size="14" font-weight="bold" text-anchor="middle">b</text>
+    <rect x="158" y="112" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="175" y="132" fill="#f1f5f9" font-size="14" font-weight="bold" text-anchor="middle">c</text>
+    <rect x="196" y="112" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="213" y="132" fill="#f1f5f9" font-size="14" font-weight="bold" text-anchor="middle">y</text>
+  </g>
+  <rect x="44" y="148" width="34" height="32" rx="5" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="61" y="168" fill="#f87171" font-size="14" font-weight="bold" text-anchor="middle">a</text>
+  <rect x="82" y="148" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="99" y="168" fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle">b</text>
+  <rect x="120" y="148" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="137" y="168" fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle">c</text>
+  <text x="170" y="164" fill="#f87171" font-size="10">x ≠ a  → shift</text>
+
+  <!-- Attempt 2: i=1, match -->
+  <text x="44" y="196" fill="#64748b" font-size="10">Attempt i=1:  align pattern at index 1</text>
+  <g>
+    <rect x="44" y="202" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="61" y="222" fill="#64748b" font-size="14" font-weight="bold" text-anchor="middle">x</text>
+    <rect x="82" y="202" width="34" height="32" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="99" y="222" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">a</text>
+    <rect x="120" y="202" width="34" height="32" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="137" y="222" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">b</text>
+    <rect x="158" y="202" width="34" height="32" rx="5" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="175" y="222" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">c</text>
+    <rect x="196" y="202" width="34" height="32" rx="5" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="213" y="222" fill="#f1f5f9" font-size="14" font-weight="bold" text-anchor="middle">y</text>
+  </g>
+  <rect x="82" y="238" width="34" height="32" rx="5" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="99" y="258" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">a</text>
+  <rect x="120" y="238" width="34" height="32" rx="5" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="137" y="258" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">b</text>
+  <rect x="158" y="238" width="34" height="32" rx="5" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="175" y="258" fill="#34d399" font-size="14" font-weight="bold" text-anchor="middle">c</text>
+  <text x="210" y="258" fill="#34d399" font-size="10">ALL match!</text>
+
+  <!-- Result naive -->
+  <rect x="44" y="282" width="360" height="30" rx="6" fill="#0d2d1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="224" y="302" fill="#34d399" font-size="12" font-weight="bold" text-anchor="middle">Found at index 1  ✓</text>
+
+  <!-- Naive complexity -->
+  <rect x="44" y="322" width="360" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="58" y="340" fill="#5b6abf" font-size="11" font-weight="bold">Naive algorithm:</text>
+  <text x="58" y="355" fill="#64748b" font-size="10">for i in range(len(text) - len(pattern) + 1):</text>
+  <text x="58" y="368" fill="#64748b" font-size="10">  if text[i:i+len(pattern)] == pattern: return i</text>
+
+  <!-- Complexity note -->
+  <rect x="44" y="382" width="360" height="36" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+  <text x="58" y="397" fill="#fbbf24" font-size="10" font-weight="bold">Time: O(n*m) worst case</text>
+  <text x="58" y="411" fill="#64748b" font-size="10">KMP / Z-function reduces to O(n+m)</text>
+
+  <!-- Python shortcut -->
+  <rect x="44" y="428" width="360" height="30" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1"/>
+  <text x="58" y="443" fill="#a78bfa" font-size="10" font-weight="bold">Python:</text>
+  <text x="104" y="443" fill="#64748b" font-size="10">return pattern in text  (uses optimized C)</text>
+  <text x="58" y="455" fill="#64748b" font-size="9">or: text.find(pattern) != -1</text>
+
+  <!-- RIGHT: Rotate String trick -->
+  <text x="685" y="66" fill="#5b6abf" font-size="13" font-weight="bold" text-anchor="middle">Rotate String — s+s contains all rotations</text>
+
+  <text x="470" y="88" fill="#64748b" font-size="11">s = "abc",  goal = "cab"  →  Is goal a rotation of s?</text>
+
+  <!-- s+s visualization -->
+  <text x="470" y="106" fill="#64748b" font-size="10">Build  s + s  =  "abcabc"</text>
+
+  <!-- s+s boxes -->
+  <g>
+    <rect x="470" y="112" width="38" height="38" rx="5" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="489" y="135" fill="#fbbf24" font-size="16" font-weight="bold" text-anchor="middle">a</text>
+    <text x="489" y="158" fill="#64748b" font-size="9" text-anchor="middle">0</text>
+    <rect x="512" y="112" width="38" height="38" rx="5" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="531" y="135" fill="#fbbf24" font-size="16" font-weight="bold" text-anchor="middle">b</text>
+    <text x="531" y="158" fill="#64748b" font-size="9" text-anchor="middle">1</text>
+    <rect x="554" y="112" width="38" height="38" rx="5" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="573" y="135" fill="#fbbf24" font-size="16" font-weight="bold" text-anchor="middle">c</text>
+    <text x="573" y="158" fill="#64748b" font-size="9" text-anchor="middle">2</text>
+
+    <!-- divider -->
+    <line x1="594" y1="108" x2="594" y2="154" stroke="#333" stroke-width="1.5" stroke-dasharray="4,2"/>
+
+    <rect x="596" y="112" width="38" height="38" rx="5" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="615" y="135" fill="#a78bfa" font-size="16" font-weight="bold" text-anchor="middle">a</text>
+    <text x="615" y="158" fill="#64748b" font-size="9" text-anchor="middle">3</text>
+    <rect x="638" y="112" width="38" height="38" rx="5" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="657" y="135" fill="#a78bfa" font-size="16" font-weight="bold" text-anchor="middle">b</text>
+    <text x="657" y="158" fill="#64748b" font-size="9" text-anchor="middle">4</text>
+    <rect x="680" y="112" width="38" height="38" rx="5" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="699" y="135" fill="#a78bfa" font-size="16" font-weight="bold" text-anchor="middle">c</text>
+    <text x="699" y="158" fill="#64748b" font-size="9" text-anchor="middle">5</text>
+  </g>
+
+  <!-- All rotations visible -->
+  <text x="470" y="174" fill="#64748b" font-size="10">Every rotation of "abc" appears as a window of length 3:</text>
+
+  <!-- Rotation 0: abc at 0-2 -->
+  <rect x="470" y="182" width="290" height="28" rx="5" fill="#111" stroke="#34d399" stroke-width="1"/>
+  <text x="484" y="200" fill="#64748b" font-size="10">window[0:3] =</text>
+  <text x="574" y="200" fill="#34d399" font-size="12" font-weight="bold">"abc"</text>
+  <text x="624" y="200" fill="#64748b" font-size="10">(rotation 0)</text>
+
+  <!-- Rotation 1: bca at 1-3 -->
+  <rect x="470" y="214" width="290" height="28" rx="5" fill="#111" stroke="#34d399" stroke-width="1"/>
+  <text x="484" y="232" fill="#64748b" font-size="10">window[1:4] =</text>
+  <text x="574" y="232" fill="#34d399" font-size="12" font-weight="bold">"bca"</text>
+  <text x="624" y="232" fill="#64748b" font-size="10">(rotation 1)</text>
+
+  <!-- Rotation 2: cab at 2-4 — MATCH -->
+  <rect x="470" y="246" width="290" height="28" rx="5" fill="#0d2d1a" stroke="#34d399" stroke-width="2"/>
+  <text x="484" y="264" fill="#64748b" font-size="10">window[2:5] =</text>
+  <text x="574" y="264" fill="#34d399" font-size="12" font-weight="bold">"cab"</text>
+  <text x="624" y="264" fill="#fbbf24" font-size="10">← MATCH! ✓</text>
+
+  <!-- Highlight on the s+s -->
+  <rect x="554" y="110" width="80" height="42" rx="4" fill="none" stroke="#fbbf24" stroke-width="2" stroke-dasharray="5,2"/>
+  <text x="594" y="108" fill="#fbbf24" font-size="9" text-anchor="middle">goal found here</text>
+
+  <!-- Why it works -->
+  <rect x="470" y="286" width="390" height="66" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="484" y="303" fill="#5b6abf" font-size="11" font-weight="bold">Why s+s works:</text>
+  <text x="484" y="319" fill="#64748b" font-size="10">Concatenating s with itself creates a string that</text>
+  <text x="484" y="333" fill="#64748b" font-size="10">contains every rotation as a contiguous substring.</text>
+  <text x="484" y="347" fill="#34d399" font-size="10">len(s+s) = 2n, and there are exactly n rotations.</text>
+
+  <!-- Code -->
+  <rect x="470" y="362" width="390" height="58" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="484" y="380" fill="#5b6abf" font-size="11" font-weight="bold">rotateString(s, goal):</text>
+  <text x="484" y="395" fill="#64748b" font-size="10">if len(s) != len(goal): return False</text>
+  <text x="484" y="409" fill="#34d399" font-size="10">return goal in (s + s)    # O(n) with good string search</text>
+  <text x="484" y="420" fill="#64748b" font-size="9">  # or: (s+s).find(goal) != -1</text>
+
+  <!-- Edge case note -->
+  <rect x="470" y="430" width="390" height="40" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+  <text x="484" y="447" fill="#fbbf24" font-size="10" font-weight="bold">Edge: must check len(s) == len(goal) first!</text>
+  <text x="484" y="463" fill="#64748b" font-size="10">"aaa" in "aaaaaa" → True but len mismatch → return False</text>
+</svg>

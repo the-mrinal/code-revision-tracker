@@ -1,0 +1,149 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      text { font-family: 'SF Mono', Menlo, monospace; fill: #e0e0e0; }
+      .title { font-size: 16px; font-weight: bold; fill: #5b6abf; }
+      .subtitle { font-size: 11px; fill: #888; }
+      .label { font-size: 10px; fill: #ccc; }
+      .label-sm { font-size: 9px; fill: #aaa; }
+    </style>
+    <marker id="arr" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" class="title">Trie (Prefix Tree) — Insert &amp; Search Visualization</text>
+  <text x="450" y="48" text-anchor="middle" class="subtitle">Words: "cat", "car", "card", "care", "app", "apple"</text>
+
+  <!-- Trie Structure -->
+  <!-- Root -->
+  <circle cx="350" cy="90" r="18" fill="#1a1a2e" stroke="#5b6abf" stroke-width="2"/>
+  <text x="350" y="94" text-anchor="middle" class="label" style="fill:#5b6abf;font-weight:bold">root</text>
+
+  <!-- Level 1: c, a -->
+  <line x1="335" y1="108" x2="220" y2="148" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="365" y1="108" x2="500" y2="148" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- c node -->
+  <circle cx="210" cy="160" r="16" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="210" y="164" text-anchor="middle" class="label" style="fill:#34d399;font-weight:bold">c</text>
+
+  <!-- a node (right branch) -->
+  <circle cx="510" cy="160" r="16" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="510" y="164" text-anchor="middle" class="label" style="fill:#a78bfa;font-weight:bold">a</text>
+
+  <!-- Level 2 from c: a -->
+  <line x1="210" y1="176" x2="210" y2="208" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- a node (under c) -->
+  <circle cx="210" cy="220" r="16" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="210" y="224" text-anchor="middle" class="label" style="fill:#34d399">a</text>
+
+  <!-- Level 2 from a: p -->
+  <line x1="510" y1="176" x2="510" y2="208" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <circle cx="510" cy="220" r="16" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="510" y="224" text-anchor="middle" class="label" style="fill:#a78bfa">p</text>
+
+  <!-- Level 3 from ca: t, r -->
+  <line x1="198" y1="236" x2="140" y2="268" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="222" y1="236" x2="280" y2="268" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- t node (cat) -->
+  <circle cx="130" cy="280" r="16" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+  <text x="130" y="284" text-anchor="middle" class="label" style="fill:#34d399;font-weight:bold">t</text>
+  <circle cx="146" cy="268" r="6" fill="#fbbf24"/>
+  <text x="146" y="271" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+
+  <!-- r node (car) -->
+  <circle cx="290" cy="280" r="16" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+  <text x="290" y="284" text-anchor="middle" class="label" style="fill:#34d399;font-weight:bold">r</text>
+  <circle cx="306" cy="268" r="6" fill="#fbbf24"/>
+  <text x="306" y="271" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+
+  <!-- Level 3 from ap: p -->
+  <line x1="510" y1="236" x2="510" y2="268" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <circle cx="510" cy="280" r="16" fill="#2e1a2e" stroke="#a78bfa" stroke-width="2"/>
+  <text x="510" y="284" text-anchor="middle" class="label" style="fill:#a78bfa;font-weight:bold">p</text>
+  <circle cx="526" cy="268" r="6" fill="#fbbf24"/>
+  <text x="526" y="271" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+
+  <!-- Level 4 from car: d, e -->
+  <line x1="278" y1="296" x2="230" y2="328" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+  <line x1="302" y1="296" x2="350" y2="328" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <!-- d node (card) -->
+  <circle cx="220" cy="340" r="16" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="220" y="344" text-anchor="middle" class="label" style="fill:#34d399">d</text>
+  <circle cx="236" cy="328" r="6" fill="#fbbf24"/>
+  <text x="236" y="331" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+
+  <!-- e node (care) -->
+  <circle cx="360" cy="340" r="16" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="360" y="344" text-anchor="middle" class="label" style="fill:#34d399">e</text>
+  <circle cx="376" cy="328" r="6" fill="#fbbf24"/>
+  <text x="376" y="331" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+
+  <!-- Level 4 from app: l -->
+  <line x1="510" y1="296" x2="510" y2="328" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <circle cx="510" cy="340" r="16" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="510" y="344" text-anchor="middle" class="label" style="fill:#a78bfa">l</text>
+
+  <!-- Level 5 from appl: e -->
+  <line x1="510" y1="356" x2="510" y2="388" stroke="#555" stroke-width="1.5" marker-end="url(#arr)"/>
+
+  <circle cx="510" cy="400" r="16" fill="#2e1a2e" stroke="#a78bfa" stroke-width="2"/>
+  <text x="510" y="404" text-anchor="middle" class="label" style="fill:#a78bfa;font-weight:bold">e</text>
+  <circle cx="526" cy="388" r="6" fill="#fbbf24"/>
+  <text x="526" y="391" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+
+  <!-- Word labels -->
+  <text x="100" y="310" text-anchor="middle" class="label-sm" style="fill:#34d399">"cat"</text>
+  <text x="190" y="370" text-anchor="middle" class="label-sm" style="fill:#34d399">"card"</text>
+  <text x="390" y="370" text-anchor="middle" class="label-sm" style="fill:#34d399">"care"</text>
+  <text x="290" y="310" text-anchor="end" class="label-sm" style="fill:#34d399">"car"</text>
+  <text x="540" y="310" text-anchor="start" class="label-sm" style="fill:#a78bfa">"app"</text>
+  <text x="540" y="430" text-anchor="start" class="label-sm" style="fill:#a78bfa">"apple"</text>
+
+  <!-- Search Operation Box -->
+  <rect x="620" y="80" width="260" height="170" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="750" y="102" text-anchor="middle" class="label" style="fill:#fbbf24;font-weight:bold">Search "care"</text>
+
+  <text x="640" y="125" class="label-sm" style="fill:#34d399">root → c ✓</text>
+  <text x="640" y="142" class="label-sm" style="fill:#34d399">  c  → a ✓</text>
+  <text x="640" y="159" class="label-sm" style="fill:#34d399">  a  → r ✓</text>
+  <text x="640" y="176" class="label-sm" style="fill:#34d399">  r  → e ✓</text>
+  <text x="640" y="196" class="label-sm" style="fill:#fbbf24">  e.isWord? YES ✓</text>
+  <text x="640" y="216" class="label-sm">Time: O(4) = O(word length)</text>
+  <text x="640" y="232" class="label-sm">Independent of dict size!</text>
+
+  <!-- Wildcard Search Box -->
+  <rect x="620" y="265" width="260" height="120" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="750" y="287" text-anchor="middle" class="label" style="fill:#f87171;font-weight:bold">Search "c.r" (wildcard)</text>
+
+  <text x="640" y="310" class="label-sm">root → c ✓</text>
+  <text x="640" y="327" class="label-sm" style="fill:#f87171">  c  → '.' try all:</text>
+  <text x="640" y="344" class="label-sm" style="fill:#34d399">    → a → r ✓ isWord? YES</text>
+  <text x="640" y="361" class="label-sm" style="fill:#34d399">  FOUND via branch 'a'</text>
+  <text x="640" y="378" class="label-sm" style="fill:#888">DFS on wildcard positions</text>
+
+  <!-- Legend -->
+  <rect x="620" y="400" width="260" height="85" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="750" y="420" text-anchor="middle" class="label" style="fill:#888;font-weight:bold">Legend</text>
+
+  <circle cx="640" cy="440" r="6" fill="#fbbf24"/>
+  <text x="640" y="443" text-anchor="middle" style="font-size:7px;fill:#000;font-weight:bold">W</text>
+  <text x="655" y="443" class="label-sm">= isWord (end of valid word)</text>
+
+  <circle cx="640" cy="460" r="8" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="655" y="463" class="label-sm" style="fill:#34d399">"c*" words branch</text>
+
+  <circle cx="640" cy="478" r="8" fill="#2e1a2e" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="655" y="481" class="label-sm" style="fill:#a78bfa">"a*" words branch</text>
+</svg>

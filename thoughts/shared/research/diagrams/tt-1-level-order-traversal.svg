@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <style>
+      text { font-family: 'SF Mono', Menlo, monospace; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="bold">Level Order Traversal (BFS)</text>
+  <text x="450" y="56" text-anchor="middle" fill="#94a3b8" font-size="12">Process nodes layer by layer using a queue</text>
+
+  <!-- Tree Structure -->
+  <!-- Level 0: Node 3 -->
+  <rect x="400" y="80" width="50" height="34" rx="6" fill="#1e1b4b" stroke="#5b6abf" stroke-width="2"/>
+  <text x="425" y="102" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">3</text>
+
+  <!-- Level 1: Node 9, Node 20 -->
+  <line x1="415" y1="114" x2="295" y2="150" stroke="#333" stroke-width="1.5"/>
+  <line x1="435" y1="114" x2="555" y2="150" stroke="#333" stroke-width="1.5"/>
+
+  <rect x="270" y="150" width="50" height="34" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+  <text x="295" y="172" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">9</text>
+
+  <rect x="530" y="150" width="50" height="34" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+  <text x="555" y="172" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">20</text>
+
+  <!-- Level 2: Node 15, Node 7 -->
+  <line x1="545" y1="184" x2="465" y2="220" stroke="#333" stroke-width="1.5"/>
+  <line x1="565" y1="184" x2="645" y2="220" stroke="#333" stroke-width="1.5"/>
+
+  <rect x="440" y="220" width="50" height="34" rx="6" fill="#2e1a1a" stroke="#fbbf24" stroke-width="2"/>
+  <text x="465" y="242" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">15</text>
+
+  <rect x="620" y="220" width="50" height="34" rx="6" fill="#2e1a1a" stroke="#fbbf24" stroke-width="2"/>
+  <text x="645" y="242" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">7</text>
+
+  <!-- Level labels -->
+  <text x="160" y="102" text-anchor="end" fill="#5b6abf" font-size="12" font-weight="bold">Level 0</text>
+  <text x="160" y="172" text-anchor="end" fill="#34d399" font-size="12" font-weight="bold">Level 1</text>
+  <text x="160" y="242" text-anchor="end" fill="#fbbf24" font-size="12" font-weight="bold">Level 2</text>
+
+  <!-- Dashed level lines -->
+  <line x1="170" y1="75" x2="170" y2="115" stroke="#5b6abf" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+  <line x1="170" y1="145" x2="170" y2="185" stroke="#34d399" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+  <line x1="170" y1="215" x2="170" y2="255" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3" opacity="0.4"/>
+
+  <!-- Queue simulation -->
+  <rect x="60" y="290" width="780" height="190" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="80" y="316" fill="#a78bfa" font-size="14" font-weight="bold">Queue Simulation</text>
+
+  <!-- Step 1 -->
+  <text x="80" y="345" fill="#94a3b8" font-size="11">Step 1:</text>
+  <text x="140" y="345" fill="#e2e8f0" font-size="11">Queue = [</text>
+  <rect x="195" y="331" width="28" height="20" rx="4" fill="#1e1b4b" stroke="#5b6abf" stroke-width="1"/>
+  <text x="209" y="345" text-anchor="middle" fill="#e2e8f0" font-size="11">3</text>
+  <text x="228" y="345" fill="#e2e8f0" font-size="11">]</text>
+  <text x="320" y="345" fill="#5b6abf" font-size="11">→ Output: [3]</text>
+  <text x="530" y="345" fill="#94a3b8" font-size="11">level_size = 1</text>
+
+  <!-- Step 2 -->
+  <text x="80" y="375" fill="#94a3b8" font-size="11">Step 2:</text>
+  <text x="140" y="375" fill="#e2e8f0" font-size="11">Queue = [</text>
+  <rect x="195" y="361" width="28" height="20" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="209" y="375" text-anchor="middle" fill="#e2e8f0" font-size="11">9</text>
+  <text x="225" y="375" fill="#e2e8f0" font-size="11">,</text>
+  <rect x="233" y="361" width="32" height="20" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="249" y="375" text-anchor="middle" fill="#e2e8f0" font-size="11">20</text>
+  <text x="270" y="375" fill="#e2e8f0" font-size="11">]</text>
+  <text x="320" y="375" fill="#34d399" font-size="11">→ Output: [9, 20]</text>
+  <text x="530" y="375" fill="#94a3b8" font-size="11">level_size = 2</text>
+
+  <!-- Step 3 -->
+  <text x="80" y="405" fill="#94a3b8" font-size="11">Step 3:</text>
+  <text x="140" y="405" fill="#e2e8f0" font-size="11">Queue = [</text>
+  <rect x="195" y="391" width="32" height="20" rx="4" fill="#2e1a1a" stroke="#fbbf24" stroke-width="1"/>
+  <text x="211" y="405" text-anchor="middle" fill="#e2e8f0" font-size="11">15</text>
+  <text x="230" y="405" fill="#e2e8f0" font-size="11">,</text>
+  <rect x="238" y="391" width="28" height="20" rx="4" fill="#2e1a1a" stroke="#fbbf24" stroke-width="1"/>
+  <text x="252" y="405" text-anchor="middle" fill="#e2e8f0" font-size="11">7</text>
+  <text x="270" y="405" fill="#e2e8f0" font-size="11">]</text>
+  <text x="320" y="405" fill="#fbbf24" font-size="11">→ Output: [15, 7]</text>
+  <text x="530" y="405" fill="#94a3b8" font-size="11">level_size = 2</text>
+
+  <!-- Result -->
+  <text x="80" y="445" fill="#94a3b8" font-size="11">Result:</text>
+  <text x="140" y="445" fill="#34d399" font-size="12" font-weight="bold">[[3], [9, 20], [15, 7]]</text>
+
+  <!-- Key insight box -->
+  <rect x="450" y="430" width="370" height="36" rx="6" fill="#1e1b4b" stroke="#5b6abf" stroke-width="1" opacity="0.8"/>
+  <text x="460" y="448" fill="#a78bfa" font-size="10" font-weight="bold">KEY:</text>
+  <text x="500" y="448" fill="#e2e8f0" font-size="10">level_size = len(queue) before inner loop</text>
+  <text x="460" y="460" fill="#94a3b8" font-size="9">separates current level from next level's nodes</text>
+
+  <!-- Legend -->
+  <rect x="700" y="78" width="14" height="14" rx="3" fill="#1e1b4b" stroke="#5b6abf" stroke-width="1"/>
+  <text x="720" y="90" fill="#94a3b8" font-size="10">Level 0</text>
+  <rect x="700" y="98" width="14" height="14" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="720" y="110" fill="#94a3b8" font-size="10">Level 1</text>
+  <rect x="700" y="118" width="14" height="14" rx="3" fill="#2e1a1a" stroke="#fbbf24" stroke-width="1"/>
+  <text x="720" y="130" fill="#94a3b8" font-size="10">Level 2</text>
+</svg>

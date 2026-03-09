@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#fbbf24" font-size="18" font-weight="bold">Binary Search on Answer</text>
+  <text x="450" y="62" text-anchor="middle" fill="#888" font-size="12">Koko Eating Bananas — piles=[3,6,7,11], h=8</text>
+
+  <!-- The answer space bar -->
+  <g transform="translate(80, 90)">
+    <text x="0" y="12" fill="#888" font-size="11">Speed k:</text>
+    <!-- Speed bar from 1 to 11 -->
+    <rect x="80" y="0" width="620" height="30" rx="4" fill="#111" stroke="#222" stroke-width="1"/>
+
+    <!-- Individual speed ticks -->
+    <line x1="115" y1="0" x2="115" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="115" y="45" text-anchor="middle" fill="#f87171" font-size="9">1</text>
+    <rect x="80" y="32" width="35" height="4" rx="2" fill="#f87171"/>
+
+    <line x1="171" y1="0" x2="171" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="171" y="45" text-anchor="middle" fill="#f87171" font-size="9">2</text>
+
+    <line x1="227" y1="0" x2="227" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="227" y="45" text-anchor="middle" fill="#f87171" font-size="9">3</text>
+
+    <line x1="283" y1="0" x2="283" y2="30" stroke="#fbbf24" stroke-width="2"/>
+    <text x="283" y="45" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">4</text>
+    <text x="283" y="58" text-anchor="middle" fill="#fbbf24" font-size="8">★ answer</text>
+
+    <line x1="339" y1="0" x2="339" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="339" y="45" text-anchor="middle" fill="#34d399" font-size="9">5</text>
+
+    <line x1="395" y1="0" x2="395" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="395" y="45" text-anchor="middle" fill="#34d399" font-size="9">6</text>
+
+    <line x1="507" y1="0" x2="507" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="507" y="45" text-anchor="middle" fill="#34d399" font-size="9">8</text>
+
+    <line x1="643" y1="0" x2="643" y2="30" stroke="#222" stroke-width="0.5"/>
+    <text x="643" y="45" text-anchor="middle" fill="#34d399" font-size="9">11</text>
+
+    <!-- Color bands -->
+    <rect x="80" y="32" width="203" height="4" rx="2" fill="#f87171"/>
+    <rect x="283" y="32" width="417" height="4" rx="2" fill="#34d399"/>
+
+    <text x="170" y="72" text-anchor="middle" fill="#f87171" font-size="10">Infeasible (too slow)</text>
+    <text x="490" y="72" text-anchor="middle" fill="#34d399" font-size="10">Feasible (fast enough)</text>
+  </g>
+
+  <!-- Feasibility check visualization -->
+  <g transform="translate(80, 180)">
+    <rect x="0" y="0" width="740" height="130" rx="8" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+    <text x="370" y="25" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold">Feasibility Check: canFinish(speed) → hours ≤ 8?</text>
+
+    <!-- k=6 -->
+    <text x="20" y="50" fill="#34d399" font-size="11">k=6:</text>
+    <text x="80" y="50" fill="#888" font-size="11">⌈3/6⌉ + ⌈6/6⌉ + ⌈7/6⌉ + ⌈11/6⌉ = 1+1+2+2 =</text>
+    <text x="475" y="50" fill="#34d399" font-size="11" font-weight="bold">6 ≤ 8 ✓</text>
+
+    <!-- k=3 -->
+    <text x="20" y="75" fill="#f87171" font-size="11">k=3:</text>
+    <text x="80" y="75" fill="#888" font-size="11">⌈3/3⌉ + ⌈6/3⌉ + ⌈7/3⌉ + ⌈11/3⌉ = 1+2+3+4 =</text>
+    <text x="475" y="75" fill="#f87171" font-size="11" font-weight="bold">10 > 8 ✗</text>
+
+    <!-- k=4 -->
+    <text x="20" y="100" fill="#fbbf24" font-size="11">k=4:</text>
+    <text x="80" y="100" fill="#888" font-size="11">⌈3/4⌉ + ⌈6/4⌉ + ⌈7/4⌉ + ⌈11/4⌉ = 1+2+2+3 =</text>
+    <text x="475" y="100" fill="#fbbf24" font-size="11" font-weight="bold">8 ≤ 8 ✓ ★ minimum</text>
+
+    <text x="20" y="122" fill="#666" font-size="10">Binary search narrows: lo=1→4→4, hi=11→6→4 → answer = 4</text>
+  </g>
+
+  <!-- The framework -->
+  <g transform="translate(80, 330)">
+    <rect x="0" y="0" width="350" height="150" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="175" y="25" text-anchor="middle" fill="#5b6abf" font-size="13" font-weight="bold">The Framework</text>
+
+    <text x="15" y="50" fill="#ccc" font-size="11">1. Define range [lo, hi]</text>
+    <text x="25" y="68" fill="#888" font-size="10">lo = min possible answer</text>
+    <text x="25" y="83" fill="#888" font-size="10">hi = max possible answer</text>
+
+    <text x="15" y="103" fill="#ccc" font-size="11">2. Write isFeasible(mid)</text>
+    <text x="25" y="118" fill="#888" font-size="10">Returns true/false in O(n)</text>
+
+    <text x="15" y="138" fill="#ccc" font-size="11">3. Standard binary search</text>
+  </g>
+
+  <!-- Common problems box -->
+  <g transform="translate(460, 330)">
+    <rect x="0" y="0" width="360" height="150" rx="8" fill="#111" stroke="#34d399" stroke-width="1"/>
+    <text x="180" y="25" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">Same Pattern, Different Skin</text>
+
+    <text x="15" y="50" fill="#888" font-size="10">🍌 Koko Eating → min speed to finish</text>
+    <text x="15" y="68" fill="#888" font-size="10">🚢 Ship Packages → min capacity for D days</text>
+    <text x="15" y="86" fill="#888" font-size="10">✂️  Split Array → min max-subarray-sum</text>
+    <text x="15" y="104" fill="#888" font-size="10">💐 Bouquets → min days for m bouquets</text>
+    <text x="15" y="122" fill="#888" font-size="10">⚽ Balls in Bag → min max-bag-size</text>
+
+    <text x="15" y="142" fill="#ccc" font-size="10">All: binary search range + greedy check</text>
+  </g>
+</svg>

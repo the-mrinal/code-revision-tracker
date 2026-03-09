@@ -1,0 +1,176 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="'SF Mono','Menlo',monospace">
+  <defs>
+    <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#34d399"/>
+    </marker>
+    <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#a78bfa"/>
+    </marker>
+    <marker id="arrowRed" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#f87171"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">Word Break — DP Pattern</text>
+  <text x="450" y="50" text-anchor="middle" fill="#666" font-size="11">s = "leetcode", wordDict = ["leet", "code", "le", "et"]</text>
+
+  <!-- String characters -->
+  <g transform="translate(140, 68)">
+    <text x="0" y="0" fill="#888" font-size="11">String characters:</text>
+    <g transform="translate(0, 10)">
+      <rect x="0" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="32" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">l</text>
+      <text x="32" y="-4" text-anchor="middle" fill="#555" font-size="8">0</text>
+
+      <rect x="70" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="102" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">e</text>
+      <text x="102" y="-4" text-anchor="middle" fill="#555" font-size="8">1</text>
+
+      <rect x="140" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="172" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">e</text>
+      <text x="172" y="-4" text-anchor="middle" fill="#555" font-size="8">2</text>
+
+      <rect x="210" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="242" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">t</text>
+      <text x="242" y="-4" text-anchor="middle" fill="#555" font-size="8">3</text>
+
+      <rect x="280" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="312" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">c</text>
+      <text x="312" y="-4" text-anchor="middle" fill="#555" font-size="8">4</text>
+
+      <rect x="350" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="382" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">o</text>
+      <text x="382" y="-4" text-anchor="middle" fill="#555" font-size="8">5</text>
+
+      <rect x="420" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="452" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">d</text>
+      <text x="452" y="-4" text-anchor="middle" fill="#555" font-size="8">6</text>
+
+      <rect x="490" y="0" width="64" height="36" rx="6" fill="#111" stroke="#222"/>
+      <text x="522" y="24" text-anchor="middle" fill="#e5e5e5" font-size="15" font-weight="bold">e</text>
+      <text x="522" y="-4" text-anchor="middle" fill="#555" font-size="8">7</text>
+    </g>
+  </g>
+
+  <!-- DP array -->
+  <g transform="translate(108, 162)">
+    <text x="0" y="0" fill="#888" font-size="11">dp[] array (can we break s[0..i]?):</text>
+    <g transform="translate(0, 10)">
+      <!-- dp[0] = T -->
+      <rect x="0" y="0" width="56" height="38" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="1.5"/>
+      <text x="28" y="16" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">T</text>
+      <text x="28" y="30" text-anchor="middle" fill="#34d399" font-size="8">dp[0]</text>
+
+      <!-- dp[1] = F -->
+      <rect x="62" y="0" width="56" height="38" rx="6" fill="#111" stroke="#222"/>
+      <text x="90" y="16" text-anchor="middle" fill="#555" font-size="12">F</text>
+      <text x="90" y="30" text-anchor="middle" fill="#555" font-size="8">dp[1]</text>
+
+      <!-- dp[2] = T -->
+      <rect x="124" y="0" width="56" height="38" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="1.5"/>
+      <text x="152" y="16" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">T</text>
+      <text x="152" y="30" text-anchor="middle" fill="#34d399" font-size="8">dp[2]</text>
+
+      <!-- dp[3] = F -->
+      <rect x="186" y="0" width="56" height="38" rx="6" fill="#111" stroke="#222"/>
+      <text x="214" y="16" text-anchor="middle" fill="#555" font-size="12">F</text>
+      <text x="214" y="30" text-anchor="middle" fill="#555" font-size="8">dp[3]</text>
+
+      <!-- dp[4] = T -->
+      <rect x="248" y="0" width="56" height="38" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="1.5"/>
+      <text x="276" y="16" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">T</text>
+      <text x="276" y="30" text-anchor="middle" fill="#34d399" font-size="8">dp[4]</text>
+
+      <!-- dp[5] = F -->
+      <rect x="310" y="0" width="56" height="38" rx="6" fill="#111" stroke="#222"/>
+      <text x="338" y="16" text-anchor="middle" fill="#555" font-size="12">F</text>
+      <text x="338" y="30" text-anchor="middle" fill="#555" font-size="8">dp[5]</text>
+
+      <!-- dp[6] = F -->
+      <rect x="372" y="0" width="56" height="38" rx="6" fill="#111" stroke="#222"/>
+      <text x="400" y="16" text-anchor="middle" fill="#555" font-size="12">F</text>
+      <text x="400" y="30" text-anchor="middle" fill="#555" font-size="8">dp[6]</text>
+
+      <!-- dp[7] = F -->
+      <rect x="434" y="0" width="56" height="38" rx="6" fill="#111" stroke="#222"/>
+      <text x="462" y="16" text-anchor="middle" fill="#555" font-size="12">F</text>
+      <text x="462" y="30" text-anchor="middle" fill="#555" font-size="8">dp[7]</text>
+
+      <!-- dp[8] = T -->
+      <rect x="496" y="0" width="56" height="38" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="2"/>
+      <text x="524" y="16" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">T</text>
+      <text x="524" y="30" text-anchor="middle" fill="#34d399" font-size="8">dp[8]</text>
+
+      <!-- ANSWER label -->
+      <text x="524" y="50" text-anchor="middle" fill="#34d399" font-size="8" font-weight="bold">ANSWER</text>
+    </g>
+  </g>
+
+  <!-- Successful word matches -->
+  <g transform="translate(108, 270)">
+    <text x="0" y="0" fill="#34d399" font-size="11" font-weight="bold">Successful word matches:</text>
+
+    <!-- Arrow dp[0] -> dp[4] "leet" -->
+    <path d="M28,12 C28,50 276,50 276,12" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+    <rect x="112" y="38" width="60" height="20" rx="4" fill="#0f2a1f" stroke="#34d399" stroke-width="0.5"/>
+    <text x="142" y="52" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">"leet"</text>
+    <text x="28" y="10" text-anchor="middle" fill="#34d399" font-size="8">dp[0]=T</text>
+    <text x="276" y="10" text-anchor="middle" fill="#34d399" font-size="8">dp[4]=T</text>
+
+    <!-- Arrow dp[4] -> dp[8] "code" -->
+    <path d="M276,12 C276,50 524,50 524,12" fill="none" stroke="#34d399" stroke-width="2" marker-end="url(#arrowGreen)"/>
+    <rect x="360" y="38" width="60" height="20" rx="4" fill="#0f2a1f" stroke="#34d399" stroke-width="0.5"/>
+    <text x="390" y="52" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">"code"</text>
+    <text x="524" y="10" text-anchor="middle" fill="#34d399" font-size="8">dp[8]=T</text>
+  </g>
+
+  <!-- Alternative match (separate row to avoid overlap) -->
+  <g transform="translate(108, 340)">
+    <text x="0" y="0" fill="#a78bfa" font-size="11" font-weight="bold">Alternative path:</text>
+
+    <!-- Arrow dp[0] -> dp[2] "le" -->
+    <path d="M28,12 C28,42 152,42 152,12" fill="none" stroke="#a78bfa" stroke-width="1.5" stroke-dasharray="4,3" marker-end="url(#arrowPurple)"/>
+    <rect x="55" y="32" width="50" height="18" rx="4" fill="#1a1530" stroke="#a78bfa" stroke-width="0.5"/>
+    <text x="80" y="45" text-anchor="middle" fill="#a78bfa" font-size="9">"le"</text>
+    <text x="28" y="10" text-anchor="middle" fill="#a78bfa" font-size="8">dp[0]=T</text>
+    <text x="152" y="10" text-anchor="middle" fill="#a78bfa" font-size="8">dp[2]=T</text>
+
+    <!-- Failed from dp[2]: "etc" not in dict -->
+    <path d="M214,12 C214,42 276,42 276,12" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.5"/>
+    <text x="245" y="52" text-anchor="middle" fill="#f87171" font-size="8" opacity="0.7">"etc" ✗</text>
+
+    <!-- dp[1]=F unreachable -->
+    <rect x="65" y="0" width="50" height="18" rx="4" fill="#1a1111" stroke="#f87171" stroke-width="0.5" opacity="0.5"/>
+    <text x="90" y="13" text-anchor="middle" fill="#f87171" font-size="8" opacity="0.7">dp[1]=F</text>
+
+    <!-- dp[5]=F unreachable -->
+    <rect x="315" y="0" width="50" height="18" rx="4" fill="#1a1111" stroke="#f87171" stroke-width="0.5" opacity="0.5"/>
+    <text x="340" y="13" text-anchor="middle" fill="#f87171" font-size="8" opacity="0.7">dp[5]=F</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(30, 420)">
+    <rect x="0" y="0" width="260" height="85" rx="8" fill="#111" stroke="#222"/>
+    <text x="15" y="18" fill="#888" font-size="11" font-weight="bold">Legend</text>
+    <rect x="15" y="28" width="12" height="12" rx="2" fill="#0f2a1f" stroke="#34d399"/>
+    <text x="33" y="39" fill="#ccc" font-size="10">dp[i] = True (breakable)</text>
+    <line x1="15" y1="52" x2="55" y2="52" stroke="#34d399" stroke-width="2"/>
+    <text x="62" y="56" fill="#ccc" font-size="10">Word match in dict</text>
+    <line x1="15" y1="70" x2="55" y2="70" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3,3" opacity="0.6"/>
+    <text x="62" y="74" fill="#ccc" font-size="10">Not in dict (failed)</text>
+  </g>
+
+  <!-- Info box -->
+  <g transform="translate(560, 420)">
+    <rect x="0" y="0" width="310" height="85" rx="8" fill="#111" stroke="#222"/>
+    <text x="15" y="18" fill="#5b6abf" font-size="11" font-weight="bold">Recurrence</text>
+    <text x="15" y="36" fill="#fbbf24" font-size="10">dp[i] = any(dp[j] and s[j:i] in dict)</text>
+    <text x="15" y="50" fill="#888" font-size="9">for all j in [0, i)</text>
+    <text x="15" y="68" fill="#5b6abf" font-size="11" font-weight="bold">Complexity</text>
+    <text x="15" y="82" fill="#888" font-size="10">Time: O(n² × k)   Space: O(n)</text>
+  </g>
+</svg>

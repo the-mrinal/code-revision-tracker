@@ -1,0 +1,135 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="'SF Mono', Menlo, monospace">
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">Catalan Numbers Pattern</text>
+  <text x="450" y="56" text-anchor="middle" fill="#666" font-size="11">Unique BSTs for n=3: Count structurally unique trees by choosing each value as root</text>
+
+  <!-- Recurrence -->
+  <g transform="translate(40,70)">
+    <rect x="0" y="0" width="820" height="36" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="15" y="23" fill="#5b6abf" font-size="12" font-weight="bold">C(3)</text>
+    <text x="55" y="23" fill="#888" font-size="12">=</text>
+    <text x="70" y="23" fill="#a78bfa" font-size="12">C(0) x C(2)</text>
+    <text x="195" y="23" fill="#888" font-size="12">+</text>
+    <text x="215" y="23" fill="#a78bfa" font-size="12">C(1) x C(1)</text>
+    <text x="340" y="23" fill="#888" font-size="12">+</text>
+    <text x="360" y="23" fill="#a78bfa" font-size="12">C(2) x C(0)</text>
+    <text x="490" y="23" fill="#888" font-size="12">=</text>
+    <text x="510" y="23" fill="#fbbf24" font-size="12">1 x 2</text>
+    <text x="570" y="23" fill="#888" font-size="12">+</text>
+    <text x="585" y="23" fill="#fbbf24" font-size="12">1 x 1</text>
+    <text x="640" y="23" fill="#888" font-size="12">+</text>
+    <text x="655" y="23" fill="#fbbf24" font-size="12">2 x 1</text>
+    <text x="710" y="23" fill="#888" font-size="12">=</text>
+    <text x="730" y="23" fill="#34d399" font-size="14" font-weight="bold">5</text>
+  </g>
+
+  <!-- Group labels -->
+  <text x="120" y="130" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">Root = 1 (2 trees)</text>
+  <text x="430" y="130" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">Root = 2 (1 tree)</text>
+  <text x="740" y="130" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="bold">Root = 3 (2 trees)</text>
+  <text x="120" y="145" text-anchor="middle" fill="#555" font-size="9">left: C(0)=1, right: C(2)=2</text>
+  <text x="430" y="145" text-anchor="middle" fill="#555" font-size="9">left: C(1)=1, right: C(1)=1</text>
+  <text x="740" y="145" text-anchor="middle" fill="#555" font-size="9">left: C(2)=2, right: C(0)=1</text>
+
+  <!-- Tree 1: root=1, right chain 2->3 -->
+  <g transform="translate(60,155)">
+    <rect x="-5" y="-5" width="120" height="130" rx="6" fill="#111" stroke="#222"/>
+    <circle cx="25" cy="20" r="14" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="25" y="25" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">1</text>
+    <line x1="37" y1="28" x2="70" y2="55" stroke="#444" stroke-width="1.5"/>
+    <circle cx="70" cy="65" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="70" y="70" text-anchor="middle" fill="#a78bfa" font-size="12">2</text>
+    <line x1="82" y1="73" x2="95" y2="95" stroke="#444" stroke-width="1.5"/>
+    <circle cx="95" cy="105" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="95" y="110" text-anchor="middle" fill="#a78bfa" font-size="12">3</text>
+  </g>
+
+  <!-- Tree 2: root=1, right=3, left of 3=2 -->
+  <g transform="translate(170,155)">
+    <rect x="-5" y="-5" width="120" height="130" rx="6" fill="#111" stroke="#222"/>
+    <circle cx="25" cy="20" r="14" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="25" y="25" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">1</text>
+    <line x1="37" y1="28" x2="80" y2="55" stroke="#444" stroke-width="1.5"/>
+    <circle cx="80" cy="65" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="80" y="70" text-anchor="middle" fill="#a78bfa" font-size="12">3</text>
+    <line x1="68" y1="73" x2="50" y2="95" stroke="#444" stroke-width="1.5"/>
+    <circle cx="50" cy="105" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="50" y="110" text-anchor="middle" fill="#a78bfa" font-size="12">2</text>
+  </g>
+
+  <!-- Tree 3: root=2, left=1, right=3 -->
+  <g transform="translate(375,155)">
+    <rect x="-5" y="-5" width="120" height="130" rx="6" fill="#111" stroke="#222"/>
+    <circle cx="55" cy="20" r="14" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="55" y="25" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">2</text>
+    <line x1="43" y1="28" x2="25" y2="55" stroke="#444" stroke-width="1.5"/>
+    <circle cx="25" cy="65" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="25" y="70" text-anchor="middle" fill="#a78bfa" font-size="12">1</text>
+    <line x1="67" y1="28" x2="85" y2="55" stroke="#444" stroke-width="1.5"/>
+    <circle cx="85" cy="65" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="85" y="70" text-anchor="middle" fill="#a78bfa" font-size="12">3</text>
+  </g>
+
+  <!-- Tree 4: root=3, left chain 2->1 -->
+  <g transform="translate(620,155)">
+    <rect x="-5" y="-5" width="120" height="130" rx="6" fill="#111" stroke="#222"/>
+    <circle cx="85" cy="20" r="14" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="85" y="25" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">3</text>
+    <line x1="73" y1="28" x2="45" y2="55" stroke="#444" stroke-width="1.5"/>
+    <circle cx="45" cy="65" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="45" y="70" text-anchor="middle" fill="#a78bfa" font-size="12">2</text>
+    <line x1="33" y1="73" x2="20" y2="95" stroke="#444" stroke-width="1.5"/>
+    <circle cx="20" cy="105" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="20" y="110" text-anchor="middle" fill="#a78bfa" font-size="12">1</text>
+  </g>
+
+  <!-- Tree 5: root=3, left=1, right of 1=2 -->
+  <g transform="translate(740,155)">
+    <rect x="-5" y="-5" width="120" height="130" rx="6" fill="#111" stroke="#222"/>
+    <circle cx="85" cy="20" r="14" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="85" y="25" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">3</text>
+    <line x1="73" y1="28" x2="35" y2="55" stroke="#444" stroke-width="1.5"/>
+    <circle cx="35" cy="65" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="35" y="70" text-anchor="middle" fill="#a78bfa" font-size="12">1</text>
+    <line x1="47" y1="73" x2="60" y2="95" stroke="#444" stroke-width="1.5"/>
+    <circle cx="60" cy="105" r="14" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="60" y="110" text-anchor="middle" fill="#a78bfa" font-size="12">2</text>
+  </g>
+
+  <!-- Recurrence formula box -->
+  <g transform="translate(40,310)">
+    <rect x="0" y="0" width="400" height="90" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="15" y="20" fill="#5b6abf" font-size="11" font-weight="bold">Catalan Recurrence</text>
+    <text x="15" y="42" fill="#e2e8f0" font-size="11">C(n) = sum of C(i) * C(n-1-i)</text>
+    <text x="15" y="58" fill="#888" font-size="10">       for i = 0 to n-1</text>
+    <text x="15" y="78" fill="#888" font-size="10">i nodes in left subtree, (n-1-i) in right</text>
+  </g>
+
+  <!-- Catalan sequence info box -->
+  <g transform="translate(460,310)">
+    <rect x="0" y="0" width="400" height="90" rx="8" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+    <text x="15" y="20" fill="#fbbf24" font-size="11" font-weight="bold">Catalan Sequence</text>
+    <text x="15" y="42" fill="#e2e8f0" font-size="10">n:    0   1   2   3   4    5    6</text>
+    <text x="15" y="60" fill="#34d399" font-size="10" font-weight="bold">C(n): 1   1   2   5   14   42   132</text>
+    <text x="15" y="80" fill="#888" font-size="10">Closed form: C(n) = (2n)! / ((n+1)! * n!)</text>
+  </g>
+
+  <!-- Applications info box -->
+  <g transform="translate(40,415)">
+    <rect x="0" y="0" width="820" height="90" rx="8" fill="#111" stroke="#222"/>
+    <text x="15" y="20" fill="#888" font-size="11" font-weight="bold">Catalan Number Applications:</text>
+    <text x="15" y="40" fill="#a78bfa" font-size="10">Unique BSTs</text>
+    <text x="120" y="40" fill="#888" font-size="10">| How many structurally unique BSTs with n nodes?</text>
+    <text x="15" y="56" fill="#a78bfa" font-size="10">Valid Parentheses</text>
+    <text x="145" y="56" fill="#888" font-size="10">| Number of valid arrangements of n pairs</text>
+    <text x="15" y="72" fill="#a78bfa" font-size="10">Triangulations</text>
+    <text x="135" y="72" fill="#888" font-size="10">| Ways to triangulate a polygon with n+2 sides</text>
+    <text x="450" y="40" fill="#a78bfa" font-size="10">Full Binary Trees</text>
+    <text x="580" y="40" fill="#888" font-size="10">| Count with n+1 leaves</text>
+    <text x="450" y="56" fill="#a78bfa" font-size="10">Ballot Problem</text>
+    <text x="560" y="56" fill="#888" font-size="10">| Monotonic lattice paths</text>
+    <text x="450" y="72" fill="#888" font-size="10">Time: O(n^2) | Space: O(n)</text>
+  </g>
+</svg>

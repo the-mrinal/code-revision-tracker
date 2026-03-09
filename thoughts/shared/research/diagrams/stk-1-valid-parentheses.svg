@@ -1,0 +1,181 @@
+<svg viewBox="0 0 900 500" xmlns="http://www.w3.org/2000/svg" font-family="'SF Mono', Menlo, monospace">
+  <defs>
+    <filter id="shadow" x="-2%" y="-2%" width="104%" height="104%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" fill="#e2e8f0" font-size="15" font-weight="bold">Valid Parentheses — Stack Pattern</text>
+
+  <!-- Input String Display -->
+  <rect x="270" y="44" width="360" height="36" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="290" y="67" fill="#9ca3af" font-size="11">Input:</text>
+  <!-- Each character of ({[]}) -->
+  <text x="345" y="67" fill="#a78bfa" font-size="14" font-weight="bold">(</text>
+  <text x="365" y="67" fill="#a78bfa" font-size="14" font-weight="bold">{</text>
+  <text x="385" y="67" fill="#a78bfa" font-size="14" font-weight="bold">[</text>
+  <text x="405" y="67" fill="#a78bfa" font-size="14" font-weight="bold">]</text>
+  <text x="425" y="67" fill="#a78bfa" font-size="14" font-weight="bold">}</text>
+  <text x="445" y="67" fill="#a78bfa" font-size="14" font-weight="bold">)</text>
+
+  <!-- ===== 6 Step Cards ===== -->
+  <!-- Step 1: Push ( -->
+  <rect x="20" y="96" width="130" height="230" rx="6" fill="#111" stroke="#222" stroke-width="1" filter="url(#shadow)"/>
+  <text x="85" y="116" text-anchor="middle" fill="#9ca3af" font-size="10">Step 1</text>
+  <rect x="55" y="122" width="60" height="24" rx="4" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="85" y="139" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">(</text>
+  <text x="85" y="158" text-anchor="middle" fill="#34d399" font-size="9">PUSH</text>
+  <!-- Arrow down -->
+  <line x1="85" y1="162" x2="85" y2="178" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+  <!-- Stack box -->
+  <rect x="40" y="182" width="90" height="100" rx="4" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="85" y="197" text-anchor="middle" fill="#555" font-size="8">STACK</text>
+  <!-- Stack content -->
+  <rect x="52" y="260" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="85" y="273" text-anchor="middle" fill="#34d399" font-size="12">(</text>
+  <!-- Stack size -->
+  <text x="85" y="310" text-anchor="middle" fill="#555" font-size="9">size: 1</text>
+
+  <!-- Step 2: Push { -->
+  <rect x="162" y="96" width="130" height="230" rx="6" fill="#111" stroke="#222" stroke-width="1" filter="url(#shadow)"/>
+  <text x="227" y="116" text-anchor="middle" fill="#9ca3af" font-size="10">Step 2</text>
+  <rect x="197" y="122" width="60" height="24" rx="4" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="227" y="139" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">{</text>
+  <text x="227" y="158" text-anchor="middle" fill="#34d399" font-size="9">PUSH</text>
+  <line x1="227" y1="162" x2="227" y2="178" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="182" y="182" width="90" height="100" rx="4" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="227" y="197" text-anchor="middle" fill="#555" font-size="8">STACK</text>
+  <rect x="194" y="240" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="227" y="253" text-anchor="middle" fill="#34d399" font-size="12">{</text>
+  <rect x="194" y="260" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="227" y="273" text-anchor="middle" fill="#34d399" font-size="12">(</text>
+  <text x="227" y="310" text-anchor="middle" fill="#555" font-size="9">size: 2</text>
+
+  <!-- Step 3: Push [ -->
+  <rect x="304" y="96" width="130" height="230" rx="6" fill="#111" stroke="#222" stroke-width="1" filter="url(#shadow)"/>
+  <text x="369" y="116" text-anchor="middle" fill="#9ca3af" font-size="10">Step 3</text>
+  <rect x="339" y="122" width="60" height="24" rx="4" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="369" y="139" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">[</text>
+  <text x="369" y="158" text-anchor="middle" fill="#34d399" font-size="9">PUSH</text>
+  <line x1="369" y1="162" x2="369" y2="178" stroke="#34d399" stroke-width="1.5"/>
+  <rect x="324" y="182" width="90" height="100" rx="4" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="369" y="197" text-anchor="middle" fill="#555" font-size="8">STACK</text>
+  <rect x="336" y="220" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="369" y="233" text-anchor="middle" fill="#34d399" font-size="12">[</text>
+  <rect x="336" y="240" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="369" y="253" text-anchor="middle" fill="#34d399" font-size="12">{</text>
+  <rect x="336" y="260" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="369" y="273" text-anchor="middle" fill="#34d399" font-size="12">(</text>
+  <text x="369" y="310" text-anchor="middle" fill="#555" font-size="9">size: 3</text>
+
+  <!-- Step 4: Pop ] matches [ -->
+  <rect x="446" y="96" width="130" height="230" rx="6" fill="#111" stroke="#222" stroke-width="1" filter="url(#shadow)"/>
+  <text x="511" y="116" text-anchor="middle" fill="#9ca3af" font-size="10">Step 4</text>
+  <rect x="481" y="122" width="60" height="24" rx="4" fill="#0a0a0a" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="511" y="139" text-anchor="middle" fill="#5b6abf" font-size="14" font-weight="bold">]</text>
+  <text x="511" y="158" text-anchor="middle" fill="#5b6abf" font-size="9">POP &amp; MATCH</text>
+  <!-- Checkmark -->
+  <text x="546" y="139" fill="#34d399" font-size="13">&#x2713;</text>
+  <!-- Arrow up -->
+  <line x1="511" y1="178" x2="511" y2="162" stroke="#5b6abf" stroke-width="1.5"/>
+  <polygon points="508,164 511,158 514,164" fill="#5b6abf"/>
+  <rect x="466" y="182" width="90" height="100" rx="4" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="511" y="197" text-anchor="middle" fill="#555" font-size="8">STACK</text>
+  <!-- [ popped - shown faded -->
+  <rect x="478" y="220" width="66" height="18" rx="3" fill="none" stroke="#333" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="511" y="233" text-anchor="middle" fill="#444" font-size="12">[</text>
+  <rect x="478" y="240" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="511" y="253" text-anchor="middle" fill="#34d399" font-size="12">{</text>
+  <rect x="478" y="260" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="511" y="273" text-anchor="middle" fill="#34d399" font-size="12">(</text>
+  <text x="511" y="310" text-anchor="middle" fill="#555" font-size="9">size: 2</text>
+
+  <!-- Step 5: Pop } matches { -->
+  <rect x="588" y="96" width="130" height="230" rx="6" fill="#111" stroke="#222" stroke-width="1" filter="url(#shadow)"/>
+  <text x="653" y="116" text-anchor="middle" fill="#9ca3af" font-size="10">Step 5</text>
+  <rect x="623" y="122" width="60" height="24" rx="4" fill="#0a0a0a" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="653" y="139" text-anchor="middle" fill="#5b6abf" font-size="14" font-weight="bold">}</text>
+  <text x="653" y="158" text-anchor="middle" fill="#5b6abf" font-size="9">POP &amp; MATCH</text>
+  <text x="688" y="139" fill="#34d399" font-size="13">&#x2713;</text>
+  <line x1="653" y1="178" x2="653" y2="162" stroke="#5b6abf" stroke-width="1.5"/>
+  <polygon points="650,164 653,158 656,164" fill="#5b6abf"/>
+  <rect x="608" y="182" width="90" height="100" rx="4" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="653" y="197" text-anchor="middle" fill="#555" font-size="8">STACK</text>
+  <rect x="620" y="240" width="66" height="18" rx="3" fill="none" stroke="#333" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="653" y="253" text-anchor="middle" fill="#444" font-size="12">{</text>
+  <rect x="620" y="260" width="66" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+  <text x="653" y="273" text-anchor="middle" fill="#34d399" font-size="12">(</text>
+  <text x="653" y="310" text-anchor="middle" fill="#555" font-size="9">size: 1</text>
+
+  <!-- Step 6: Pop ) matches ( -->
+  <rect x="730" y="96" width="150" height="230" rx="6" fill="#111" stroke="#222" stroke-width="1" filter="url(#shadow)"/>
+  <text x="805" y="116" text-anchor="middle" fill="#9ca3af" font-size="10">Step 6</text>
+  <rect x="775" y="122" width="60" height="24" rx="4" fill="#0a0a0a" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="805" y="139" text-anchor="middle" fill="#5b6abf" font-size="14" font-weight="bold">)</text>
+  <text x="805" y="158" text-anchor="middle" fill="#5b6abf" font-size="9">POP &amp; MATCH</text>
+  <text x="840" y="139" fill="#34d399" font-size="13">&#x2713;</text>
+  <line x1="805" y1="178" x2="805" y2="162" stroke="#5b6abf" stroke-width="1.5"/>
+  <polygon points="802,164 805,158 808,164" fill="#5b6abf"/>
+  <rect x="760" y="182" width="90" height="100" rx="4" fill="#0a0a0a" stroke="#333" stroke-width="1"/>
+  <text x="805" y="197" text-anchor="middle" fill="#555" font-size="8">STACK</text>
+  <rect x="772" y="260" width="66" height="18" rx="3" fill="none" stroke="#333" stroke-width="0.5" stroke-dasharray="3,2"/>
+  <text x="805" y="273" text-anchor="middle" fill="#444" font-size="12">(</text>
+  <!-- Empty indicator -->
+  <text x="805" y="240" text-anchor="middle" fill="#34d399" font-size="10">EMPTY</text>
+  <text x="805" y="310" text-anchor="middle" fill="#555" font-size="9">size: 0</text>
+  <!-- Result badge -->
+  <rect x="762" y="292" width="86" height="20" rx="4" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="805" y="306" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">VALID &#x2713;</text>
+
+  <!-- ===== Flow Arrows Between Steps ===== -->
+  <line x1="150" y1="210" x2="162" y2="210" stroke="#333" stroke-width="1"/>
+  <line x1="292" y1="210" x2="304" y2="210" stroke="#333" stroke-width="1"/>
+  <line x1="434" y1="210" x2="446" y2="210" stroke="#333" stroke-width="1"/>
+  <line x1="576" y1="210" x2="588" y2="210" stroke="#333" stroke-width="1"/>
+  <line x1="718" y1="210" x2="730" y2="210" stroke="#333" stroke-width="1"/>
+
+  <!-- ===== Character Highlight Bar ===== -->
+  <!-- Underline active char per step -->
+  <text x="85" y="340" text-anchor="middle" fill="#34d399" font-size="10">char: (</text>
+  <text x="227" y="340" text-anchor="middle" fill="#34d399" font-size="10">char: {</text>
+  <text x="369" y="340" text-anchor="middle" fill="#34d399" font-size="10">char: [</text>
+  <text x="511" y="340" text-anchor="middle" fill="#5b6abf" font-size="10">char: ]</text>
+  <text x="653" y="340" text-anchor="middle" fill="#5b6abf" font-size="10">char: }</text>
+  <text x="805" y="340" text-anchor="middle" fill="#5b6abf" font-size="10">char: )</text>
+
+  <!-- ===== Legend ===== -->
+  <rect x="20" y="360" width="400" height="70" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="40" y="382" fill="#e2e8f0" font-size="11" font-weight="bold">Legend</text>
+
+  <!-- Push -->
+  <rect x="40" y="392" width="10" height="10" rx="2" fill="#34d399"/>
+  <text x="56" y="401" fill="#34d399" font-size="10">Push — opening bracket onto stack</text>
+
+  <!-- Pop & Match -->
+  <rect x="40" y="408" width="10" height="10" rx="2" fill="#5b6abf"/>
+  <text x="56" y="417" fill="#5b6abf" font-size="10">Pop &amp; Match — closer resolves top of stack</text>
+
+  <!-- Mismatch -->
+  <rect x="280" y="392" width="10" height="10" rx="2" fill="#f87171"/>
+  <text x="296" y="401" fill="#f87171" font-size="10">Mismatch — invalid pair</text>
+
+  <!-- ===== Summary Box ===== -->
+  <rect x="440" y="360" width="440" height="70" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1" stroke-opacity="0.4"/>
+  <text x="460" y="382" fill="#a78bfa" font-size="11" font-weight="bold">How It Works</text>
+  <text x="460" y="400" fill="#9ca3af" font-size="10">Stack tracks unresolved openers. Each closer resolves</text>
+  <text x="460" y="414" fill="#9ca3af" font-size="10">the most recent match. If the stack is empty at the end</text>
+  <text x="460" y="428" fill="#9ca3af" font-size="10">and every closer matched its opener, the string is valid.</text>
+
+  <!-- Bottom accent line -->
+  <rect x="20" y="448" width="860" height="2" rx="1" fill="#5b6abf" opacity="0.3"/>
+
+  <!-- Time/Space complexity -->
+  <text x="450" y="470" text-anchor="middle" fill="#555" font-size="10">Time: O(n)  |  Space: O(n)  |  Pattern: Stack — Bracket Matching</text>
+
+  <!-- Watermark -->
+  <text x="450" y="490" text-anchor="middle" fill="#222" font-size="9">valid-parentheses-stack-visualization</text>
+</svg>

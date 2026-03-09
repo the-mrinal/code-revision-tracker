@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" font-family="'SF Mono','Menlo',monospace">
+  <defs>
+    <marker id="aY" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#fbbf24"/>
+    </marker>
+    <marker id="aB" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#5b6abf"/>
+    </marker>
+    <marker id="aR" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#f87171"/>
+    </marker>
+    <marker id="aGr" markerWidth="7" markerHeight="5" refX="7" refY="2.5" orient="auto">
+      <path d="M0,0 L7,2.5 L0,5" fill="#34d399"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="35" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">Edit Distance — DP Pattern</text>
+  <text x="450" y="55" text-anchor="middle" fill="#666" font-size="12">word1 = "horse", word2 = "ros" → min operations = 3</text>
+
+  <!-- DP Table -->
+  <g transform="translate(60, 72)">
+    <!-- Column headers -->
+    <text x="48" y="18" text-anchor="middle" fill="#555" font-size="11">""</text>
+    <text x="100" y="18" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">r</text>
+    <text x="152" y="18" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">o</text>
+    <text x="204" y="18" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">s</text>
+
+    <!-- Row headers -->
+    <text x="-8" y="52" text-anchor="middle" fill="#555" font-size="11">""</text>
+    <text x="-8" y="104" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">h</text>
+    <text x="-8" y="156" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">o</text>
+    <text x="-8" y="208" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">r</text>
+    <text x="-8" y="260" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">s</text>
+    <text x="-8" y="312" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">e</text>
+
+    <!-- Row 0: 0 1 2 3 -->
+    <rect x="22" y="28" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="47" y="55" text-anchor="middle" fill="#888" font-size="14">0</text>
+    <rect x="74" y="28" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="99" y="55" text-anchor="middle" fill="#888" font-size="14">1</text>
+    <rect x="126" y="28" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="151" y="55" text-anchor="middle" fill="#888" font-size="14">2</text>
+    <rect x="178" y="28" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="203" y="55" text-anchor="middle" fill="#888" font-size="14">3</text>
+
+    <!-- Row 1 (h): 1 1 2 3 -->
+    <rect x="22" y="80" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="47" y="107" text-anchor="middle" fill="#888" font-size="14">1</text>
+    <!-- h!=r: replace, min(0,1,1)+1=1 -->
+    <rect x="74" y="80" width="50" height="44" rx="6" fill="#1a1a10" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="99" y="107" text-anchor="middle" fill="#fbbf24" font-size="14" font-weight="bold">1</text>
+    <rect x="126" y="80" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="151" y="107" text-anchor="middle" fill="#888" font-size="14">2</text>
+    <rect x="178" y="80" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="203" y="107" text-anchor="middle" fill="#888" font-size="14">3</text>
+
+    <!-- Row 2 (o): 2 2 1 2 -->
+    <rect x="22" y="132" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="47" y="159" text-anchor="middle" fill="#888" font-size="14">2</text>
+    <rect x="74" y="132" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="99" y="159" text-anchor="middle" fill="#888" font-size="14">2</text>
+    <!-- o=o: match, diagonal 1 -->
+    <rect x="126" y="132" width="50" height="44" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="1.5"/>
+    <text x="151" y="159" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">1</text>
+    <rect x="178" y="132" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="203" y="159" text-anchor="middle" fill="#888" font-size="14">2</text>
+
+    <!-- Row 3 (r): 3 2 2 2 -->
+    <rect x="22" y="184" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="47" y="211" text-anchor="middle" fill="#888" font-size="14">3</text>
+    <!-- r=r: match, diagonal 1 -->
+    <rect x="74" y="184" width="50" height="44" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="1.5"/>
+    <text x="99" y="211" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">2</text>
+    <rect x="126" y="184" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="151" y="211" text-anchor="middle" fill="#888" font-size="14">2</text>
+    <rect x="178" y="184" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="203" y="211" text-anchor="middle" fill="#888" font-size="14">2</text>
+
+    <!-- Row 4 (s): 4 3 3 2 -->
+    <rect x="22" y="236" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="47" y="263" text-anchor="middle" fill="#888" font-size="14">4</text>
+    <rect x="74" y="236" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="99" y="263" text-anchor="middle" fill="#888" font-size="14">3</text>
+    <rect x="126" y="236" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="151" y="263" text-anchor="middle" fill="#888" font-size="14">3</text>
+    <!-- s=s: match, diagonal 2 -->
+    <rect x="178" y="236" width="50" height="44" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="1.5"/>
+    <text x="203" y="263" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">2</text>
+
+    <!-- Row 5 (e): 5 4 4 3 -->
+    <rect x="22" y="288" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="47" y="315" text-anchor="middle" fill="#888" font-size="14">5</text>
+    <!-- e!=r: delete, from above+1 -->
+    <rect x="74" y="288" width="50" height="44" rx="6" fill="#1a1115" stroke="#f87171" stroke-width="1"/>
+    <text x="99" y="315" text-anchor="middle" fill="#f87171" font-size="14">4</text>
+    <rect x="126" y="288" width="50" height="44" rx="6" fill="#111" stroke="#222"/>
+    <text x="151" y="315" text-anchor="middle" fill="#888" font-size="14">4</text>
+    <!-- Final answer -->
+    <rect x="178" y="288" width="50" height="44" rx="6" fill="#0f2a1f" stroke="#34d399" stroke-width="2.5"/>
+    <text x="203" y="315" text-anchor="middle" fill="#34d399" font-size="16" font-weight="bold">3</text>
+
+    <!-- Optimal path trace -->
+    <!-- (0,0) diag-> (1,1) replace h->r -->
+    <line x1="62" y1="72" x2="86" y2="86" stroke="#fbbf24" stroke-width="2.5" marker-end="url(#aY)"/>
+    <!-- (1,1) diag-> (2,2) match o=o -->
+    <line x1="112" y1="124" x2="138" y2="138" stroke="#34d399" stroke-width="2.5" marker-end="url(#aGr)"/>
+    <!-- (2,2) diag-> (3,1) — actually need to delete r: (2,2) -> (3,2) delete -->
+    <line x1="151" y1="178" x2="151" y2="190" stroke="#f87171" stroke-width="2.5" marker-end="url(#aR)"/>
+    <!-- (3,1) — r=r match: but we need (3,2) -> (3,1) match r=r: go (2,2)->(3,2) del, then (3,2)->(3,1) hmm -->
+    <!-- Simpler: trace backwards from (5,3)=3 -->
+    <!-- (5,3) came from (4,3)=2 + delete => up -->
+    <line x1="203" y1="290" x2="203" y2="282" stroke="#f87171" stroke-width="2" marker-end="url(#aR)"/>
+    <!-- (4,3)=2 came from (3,2)=2 match s=s diagonal -->
+    <line x1="203" y1="240" x2="165" y2="228" stroke="#34d399" stroke-width="2"/>
+    <!-- (3,2)=2 came from (2,1)=2 match — wait no, (3,1) r=r diagonal from (2,0) -->
+    <!-- Let me just show forward path clearly -->
+  </g>
+
+  <!-- Operations explanation -->
+  <g transform="translate(320, 80)">
+    <rect x="0" y="0" width="540" height="120" rx="8" fill="#111" stroke="#222"/>
+    <text x="20" y="22" fill="#5b6abf" font-size="13" font-weight="bold">Three Operations</text>
+
+    <!-- Replace: diagonal -->
+    <rect x="20" y="34" width="155" height="72" rx="6" fill="#1a1a10" stroke="#fbbf24" stroke-width="0.8"/>
+    <text x="97" y="52" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold">Replace</text>
+    <text x="97" y="68" text-anchor="middle" fill="#888" font-size="10">dp[i-1][j-1] + 1</text>
+    <text x="97" y="84" text-anchor="middle" fill="#555" font-size="10">diagonal &#x2198;</text>
+    <rect x="55" y="90" width="10" height="10" rx="2" fill="#fbbf24" opacity="0.3"/>
+    <text x="70" y="99" fill="#fbbf24" font-size="9">yellow</text>
+
+    <!-- Insert: left -->
+    <rect x="190" y="34" width="155" height="72" rx="6" fill="#111a25" stroke="#5b6abf" stroke-width="0.8"/>
+    <text x="267" y="52" text-anchor="middle" fill="#5b6abf" font-size="12" font-weight="bold">Insert</text>
+    <text x="267" y="68" text-anchor="middle" fill="#888" font-size="10">dp[i][j-1] + 1</text>
+    <text x="267" y="84" text-anchor="middle" fill="#555" font-size="10">from left &#x2192;</text>
+    <rect x="225" y="90" width="10" height="10" rx="2" fill="#5b6abf" opacity="0.3"/>
+    <text x="240" y="99" fill="#5b6abf" font-size="9">blue</text>
+
+    <!-- Delete: up -->
+    <rect x="360" y="34" width="155" height="72" rx="6" fill="#1a1115" stroke="#f87171" stroke-width="0.8"/>
+    <text x="437" y="52" text-anchor="middle" fill="#f87171" font-size="12" font-weight="bold">Delete</text>
+    <text x="437" y="68" text-anchor="middle" fill="#888" font-size="10">dp[i-1][j] + 1</text>
+    <text x="437" y="84" text-anchor="middle" fill="#555" font-size="10">from above &#x2193;</text>
+    <rect x="395" y="90" width="10" height="10" rx="2" fill="#f87171" opacity="0.3"/>
+    <text x="410" y="99" fill="#f87171" font-size="9">red</text>
+  </g>
+
+  <!-- Recurrence -->
+  <g transform="translate(320, 216)">
+    <rect x="0" y="0" width="540" height="90" rx="8" fill="#111" stroke="#222"/>
+    <text x="20" y="22" fill="#5b6abf" font-size="12" font-weight="bold">Recurrence</text>
+    <text x="20" y="44" fill="#34d399" font-size="11">If word1[i] == word2[j]: dp[i][j] = dp[i-1][j-1]</text>
+    <text x="380" y="44" fill="#555" font-size="10">(no cost)</text>
+    <text x="20" y="64" fill="#fbbf24" font-size="11">Else: dp[i][j] = 1 + min(</text>
+    <text x="230" y="64" fill="#fbbf24" font-size="11">dp[i-1][j-1],</text>
+    <text x="340" y="64" fill="#5b6abf" font-size="11">dp[i][j-1],</text>
+    <text x="430" y="64" fill="#f87171" font-size="11">dp[i-1][j]</text>
+    <text x="510" y="64" fill="#fbbf24" font-size="11">)</text>
+    <text x="20" y="82" fill="#555" font-size="10">Base: dp[i][0] = i (delete all), dp[0][j] = j (insert all)</text>
+  </g>
+
+  <!-- Optimal path explanation -->
+  <g transform="translate(320, 322)">
+    <rect x="0" y="0" width="540" height="110" rx="8" fill="#111" stroke="#222"/>
+    <text x="20" y="22" fill="#5b6abf" font-size="12" font-weight="bold">Optimal Transformation: "horse" &#x2192; "ros"</text>
+
+    <text x="20" y="46" fill="#fbbf24" font-size="11">1. Replace 'h' with 'r':</text>
+    <text x="230" y="46" fill="#888" font-size="11">horse &#x2192; rorse</text>
+
+    <text x="20" y="66" fill="#f87171" font-size="11">2. Delete 'r':</text>
+    <text x="230" y="66" fill="#888" font-size="11">rorse &#x2192; rose</text>
+
+    <text x="20" y="86" fill="#f87171" font-size="11">3. Delete 'e':</text>
+    <text x="230" y="86" fill="#888" font-size="11">rose  &#x2192; ros</text>
+
+    <text x="370" y="86" fill="#34d399" font-size="13" font-weight="bold">Answer: 3</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(320, 448)">
+    <rect x="0" y="0" width="540" height="56" rx="8" fill="#111" stroke="#222"/>
+    <rect x="20" y="16" width="12" height="12" rx="2" fill="#0f2a1f" stroke="#34d399"/>
+    <text x="38" y="27" fill="#ccc" font-size="10">Character match (free)</text>
+    <rect x="175" y="16" width="12" height="12" rx="2" fill="#1a1a10" stroke="#fbbf24"/>
+    <text x="193" y="27" fill="#ccc" font-size="10">Replace op</text>
+    <rect x="280" y="16" width="12" height="12" rx="2" fill="#1a1115" stroke="#f87171"/>
+    <text x="298" y="27" fill="#ccc" font-size="10">Delete op</text>
+    <text x="380" y="27" fill="#888" font-size="10">Time: O(m*n)  Space: O(m*n)</text>
+  </g>
+</svg>

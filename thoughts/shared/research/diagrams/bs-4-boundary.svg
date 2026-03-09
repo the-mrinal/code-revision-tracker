@@ -1,0 +1,112 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#34d399" font-size="18" font-weight="bold">First / Last Occurrence (Boundary Search)</text>
+  <text x="450" y="62" text-anchor="middle" fill="#888" font-size="12">Find first and last position of 8 in [5, 7, 7, 8, 8, 10]</text>
+
+  <!-- Array -->
+  <g transform="translate(150, 85)">
+    <rect x="0" y="0" width="55" height="45" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="27" y="30" text-anchor="middle" fill="#e0e0e0" font-size="16">5</text>
+    <text x="27" y="-8" text-anchor="middle" fill="#666" font-size="10">0</text>
+
+    <rect x="62" y="0" width="55" height="45" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="89" y="30" text-anchor="middle" fill="#e0e0e0" font-size="16">7</text>
+    <text x="89" y="-8" text-anchor="middle" fill="#666" font-size="10">1</text>
+
+    <rect x="124" y="0" width="55" height="45" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="151" y="30" text-anchor="middle" fill="#e0e0e0" font-size="16">7</text>
+    <text x="151" y="-8" text-anchor="middle" fill="#666" font-size="10">2</text>
+
+    <rect x="186" y="0" width="55" height="45" rx="6" fill="#34d399" stroke="#34d399" stroke-width="2"/>
+    <text x="213" y="30" text-anchor="middle" fill="#0a0a0a" font-size="16" font-weight="bold">8</text>
+    <text x="213" y="-8" text-anchor="middle" fill="#34d399" font-size="10">3</text>
+    <text x="213" y="62" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">first</text>
+
+    <rect x="248" y="0" width="55" height="45" rx="6" fill="#a78bfa" stroke="#a78bfa" stroke-width="2"/>
+    <text x="275" y="30" text-anchor="middle" fill="#0a0a0a" font-size="16" font-weight="bold">8</text>
+    <text x="275" y="-8" text-anchor="middle" fill="#a78bfa" font-size="10">4</text>
+    <text x="275" y="62" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="bold">last</text>
+
+    <rect x="310" y="0" width="55" height="45" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="337" y="30" text-anchor="middle" fill="#e0e0e0" font-size="16">10</text>
+    <text x="337" y="-8" text-anchor="middle" fill="#666" font-size="10">5</text>
+  </g>
+
+  <!-- Predicate visualization -->
+  <g transform="translate(60, 180)">
+    <rect x="0" y="0" width="380" height="115" rx="8" fill="#111" stroke="#34d399" stroke-width="1"/>
+    <text x="190" y="22" text-anchor="middle" fill="#34d399" font-size="13" font-weight="bold">Find FIRST: predicate nums[i] ≥ 8</text>
+
+    <g transform="translate(20, 35)">
+      <rect x="0" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="21" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="48" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="69" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="96" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="117" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="144" y="0" width="42" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+      <text x="165" y="16" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">T</text>
+      <rect x="192" y="0" width="42" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+      <text x="213" y="16" text-anchor="middle" fill="#34d399" font-size="10">T</text>
+      <rect x="240" y="0" width="42" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+      <text x="261" y="16" text-anchor="middle" fill="#34d399" font-size="10">T</text>
+      <!-- Arrow to first T -->
+      <line x1="165" y1="26" x2="165" y2="40" stroke="#34d399" stroke-width="2" marker-end="url(#arrowG)"/>
+      <text x="165" y="55" text-anchor="middle" fill="#34d399" font-size="10">first T = idx 3</text>
+    </g>
+
+    <text x="20" y="105" fill="#888" font-size="10">if nums[mid] &lt; target → lo = mid + 1, else hi = mid</text>
+  </g>
+
+  <g transform="translate(460, 180)">
+    <rect x="0" y="0" width="380" height="115" rx="8" fill="#111" stroke="#a78bfa" stroke-width="1"/>
+    <text x="190" y="22" text-anchor="middle" fill="#a78bfa" font-size="13" font-weight="bold">Find LAST: predicate nums[i] &gt; 8</text>
+
+    <g transform="translate(20, 35)">
+      <rect x="0" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="21" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="48" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="69" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="96" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="117" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="144" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="165" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+      <rect x="192" y="0" width="42" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+      <text x="213" y="16" text-anchor="middle" fill="#f87171" font-size="10" font-weight="bold">F</text>
+      <rect x="240" y="0" width="42" height="22" rx="3" fill="#1a2e2e" stroke="#a78bfa" stroke-width="1.5"/>
+      <text x="261" y="16" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">T</text>
+      <!-- Arrow -->
+      <line x1="213" y1="26" x2="213" y2="40" stroke="#a78bfa" stroke-width="2" marker-end="url(#arrowP)"/>
+      <text x="213" y="55" text-anchor="middle" fill="#a78bfa" font-size="10">last F = idx 4</text>
+    </g>
+
+    <text x="20" y="105" fill="#888" font-size="10">if nums[mid] ≤ target → lo = mid + 1, else hi = mid</text>
+  </g>
+
+  <!-- The "don't stop" rule -->
+  <g transform="translate(60, 320)">
+    <rect x="0" y="0" width="780" height="70" rx="8" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+    <text x="390" y="22" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold">The "Don't Stop" Rule</text>
+    <text x="390" y="45" text-anchor="middle" fill="#ccc" font-size="12">When nums[mid] == target, DON'T return. Keep searching in the boundary direction.</text>
+    <text x="390" y="62" text-anchor="middle" fill="#888" font-size="11">First: hi = mid (might be earlier)  |  Last: lo = mid + 1 (might be later)</text>
+  </g>
+
+  <!-- K Closest Elements variant -->
+  <g transform="translate(60, 408)">
+    <rect x="0" y="0" width="780" height="55" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="390" y="22" text-anchor="middle" fill="#5b6abf" font-size="13" font-weight="bold">LC 658: K Closest Elements Variant</text>
+    <text x="390" y="42" text-anchor="middle" fill="#888" font-size="11">Binary search for the LEFT EDGE of a window of size k. Compare: x - arr[mid] vs arr[mid+k] - x</text>
+  </g>
+
+  <!-- Arrow markers -->
+  <defs>
+    <marker id="arrowG" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowP" viewBox="0 0 10 10" refX="5" refY="9" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 0 L 5 10 z" fill="#a78bfa"/>
+    </marker>
+  </defs>
+</svg>

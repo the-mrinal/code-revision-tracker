@@ -1,0 +1,280 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <defs>
+    <style>
+      text { font-family: 'SF Mono', Menlo, monospace; }
+    </style>
+    <marker id="arrowDown" markerWidth="8" markerHeight="8" refX="4" refY="8" orient="auto">
+      <path d="M0,0 L4,8 L8,0" fill="#34d399" stroke="none"/>
+    </marker>
+    <marker id="arrowUp" markerWidth="8" markerHeight="8" refX="4" refY="0" orient="auto">
+      <path d="M0,8 L4,0 L8,8" fill="#5b6abf" stroke="none"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="30" text-anchor="middle" fill="#e2e8f0" font-size="16" font-weight="bold">Stack Simulation: Decode String</text>
+  <text x="450" y="48" text-anchor="middle" fill="#64748b" font-size="11">Pattern: Use a stack to save context on '[' and restore + combine on ']'</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Input String: 3[a2[c]]                     -->
+  <!-- ═══════════════════════════════════════════ -->
+  <text x="30" y="78" fill="#94a3b8" font-size="10" font-weight="bold">INPUT</text>
+  <g transform="translate(90, 62)">
+    <!-- 3 -->
+    <rect x="0" y="0" width="28" height="24" rx="4" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="14" y="16" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold">3</text>
+    <!-- [ -->
+    <rect x="32" y="0" width="28" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="46" y="16" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">[</text>
+    <!-- a -->
+    <rect x="64" y="0" width="28" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="78" y="16" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">a</text>
+    <!-- 2 -->
+    <rect x="96" y="0" width="28" height="24" rx="4" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="110" y="16" text-anchor="middle" fill="#fbbf24" font-size="12" font-weight="bold">2</text>
+    <!-- [ -->
+    <rect x="128" y="0" width="28" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="142" y="16" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">[</text>
+    <!-- c -->
+    <rect x="160" y="0" width="28" height="24" rx="4" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+    <text x="174" y="16" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">c</text>
+    <!-- ] -->
+    <rect x="192" y="0" width="28" height="24" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+    <text x="206" y="16" text-anchor="middle" fill="#5b6abf" font-size="12" font-weight="bold">]</text>
+    <!-- ] -->
+    <rect x="224" y="0" width="28" height="24" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+    <text x="238" y="16" text-anchor="middle" fill="#5b6abf" font-size="12" font-weight="bold">]</text>
+  </g>
+
+  <!-- Arrow to result -->
+  <text x="365" y="78" fill="#64748b" font-size="14">=</text>
+  <rect x="385" y="62" width="120" height="24" rx="4" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="445" y="78" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">accaccacc</text>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Step-by-step columns                        -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- Column headers -->
+  <text x="450" y="108" text-anchor="middle" fill="#e2e8f0" font-size="12" font-weight="bold">Step-by-Step Stack Evolution</text>
+
+  <!-- Step labels row -->
+  <g transform="translate(0, 120)">
+    <!-- We'll show 8 steps, each in a column of width ~105 -->
+    <!-- Step 1: char='3' -->
+    <g transform="translate(12, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#111" stroke="#222"/>
+      <text x="50" y="14" text-anchor="middle" fill="#94a3b8" font-size="9">Step 1: '3'</text>
+      <!-- Current state box -->
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="40" text-anchor="middle" fill="#fbbf24" font-size="9">num = 3</text>
+      <text x="50" y="55" text-anchor="middle" fill="#94a3b8" font-size="9">curStr = ""</text>
+      <!-- Stack visualization -->
+      <text x="50" y="74" text-anchor="middle" fill="#64748b" font-size="8">-- stack --</text>
+      <rect x="15" y="80" width="70" height="20" rx="3" fill="#0a0a0a" stroke="#333" stroke-dasharray="3,3"/>
+      <text x="50" y="94" text-anchor="middle" fill="#4a5568" font-size="8" font-style="italic">empty</text>
+      <text x="50" y="125" text-anchor="middle" fill="#64748b" font-size="8">build: ""</text>
+    </g>
+
+    <!-- Step 2: char='[' -->
+    <g transform="translate(122, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="14" text-anchor="middle" fill="#34d399" font-size="9">Step 2: '['</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="40" text-anchor="middle" fill="#34d399" font-size="9">PUSH context</text>
+      <text x="50" y="55" text-anchor="middle" fill="#94a3b8" font-size="9">reset num, str</text>
+      <!-- Green arrow down -->
+      <line x1="50" y1="58" x2="50" y2="76" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowDown)"/>
+      <!-- Stack -->
+      <rect x="10" y="80" width="80" height="20" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="94" text-anchor="middle" fill="#34d399" font-size="8">("", 3)</text>
+      <text x="50" y="125" text-anchor="middle" fill="#64748b" font-size="8">build: ""</text>
+    </g>
+
+    <!-- Step 3: char='a' -->
+    <g transform="translate(232, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#111" stroke="#a78bfa" stroke-width="0.8"/>
+      <text x="50" y="14" text-anchor="middle" fill="#a78bfa" font-size="9">Step 3: 'a'</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="40" text-anchor="middle" fill="#a78bfa" font-size="9">append 'a'</text>
+      <text x="50" y="55" text-anchor="middle" fill="#94a3b8" font-size="9">curStr = "a"</text>
+      <!-- Stack unchanged -->
+      <text x="50" y="74" text-anchor="middle" fill="#64748b" font-size="8">-- stack --</text>
+      <rect x="10" y="80" width="80" height="20" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="94" text-anchor="middle" fill="#34d399" font-size="8">("", 3)</text>
+      <text x="50" y="125" text-anchor="middle" fill="#e2e8f0" font-size="8">build: "a"</text>
+    </g>
+
+    <!-- Step 4: char='2' -->
+    <g transform="translate(342, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#111" stroke="#222"/>
+      <text x="50" y="14" text-anchor="middle" fill="#fbbf24" font-size="9">Step 4: '2'</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="40" text-anchor="middle" fill="#fbbf24" font-size="9">num = 2</text>
+      <text x="50" y="55" text-anchor="middle" fill="#94a3b8" font-size="9">curStr = "a"</text>
+      <!-- Stack unchanged -->
+      <text x="50" y="74" text-anchor="middle" fill="#64748b" font-size="8">-- stack --</text>
+      <rect x="10" y="80" width="80" height="20" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="94" text-anchor="middle" fill="#34d399" font-size="8">("", 3)</text>
+      <text x="50" y="125" text-anchor="middle" fill="#e2e8f0" font-size="8">build: "a"</text>
+    </g>
+
+    <!-- Step 5: char='[' -->
+    <g transform="translate(452, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="14" text-anchor="middle" fill="#34d399" font-size="9">Step 5: '['</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="40" text-anchor="middle" fill="#34d399" font-size="9">PUSH context</text>
+      <text x="50" y="55" text-anchor="middle" fill="#94a3b8" font-size="9">reset num, str</text>
+      <!-- Green arrow down -->
+      <line x1="50" y1="58" x2="50" y2="68" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowDown)"/>
+      <!-- Stack - 2 items -->
+      <rect x="10" y="76" width="80" height="16" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="88" text-anchor="middle" fill="#34d399" font-size="7.5">("a", 2)</text>
+      <rect x="10" y="94" width="80" height="16" rx="3" fill="#1a2e1a" stroke="#2d8a6e" stroke-width="0.8"/>
+      <text x="50" y="106" text-anchor="middle" fill="#2d8a6e" font-size="7.5">("", 3)</text>
+      <text x="50" y="125" text-anchor="middle" fill="#64748b" font-size="8">build: ""</text>
+    </g>
+
+    <!-- Step 6: char='c' -->
+    <g transform="translate(562, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#111" stroke="#a78bfa" stroke-width="0.8"/>
+      <text x="50" y="14" text-anchor="middle" fill="#a78bfa" font-size="9">Step 6: 'c'</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="40" text-anchor="middle" fill="#a78bfa" font-size="9">append 'c'</text>
+      <text x="50" y="55" text-anchor="middle" fill="#94a3b8" font-size="9">curStr = "c"</text>
+      <!-- Stack unchanged -->
+      <text x="50" y="70" text-anchor="middle" fill="#64748b" font-size="8">-- stack --</text>
+      <rect x="10" y="76" width="80" height="16" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+      <text x="50" y="88" text-anchor="middle" fill="#34d399" font-size="7.5">("a", 2)</text>
+      <rect x="10" y="94" width="80" height="16" rx="3" fill="#1a2e1a" stroke="#2d8a6e" stroke-width="0.8"/>
+      <text x="50" y="106" text-anchor="middle" fill="#2d8a6e" font-size="7.5">("", 3)</text>
+      <text x="50" y="125" text-anchor="middle" fill="#e2e8f0" font-size="8">build: "c"</text>
+    </g>
+
+    <!-- Step 7: char=']' (first close) -->
+    <g transform="translate(672, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#151530" stroke="#5b6abf" stroke-width="0.8"/>
+      <text x="50" y="14" text-anchor="middle" fill="#5b6abf" font-size="9">Step 7: ']'</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="38" text-anchor="middle" fill="#5b6abf" font-size="8.5">POP ("a",2)</text>
+      <text x="50" y="50" text-anchor="middle" fill="#94a3b8" font-size="7.5">"a" + "c"x2</text>
+      <!-- Blue arrow up -->
+      <line x1="50" y1="76" x2="50" y2="56" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#arrowUp)"/>
+      <!-- Stack - 1 item left -->
+      <text x="50" y="86" text-anchor="middle" fill="#64748b" font-size="8">-- stack --</text>
+      <rect x="10" y="90" width="80" height="16" rx="3" fill="#1a2e1a" stroke="#2d8a6e" stroke-width="0.8"/>
+      <text x="50" y="102" text-anchor="middle" fill="#2d8a6e" font-size="7.5">("", 3)</text>
+      <text x="50" y="125" text-anchor="middle" fill="#e2e8f0" font-size="8">build: "acc"</text>
+    </g>
+
+    <!-- Step 8: char=']' (second close) -->
+    <g transform="translate(782, 0)">
+      <rect x="0" y="0" width="100" height="20" rx="3" fill="#151530" stroke="#5b6abf" stroke-width="0.8"/>
+      <text x="50" y="14" text-anchor="middle" fill="#5b6abf" font-size="9">Step 8: ']'</text>
+      <rect x="0" y="24" width="100" height="110" rx="4" fill="#111" stroke="#222"/>
+      <text x="50" y="38" text-anchor="middle" fill="#5b6abf" font-size="8.5">POP ("",3)</text>
+      <text x="50" y="50" text-anchor="middle" fill="#94a3b8" font-size="7.5">"" + "acc"x3</text>
+      <!-- Blue arrow up -->
+      <line x1="50" y1="76" x2="50" y2="56" stroke="#5b6abf" stroke-width="1.5" marker-end="url(#arrowUp)"/>
+      <!-- Stack empty -->
+      <text x="50" y="86" text-anchor="middle" fill="#64748b" font-size="8">-- stack --</text>
+      <rect x="15" y="90" width="70" height="16" rx="3" fill="#0a0a0a" stroke="#333" stroke-dasharray="3,3"/>
+      <text x="50" y="102" text-anchor="middle" fill="#4a5568" font-size="7.5" font-style="italic">empty</text>
+      <text x="50" y="125" text-anchor="middle" fill="#34d399" font-size="8" font-weight="bold">accaccacc</text>
+    </g>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Detailed Mechanism Explanation               -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(0, 270)">
+    <!-- Push mechanism -->
+    <rect x="20" y="0" width="420" height="100" rx="6" fill="#111" stroke="#34d399" stroke-width="0.8"/>
+    <text x="230" y="18" text-anchor="middle" fill="#34d399" font-size="11" font-weight="bold">On '[' -- Push Context</text>
+    <line x1="40" y1="24" x2="420" y2="24" stroke="#222"/>
+    <text x="35" y="42" fill="#94a3b8" font-size="9.5">1. Push (currentString, currentNum) onto stack</text>
+    <text x="35" y="58" fill="#94a3b8" font-size="9.5">2. Reset currentString = ""</text>
+    <text x="35" y="74" fill="#94a3b8" font-size="9.5">3. Reset currentNum = 0</text>
+    <text x="35" y="90" fill="#64748b" font-size="8.5">Saves the "outer" context so inner decode starts fresh</text>
+
+    <!-- Pop mechanism -->
+    <rect x="460" y="0" width="420" height="100" rx="6" fill="#111" stroke="#5b6abf" stroke-width="0.8"/>
+    <text x="670" y="18" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">On ']' -- Pop &amp; Combine</text>
+    <line x1="480" y1="24" x2="860" y2="24" stroke="#222"/>
+    <text x="475" y="42" fill="#94a3b8" font-size="9.5">1. Pop (prevString, count) from stack</text>
+    <text x="475" y="58" fill="#94a3b8" font-size="9.5">2. currentString = prevString + currentString x count</text>
+    <text x="475" y="74" fill="#94a3b8" font-size="9.5">3. Continue processing next character</text>
+    <text x="475" y="90" fill="#64748b" font-size="8.5">Restores outer context and appends repeated inner result</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Walkthrough of the key transitions           -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(0, 385)">
+    <rect x="20" y="0" width="860" height="48" rx="6" fill="#111" stroke="#222"/>
+    <text x="450" y="16" text-anchor="middle" fill="#e2e8f0" font-size="10" font-weight="bold">Key Transitions</text>
+
+    <!-- Transition arrows showing the combine logic -->
+    <text x="40" y="36" fill="#34d399" font-size="9">Step 7:</text>
+    <text x="95" y="36" fill="#94a3b8" font-size="9">pop("a",2) => "a" + "c"*2 = "a"+"cc" =</text>
+    <text x="340" y="36" fill="#e2e8f0" font-size="9" font-weight="bold">"acc"</text>
+
+    <line x1="380" y1="28" x2="400" y2="28" stroke="#64748b" stroke-width="1"/>
+
+    <text x="415" y="36" fill="#5b6abf" font-size="9">Step 8:</text>
+    <text x="470" y="36" fill="#94a3b8" font-size="9">pop("",3) => "" + "acc"*3 = "acc"+"acc"+"acc" =</text>
+    <text x="760" y="36" fill="#34d399" font-size="9" font-weight="bold">"accaccacc"</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- Legend                                       -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(0, 448)">
+    <rect x="20" y="0" width="860" height="40" rx="6" fill="#0a0a0a" stroke="#222"/>
+
+    <!-- [ -->
+    <rect x="35" y="10" width="14" height="14" rx="2" fill="#111" stroke="#34d399" stroke-width="1"/>
+    <text x="42" y="21" text-anchor="middle" fill="#34d399" font-size="8" font-weight="bold">[</text>
+    <text x="55" y="21" fill="#94a3b8" font-size="8.5">= Save context &amp; push</text>
+
+    <!-- | separator -->
+    <line x1="205" y1="8" x2="205" y2="34" stroke="#333"/>
+
+    <!-- ] -->
+    <rect x="220" y="10" width="14" height="14" rx="2" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="227" y="21" text-anchor="middle" fill="#5b6abf" font-size="8" font-weight="bold">]</text>
+    <text x="240" y="21" fill="#94a3b8" font-size="8.5">= Pop context &amp; combine</text>
+
+    <!-- | separator -->
+    <line x1="405" y1="8" x2="405" y2="34" stroke="#333"/>
+
+    <!-- Stack -->
+    <rect x="420" y="10" width="45" height="14" rx="2" fill="#1a2e1a" stroke="#34d399" stroke-width="0.8"/>
+    <text x="443" y="21" text-anchor="middle" fill="#34d399" font-size="7.5">stack</text>
+    <text x="472" y="21" fill="#94a3b8" font-size="8.5">= Saved (string, count) pairs</text>
+
+    <!-- | separator -->
+    <line x1="660" y1="8" x2="660" y2="34" stroke="#333"/>
+
+    <!-- Digit -->
+    <text x="675" y="21" fill="#fbbf24" font-size="9" font-weight="bold">3</text>
+    <text x="688" y="21" fill="#94a3b8" font-size="8.5">= Digit</text>
+
+    <!-- | separator -->
+    <line x1="735" y1="8" x2="735" y2="34" stroke="#333"/>
+
+    <!-- Letter -->
+    <text x="750" y="21" fill="#a78bfa" font-size="9" font-weight="bold">a</text>
+    <text x="763" y="21" fill="#94a3b8" font-size="8.5">= Letter</text>
+
+    <!-- | separator -->
+    <line x1="810" y1="8" x2="810" y2="34" stroke="#333"/>
+
+    <!-- Result -->
+    <text x="825" y="21" fill="#34d399" font-size="8.5" font-weight="bold">result</text>
+  </g>
+</svg>

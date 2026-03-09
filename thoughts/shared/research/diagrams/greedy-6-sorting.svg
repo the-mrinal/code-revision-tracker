@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <text x="450" y="32" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="16" font-weight="bold" text-anchor="middle">Sorting Based Greedy — Sort Right, Process Left to Right</text>
+
+  <!-- Assign Cookies -->
+  <rect x="30" y="50" width="410" height="180" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="50" y="75" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Assign Cookies (#455)</text>
+  <text x="50" y="95" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Sort both. Match smallest cookie to least greedy child.</text>
+
+  <!-- Children -->
+  <text x="50" y="115" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Children (greed): </text>
+  <rect x="170" y="103" width="30" height="20" rx="3" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="185" y="118" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+  <rect x="208" y="103" width="30" height="20" rx="3" fill="#0a0a0a" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="223" y="118" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">2</text>
+  <rect x="246" y="103" width="30" height="20" rx="3" fill="#0a0a0a" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="261" y="118" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">3</text>
+
+  <!-- Cookies -->
+  <text x="50" y="145" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Cookies (size):  </text>
+  <rect x="170" y="133" width="30" height="20" rx="3" fill="#0a0a0a" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="185" y="148" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+  <rect x="208" y="133" width="30" height="20" rx="3" fill="#0a0a0a" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="223" y="148" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">1</text>
+
+  <!-- Match -->
+  <line x1="185" y1="123" x2="185" y2="133" stroke="#34d399" stroke-width="1.5"/>
+  <text x="185" y="168" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">1≥1 ✓</text>
+  <text x="223" y="168" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">1≥2 ✗</text>
+
+  <text x="50" y="195" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Result: 1 child satisfied</text>
+  <text x="50" y="215" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8">Key: Sort both ascending, two-pointer match</text>
+
+  <!-- Two City Scheduling -->
+  <rect x="460" y="50" width="410" height="180" rx="8" fill="#111" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="480" y="75" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Two City Scheduling (#1029)</text>
+  <text x="480" y="95" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Sort by (costA - costB). First half → A, second → B.</text>
+
+  <!-- Table -->
+  <text x="480" y="115" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8">Person   costA  costB  diff</text>
+  <text x="480" y="130" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="8">[30,200]   30    200   -170  → A</text>
+  <text x="480" y="145" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="8">[10,20]    10     20    -10  → A</text>
+  <text x="480" y="160" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="8">[30,20]    30     20    +10  → B</text>
+  <text x="480" y="175" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="8">[400,50]  400     50   +350  → B</text>
+
+  <text x="480" y="200" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">Total: 30+10+20+50 = 110</text>
+  <text x="480" y="215" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8">Key: Sort by "savings of choosing A over B"</text>
+
+  <!-- Candy (Two-Pass) -->
+  <rect x="30" y="245" width="410" height="230" rx="8" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="50" y="270" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Candy (#135) — Two-Pass Greedy</text>
+  <text x="50" y="290" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">ratings = [1, 0, 2]</text>
+
+  <!-- Pass 1 -->
+  <text x="50" y="315" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Pass 1: Left → Right</text>
+  <text x="50" y="333" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">ratings: 1  0  2</text>
+  <text x="50" y="348" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">candies: 1  1  2</text>
+  <text x="50" y="363" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8">(if rating[i]>rating[i-1]: candy[i]=candy[i-1]+1)</text>
+
+  <!-- Arrow -->
+  <text x="50" y="383" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">↓</text>
+
+  <!-- Pass 2 -->
+  <text x="50" y="400" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Pass 2: Right → Left</text>
+  <text x="50" y="418" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">ratings: 1  0  2</text>
+  <text x="50" y="433" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">candies: 2  1  2</text>
+  <text x="50" y="448" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8">(if rating[i]>rating[i+1]: candy[i]=max(candy[i],candy[i+1]+1))</text>
+
+  <text x="50" y="468" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">Sum: 2+1+2 = 5</text>
+
+  <!-- Queue Reconstruction -->
+  <rect x="460" y="245" width="410" height="230" rx="8" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="480" y="270" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Queue Reconstruction (#406)</text>
+  <text x="480" y="290" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Sort: height DESC, k ASC. Insert at index k.</text>
+
+  <!-- Sort step -->
+  <text x="480" y="315" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">Sorted: [7,0] [7,1] [6,1] [5,0] [5,2] [4,4]</text>
+
+  <!-- Insert steps -->
+  <text x="480" y="340" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9">Insert [7,0] at 0: [7,0]</text>
+  <text x="480" y="355" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9">Insert [7,1] at 1: [7,0] [7,1]</text>
+  <text x="480" y="370" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="9">Insert [6,1] at 1: [7,0] [6,1] [7,1]</text>
+  <text x="480" y="385" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="9">Insert [5,0] at 0: [5,0] [7,0] [6,1] [7,1]</text>
+  <text x="480" y="400" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">Insert [5,2] at 2: [5,0] [7,0] [5,2] [6,1] [7,1]</text>
+  <text x="480" y="415" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">Insert [4,4] at 4: [5,0] [7,0] [5,2] [6,1] [4,4] [7,1]</text>
+
+  <text x="480" y="443" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="9" font-weight="bold">Key: Tallest first → shorter insertions</text>
+  <text x="480" y="458" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="8">don't invalidate taller placements</text>
+</svg>

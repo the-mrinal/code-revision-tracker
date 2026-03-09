@@ -1,0 +1,250 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520">
+  <defs>
+    <filter id="shadow4">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.3"/>
+    </filter>
+    <marker id="arrowR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#f87171"/>
+    </marker>
+    <marker id="arrowG2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#34d399"/>
+    </marker>
+    <marker id="arrowW" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="520" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="16" font-weight="bold">0/1 Knapsack Pattern (Subset Sum)</text>
+  <text x="450" y="50" text-anchor="middle" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="11">nums = [1, 5, 11, 5], target = 11 -- Can we partition into equal sums?</text>
+
+  <!-- ===== Decision Tree (top left) ===== -->
+  <rect x="15" y="62" width="400" height="195" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="215" y="84" text-anchor="middle" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">Take or Skip Decision Tree (num=5)</text>
+
+  <!-- Decision node -->
+  <rect x="165" y="94" width="100" height="24" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5" filter="url(#shadow4)"/>
+  <text x="215" y="110" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="10">dp[j], num=5</text>
+
+  <!-- Skip branch -->
+  <line x1="185" y1="118" x2="110" y2="148" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="130" y="138" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="9" transform="rotate(-25 130 138)">skip</text>
+  <rect x="58" y="148" width="105" height="24" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+  <text x="110" y="164" text-anchor="middle" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="9">dp[j] stays</text>
+
+  <!-- Take branch -->
+  <line x1="245" y1="118" x2="310" y2="148" stroke="#34d399" stroke-width="1.5"/>
+  <text x="290" y="138" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" transform="rotate(25 290 138)">take</text>
+  <rect x="258" y="148" width="105" height="24" rx="6" fill="#111" stroke="#34d399" stroke-width="1"/>
+  <text x="310" y="164" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">dp[j-5] used</text>
+
+  <!-- Merge -->
+  <line x1="110" y1="172" x2="215" y2="200" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+  <line x1="310" y1="172" x2="215" y2="200" stroke="#888" stroke-width="1" stroke-dasharray="3,2"/>
+  <rect x="145" y="198" width="140" height="24" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="215" y="214" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="9">dp[j] |= dp[j-5]</text>
+
+  <text x="215" y="245" text-anchor="middle" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">If dp[j-num] is True, then dp[j] becomes True</text>
+
+  <!-- ===== DP Boolean Table ===== -->
+  <text x="450" y="78" text-anchor="middle" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">1D Boolean DP Table (after all nums processed)</text>
+
+  <!-- Column headers: 0..11 -->
+  <g font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle" fill="#555">
+    <text x="450" y="92">0</text>
+    <text x="480" y="92">1</text>
+    <text x="510" y="92">2</text>
+    <text x="540" y="92">3</text>
+    <text x="570" y="92">4</text>
+    <text x="600" y="92">5</text>
+    <text x="630" y="92">6</text>
+    <text x="660" y="92">7</text>
+    <text x="690" y="92">8</text>
+    <text x="720" y="92">9</text>
+    <text x="750" y="92">10</text>
+    <text x="780" y="92">11</text>
+  </g>
+
+  <!-- Row: after num=1 -->
+  <text x="430" y="113" text-anchor="end" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="8">+1</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">
+    <rect x="436" y="100" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="450" y="113" fill="#34d399">T</text>
+    <rect x="466" y="100" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="480" y="113" fill="#34d399">T</text>
+    <rect x="496" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="510" y="113" fill="#555">F</text>
+    <rect x="526" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="540" y="113" fill="#555">F</text>
+    <rect x="556" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="570" y="113" fill="#555">F</text>
+    <rect x="586" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="600" y="113" fill="#555">F</text>
+    <rect x="616" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="630" y="113" fill="#555">F</text>
+    <rect x="646" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="660" y="113" fill="#555">F</text>
+    <rect x="676" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="690" y="113" fill="#555">F</text>
+    <rect x="706" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="720" y="113" fill="#555">F</text>
+    <rect x="736" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="750" y="113" fill="#555">F</text>
+    <rect x="766" y="100" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="780" y="113" fill="#555">F</text>
+  </g>
+
+  <!-- Row: after num=5 -->
+  <text x="430" y="137" text-anchor="end" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="8">+5</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">
+    <rect x="436" y="124" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="450" y="137" fill="#34d399">T</text>
+    <rect x="466" y="124" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="480" y="137" fill="#34d399">T</text>
+    <rect x="496" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="510" y="137" fill="#555">F</text>
+    <rect x="526" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="540" y="137" fill="#555">F</text>
+    <rect x="556" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="570" y="137" fill="#555">F</text>
+    <rect x="586" y="124" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="600" y="137" fill="#34d399">T</text>
+    <rect x="616" y="124" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="630" y="137" fill="#34d399">T</text>
+    <rect x="646" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="660" y="137" fill="#555">F</text>
+    <rect x="676" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="690" y="137" fill="#555">F</text>
+    <rect x="706" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="720" y="137" fill="#555">F</text>
+    <rect x="736" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="750" y="137" fill="#555">F</text>
+    <rect x="766" y="124" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="780" y="137" fill="#555">F</text>
+  </g>
+
+  <!-- Row: after num=11 -->
+  <text x="430" y="161" text-anchor="end" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="8">+11</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">
+    <rect x="436" y="148" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="450" y="161" fill="#34d399">T</text>
+    <rect x="466" y="148" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="480" y="161" fill="#34d399">T</text>
+    <rect x="496" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="510" y="161" fill="#555">F</text>
+    <rect x="526" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="540" y="161" fill="#555">F</text>
+    <rect x="556" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="570" y="161" fill="#555">F</text>
+    <rect x="586" y="148" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="600" y="161" fill="#34d399">T</text>
+    <rect x="616" y="148" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="630" y="161" fill="#34d399">T</text>
+    <rect x="646" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="660" y="161" fill="#555">F</text>
+    <rect x="676" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="690" y="161" fill="#555">F</text>
+    <rect x="706" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="720" y="161" fill="#555">F</text>
+    <rect x="736" y="148" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="750" y="161" fill="#555">F</text>
+    <rect x="766" y="148" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="780" y="161" fill="#34d399">T</text>
+  </g>
+
+  <!-- Row: after num=5 (second) -- final -->
+  <text x="430" y="185" text-anchor="end" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="8">+5</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">
+    <rect x="436" y="172" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="450" y="185" fill="#34d399">T</text>
+    <rect x="466" y="172" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="480" y="185" fill="#34d399">T</text>
+    <rect x="496" y="172" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="510" y="185" fill="#555">F</text>
+    <rect x="526" y="172" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="540" y="185" fill="#555">F</text>
+    <rect x="556" y="172" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="570" y="185" fill="#555">F</text>
+    <rect x="586" y="172" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="600" y="185" fill="#34d399">T</text>
+    <rect x="616" y="172" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="630" y="185" fill="#34d399">T</text>
+    <rect x="646" y="172" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="660" y="185" fill="#555">F</text>
+    <rect x="676" y="172" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="690" y="185" fill="#555">F</text>
+    <rect x="706" y="172" width="28" height="18" rx="3" fill="#1a1a1a" stroke="#333" stroke-width="0.5"/>
+    <text x="720" y="185" fill="#555">F</text>
+    <rect x="736" y="172" width="28" height="18" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="0.5"/>
+    <text x="750" y="185" fill="#34d399">T</text>
+    <rect x="766" y="172" width="28" height="18" rx="3" fill="#0f2a1f" stroke="#34d399" stroke-width="2"/>
+    <text x="780" y="185" fill="#34d399" font-weight="bold">T</text>
+  </g>
+
+  <!-- Arrow showing how dp[11] got set: dp[11] |= dp[11-5]=dp[6]=T -->
+  <path d="M630,190 C630,205 780,205 780,190" fill="none" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowG2)"/>
+  <text x="705" y="215" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">dp[6]=T, so dp[11]=T (take 5)</text>
+
+  <!-- ===== Reverse Iteration Visualization ===== -->
+  <rect x="15" y="262" width="870" height="120" rx="8" fill="#111" stroke="#f87171" stroke-width="1"/>
+  <text x="450" y="284" text-anchor="middle" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="12" font-weight="bold">Why Reverse Iteration? (Processing num=5)</text>
+
+  <!-- Forward (wrong) -->
+  <text x="30" y="306" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">WRONG: Forward j=5..11</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9">
+    <text x="30" y="322" fill="#888">j=5:  dp[5] |= dp[0]=T</text>
+    <text x="210" y="322" fill="#f87171">dp[5] set to T</text>
+    <text x="30" y="338" fill="#888">j=10: dp[10] |= dp[5]=T</text>
+    <text x="210" y="338" fill="#f87171">WRONG! Uses num=5 twice!</text>
+    <text x="30" y="356" fill="#f87171">Forward loop lets same item be reused</text>
+    <text x="30" y="370" fill="#555">(This is the unbounded knapsack variant)</text>
+  </g>
+
+  <!-- Reverse (correct) -->
+  <text x="470" y="306" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">CORRECT: Reverse j=11..5</text>
+  <g font-family="SF Mono, Menlo, monospace" font-size="9">
+    <text x="470" y="322" fill="#888">j=11: dp[11] |= dp[6]=T</text>
+    <text x="665" y="322" fill="#34d399">uses old dp[6]</text>
+    <text x="470" y="338" fill="#888">j=10: dp[10] |= dp[5]=F</text>
+    <text x="665" y="338" fill="#34d399">uses old dp[5]</text>
+    <text x="470" y="356" fill="#34d399">Reverse loop preserves previous row's values</text>
+    <text x="470" y="370" fill="#555">(Each item used at most once -- 0/1 knapsack)</text>
+  </g>
+
+  <!-- Direction arrows -->
+  <!-- Forward arrow (wrong) -->
+  <line x1="130" y1="292" x2="400" y2="292" stroke="#f87171" stroke-width="1.5" marker-end="url(#arrowR)" stroke-dasharray="4,2"/>
+  <text x="270" y="290" text-anchor="middle" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="8">j++</text>
+
+  <!-- Reverse arrow (correct) -->
+  <line x1="840" y1="292" x2="570" y2="292" stroke="#34d399" stroke-width="1.5" marker-end="url(#arrowG2)"/>
+  <text x="700" y="290" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="8">j--</text>
+
+  <!-- ===== Code + Info Box ===== -->
+  <rect x="15" y="395" width="500" height="112" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="265" y="415" text-anchor="middle" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">Core Algorithm</text>
+
+  <rect x="30" y="422" width="470" height="78" rx="6" fill="#0a0a0a" stroke="#222"/>
+  <g font-family="SF Mono, Menlo, monospace" font-size="10" fill="#ccc">
+    <text x="40" y="438">dp = [</text><text x="80" y="438" fill="#34d399">True</text><text x="114" y="438">] + [</text><text x="140" y="438" fill="#f87171">False</text><text x="180" y="438">] * target</text>
+    <text x="40" y="456" fill="#fbbf24">for</text><text x="64" y="456"> num </text><text x="92" y="456" fill="#fbbf24">in</text><text x="108" y="456"> nums:</text>
+    <text x="56" y="474" fill="#fbbf24">for</text><text x="80" y="474"> j </text><text x="96" y="474" fill="#fbbf24">in</text><text x="112" y="474"> range(target, num-1, </text><text x="310" y="474" fill="#f87171">-1</text><text x="324" y="474">):</text><text x="340" y="474" fill="#555"> # reverse!</text>
+    <text x="72" y="492">dp[j] |= dp[j - num]</text>
+  </g>
+
+  <!-- Info box -->
+  <rect x="530" y="395" width="355" height="112" rx="8" fill="#111" stroke="#a78bfa" stroke-width="1"/>
+  <text x="708" y="415" text-anchor="middle" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">Reverse vs Forward Loop</text>
+
+  <g font-family="SF Mono, Menlo, monospace" font-size="10">
+    <text x="545" y="438" fill="#f87171">Forward (j++)</text><text x="680" y="438" fill="#888">= unbounded knapsack</text>
+    <text x="565" y="454" fill="#555">Each item reusable (coin change)</text>
+    <text x="545" y="476" fill="#34d399">Reverse (j--)</text><text x="680" y="476" fill="#888">= 0/1 knapsack</text>
+    <text x="565" y="492" fill="#555">Each item used at most once</text>
+  </g>
+
+  <text x="450" y="515" text-anchor="middle" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">dp[11] = True -- partition [1,5,5] and [11] both sum to 11</text>
+</svg>

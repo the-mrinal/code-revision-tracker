@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+  <text x="450" y="35" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">DFS Connected Components</text>
+
+  <!-- Grid -->
+  <g transform="translate(50, 60)">
+    <text x="0" y="0" fill="#888" font-size="12">Input Grid (Number of Islands)</text>
+    <!-- Grid cells -->
+    <g transform="translate(0, 15)">
+      <!-- Row 0 -->
+      <rect x="0" y="0" width="40" height="40" rx="4" fill="#1a3a1a" stroke="#34d399" stroke-width="1.5"/><text x="20" y="26" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+      <rect x="45" y="0" width="40" height="40" rx="4" fill="#1a3a1a" stroke="#34d399" stroke-width="1.5"/><text x="65" y="26" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+      <rect x="90" y="0" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="110" y="26" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="135" y="0" width="40" height="40" rx="4" fill="#2a1a1a" stroke="#a78bfa" stroke-width="1.5"/><text x="155" y="26" text-anchor="middle" fill="#a78bfa" font-size="16">1</text>
+      <rect x="180" y="0" width="40" height="40" rx="4" fill="#2a1a1a" stroke="#a78bfa" stroke-width="1.5"/><text x="200" y="26" text-anchor="middle" fill="#a78bfa" font-size="16">1</text>
+      <!-- Row 1 -->
+      <rect x="0" y="45" width="40" height="40" rx="4" fill="#1a3a1a" stroke="#34d399" stroke-width="1.5"/><text x="20" y="71" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+      <rect x="45" y="45" width="40" height="40" rx="4" fill="#1a3a1a" stroke="#34d399" stroke-width="1.5"/><text x="65" y="71" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+      <rect x="90" y="45" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="110" y="71" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="135" y="45" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="155" y="71" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="180" y="45" width="40" height="40" rx="4" fill="#2a1a1a" stroke="#a78bfa" stroke-width="1.5"/><text x="200" y="71" text-anchor="middle" fill="#a78bfa" font-size="16">1</text>
+      <!-- Row 2 -->
+      <rect x="0" y="90" width="40" height="40" rx="4" fill="#1a3a1a" stroke="#34d399" stroke-width="1.5"/><text x="20" y="116" text-anchor="middle" fill="#34d399" font-size="16">1</text>
+      <rect x="90" y="90" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="110" y="116" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="45" y="90" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="65" y="116" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="135" y="90" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="155" y="116" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="180" y="90" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="200" y="116" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <!-- Row 3 -->
+      <rect x="0" y="135" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="20" y="161" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="45" y="135" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="65" y="161" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="90" y="135" width="40" height="40" rx="4" fill="#1a1a2a" stroke="#fbbf24" stroke-width="1.5"/><text x="110" y="161" text-anchor="middle" fill="#fbbf24" font-size="16">1</text>
+      <rect x="135" y="135" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="155" y="161" text-anchor="middle" fill="#555" font-size="16">0</text>
+      <rect x="180" y="135" width="40" height="40" rx="4" fill="#1a1a1a" stroke="#333"/><text x="200" y="161" text-anchor="middle" fill="#555" font-size="16">0</text>
+    </g>
+    <!-- Labels -->
+    <text x="20" y="220" fill="#34d399" font-size="13">Island 1</text>
+    <text x="155" y="220" fill="#a78bfa" font-size="13">Island 2</text>
+    <text x="90" y="235" fill="#fbbf24" font-size="13">Island 3</text>
+  </g>
+
+  <!-- DFS Tree -->
+  <g transform="translate(340, 60)">
+    <text x="0" y="0" fill="#888" font-size="12">DFS from (0,0) — exploring Island 1</text>
+    <g transform="translate(80, 30)">
+      <!-- Root -->
+      <rect x="-30" y="0" width="60" height="28" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+      <text x="0" y="19" text-anchor="middle" fill="#34d399" font-size="12">(0,0)</text>
+      <!-- Children -->
+      <line x1="0" y1="28" x2="-60" y2="55" stroke="#34d399" stroke-width="1" opacity="0.5"/>
+      <line x1="0" y1="28" x2="60" y2="55" stroke="#34d399" stroke-width="1" opacity="0.5"/>
+      <rect x="-90" y="55" width="60" height="28" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+      <text x="-60" y="74" text-anchor="middle" fill="#34d399" font-size="12">(0,1)</text>
+      <rect x="30" y="55" width="60" height="28" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+      <text x="60" y="74" text-anchor="middle" fill="#34d399" font-size="12">(1,0)</text>
+      <!-- Level 3 -->
+      <line x1="-60" y1="83" x2="-60" y2="110" stroke="#34d399" stroke-width="1" opacity="0.5"/>
+      <line x1="60" y1="83" x2="60" y2="110" stroke="#34d399" stroke-width="1" opacity="0.5"/>
+      <rect x="-90" y="110" width="60" height="28" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+      <text x="-60" y="129" text-anchor="middle" fill="#34d399" font-size="12">(1,1)</text>
+      <rect x="30" y="110" width="60" height="28" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+      <text x="60" y="129" text-anchor="middle" fill="#34d399" font-size="12">(2,0)</text>
+    </g>
+    <!-- Arrow to result -->
+    <text x="0" y="195" fill="#888" font-size="11">5 cells → 1 component</text>
+  </g>
+
+  <!-- Algorithm steps -->
+  <g transform="translate(600, 60)">
+    <text x="0" y="0" fill="#888" font-size="12">Algorithm</text>
+    <rect x="0" y="12" width="260" height="200" rx="8" fill="#111" stroke="#222"/>
+    <text x="15" y="35" fill="#5b6abf" font-size="12" font-weight="bold">for each cell (r,c):</text>
+    <text x="15" y="55" fill="#ccc" font-size="11">  if grid[r][c] == 1:</text>
+    <text x="15" y="75" fill="#34d399" font-size="11">    dfs(r, c)  // sink island</text>
+    <text x="15" y="95" fill="#fbbf24" font-size="11">    count++</text>
+    <text x="15" y="125" fill="#5b6abf" font-size="12" font-weight="bold">dfs(r, c):</text>
+    <text x="15" y="145" fill="#ccc" font-size="11">  if out of bounds: return</text>
+    <text x="15" y="165" fill="#ccc" font-size="11">  if grid[r][c] != 1: return</text>
+    <text x="15" y="185" fill="#f87171" font-size="11">  grid[r][c] = 0  // mark visited</text>
+    <text x="15" y="205" fill="#ccc" font-size="11">  dfs 4 directions</text>
+  </g>
+
+  <!-- Legend -->
+  <g transform="translate(50, 320)">
+    <rect x="0" y="0" width="800" height="55" rx="8" fill="#111" stroke="#222"/>
+    <rect x="20" y="15" width="16" height="16" rx="3" fill="#1a3a1a" stroke="#34d399"/>
+    <text x="45" y="28" fill="#ccc" font-size="12">Island 1 (DFS component)</text>
+    <rect x="230" y="15" width="16" height="16" rx="3" fill="#2a1a1a" stroke="#a78bfa"/>
+    <text x="255" y="28" fill="#ccc" font-size="12">Island 2</text>
+    <rect x="380" y="15" width="16" height="16" rx="3" fill="#1a1a2a" stroke="#fbbf24"/>
+    <text x="405" y="28" fill="#ccc" font-size="12">Island 3</text>
+    <rect x="530" y="15" width="16" height="16" rx="3" fill="#1a1a1a" stroke="#333"/>
+    <text x="555" y="28" fill="#ccc" font-size="12">Water (0)</text>
+  </g>
+
+  <!-- Summary -->
+  <g transform="translate(50, 395)">
+    <rect x="0" y="0" width="800" height="90" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="20" y="25" fill="#5b6abf" font-size="14" font-weight="bold">Key Takeaway</text>
+    <text x="20" y="48" fill="#ccc" font-size="12">Scan grid → when unvisited land found → DFS to mark entire component → increment count</text>
+    <text x="20" y="68" fill="#888" font-size="11">In-place marking (set 1→0) eliminates need for separate visited array — O(1) extra space</text>
+    <text x="20" y="83" fill="#888" font-size="11">Works for adjacency lists (841), matrices (547), and grids (200) — same core pattern</text>
+  </g>
+</svg>

@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 520" font-family="SF Mono, Menlo, monospace">
+  <rect width="1100" height="520" rx="12" fill="#0a0a0a"/>
+  <text x="550" y="32" text-anchor="middle" fill="#34d399" font-size="16" font-weight="700">Top K Elements — Min-Heap of Size K</text>
+  <text x="550" y="52" text-anchor="middle" fill="#777" font-size="11">Keep the K best in a min-heap. Root = Kth best = gatekeeper.</text>
+
+  <!-- Example: K=3, nums = [3,1,5,12,2,11] -->
+  <rect x="60" y="75" width="980" height="280" rx="8" fill="#111" stroke="#222"/>
+  <text x="550" y="100" text-anchor="middle" fill="#34d399" font-size="14" font-weight="600">#215 — Find 3rd Largest in [3, 1, 5, 12, 2, 11]</text>
+
+  <!-- Step by step -->
+  <text x="100" y="135" fill="#555" font-size="11">Step</text>
+  <text x="200" y="135" fill="#555" font-size="11">Element</text>
+  <text x="330" y="135" fill="#555" font-size="11">Action</text>
+  <text x="650" y="135" fill="#555" font-size="11">Min-Heap (size ≤ 3)</text>
+  <text x="920" y="135" fill="#555" font-size="11">Root</text>
+
+  <line x1="80" y1="145" x2="1020" y2="145" stroke="#333" stroke-width="1"/>
+
+  <text x="100" y="170" fill="#ddd" font-size="12">1</text>
+  <text x="200" y="170" fill="#ddd" font-size="12">3</text>
+  <text x="330" y="170" fill="#34d399" font-size="12">push (size &lt; 3)</text>
+  <text x="650" y="170" fill="#34d399" font-size="13" font-weight="600">[3]</text>
+  <text x="920" y="170" fill="#ddd" font-size="12">3</text>
+
+  <text x="100" y="195" fill="#ddd" font-size="12">2</text>
+  <text x="200" y="195" fill="#ddd" font-size="12">1</text>
+  <text x="330" y="195" fill="#34d399" font-size="12">push (size &lt; 3)</text>
+  <text x="650" y="195" fill="#34d399" font-size="13" font-weight="600">[1, 3]</text>
+  <text x="920" y="195" fill="#ddd" font-size="12">1</text>
+
+  <text x="100" y="220" fill="#ddd" font-size="12">3</text>
+  <text x="200" y="220" fill="#ddd" font-size="12">5</text>
+  <text x="330" y="220" fill="#34d399" font-size="12">push (size &lt; 3)</text>
+  <text x="650" y="220" fill="#34d399" font-size="13" font-weight="600">[1, 3, 5]</text>
+  <text x="920" y="220" fill="#ddd" font-size="12">1</text>
+
+  <text x="100" y="245" fill="#ddd" font-size="12">4</text>
+  <text x="200" y="245" fill="#fbbf24" font-size="12">12</text>
+  <text x="330" y="245" fill="#fbbf24" font-size="12">12 &gt; root(1): pop 1, push 12</text>
+  <text x="650" y="245" fill="#fbbf24" font-size="13" font-weight="600">[3, 5, 12]</text>
+  <text x="920" y="245" fill="#fbbf24" font-size="12">3</text>
+
+  <text x="100" y="270" fill="#ddd" font-size="12">5</text>
+  <text x="200" y="270" fill="#f87171" font-size="12">2</text>
+  <text x="330" y="270" fill="#f87171" font-size="12">2 &lt; root(3): skip</text>
+  <text x="650" y="270" fill="#ddd" font-size="13">[3, 5, 12]</text>
+  <text x="920" y="270" fill="#ddd" font-size="12">3</text>
+
+  <text x="100" y="295" fill="#ddd" font-size="12">6</text>
+  <text x="200" y="295" fill="#fbbf24" font-size="12">11</text>
+  <text x="330" y="295" fill="#fbbf24" font-size="12">11 &gt; root(3): pop 3, push 11</text>
+  <text x="650" y="295" fill="#fbbf24" font-size="13" font-weight="600">[5, 11, 12]</text>
+  <text x="920" y="295" fill="#34d399" font-size="14" font-weight="700">5</text>
+
+  <text x="100" y="335" fill="#34d399" font-size="13" font-weight="600">Answer: root = 5 (the 3rd largest)</text>
+  <text x="600" y="335" fill="#777" font-size="11">Heap always holds the top K. Root = smallest of top K = Kth largest.</text>
+
+  <!-- Complexity comparison -->
+  <rect x="60" y="375" width="480" height="120" rx="8" fill="#111" stroke="#222"/>
+  <text x="300" y="400" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="600">Complexity Comparison</text>
+  <text x="100" y="430" fill="#ddd" font-size="12">Sort then index:      O(N log N)</text>
+  <text x="100" y="455" fill="#34d399" font-size="12">Min-heap of size K:   O(N log K)  ← better when K ≪ N</text>
+  <text x="100" y="480" fill="#ddd" font-size="12">Quickselect:          O(N) avg, O(N²) worst</text>
+
+  <!-- Variants box -->
+  <rect x="580" y="375" width="460" height="120" rx="8" fill="#111" stroke="#222"/>
+  <text x="810" y="400" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="600">Common Variants</text>
+  <text x="620" y="430" fill="#34d399" font-size="12">K largest  → min-heap size K</text>
+  <text x="620" y="455" fill="#38bdf8" font-size="12">K smallest → max-heap size K</text>
+  <text x="620" y="480" fill="#a78bfa" font-size="12">K frequent → hashmap + heap on freq</text>
+</svg>

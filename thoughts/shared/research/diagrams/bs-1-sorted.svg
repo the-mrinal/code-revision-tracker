@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="40" text-anchor="middle" fill="#5b6abf" font-size="18" font-weight="bold">Binary Search on Sorted Array</text>
+  <text x="450" y="62" text-anchor="middle" fill="#888" font-size="12">Find target=9 in [-1, 0, 3, 5, 9, 12]</text>
+
+  <!-- Array -->
+  <g transform="translate(130, 90)">
+    <rect x="0" y="0" width="60" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="30" y="32" text-anchor="middle" fill="#e0e0e0" font-size="16">-1</text>
+    <text x="30" y="-8" text-anchor="middle" fill="#666" font-size="10">0</text>
+
+    <rect x="70" y="0" width="60" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="100" y="32" text-anchor="middle" fill="#e0e0e0" font-size="16">0</text>
+    <text x="100" y="-8" text-anchor="middle" fill="#666" font-size="10">1</text>
+
+    <rect x="140" y="0" width="60" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="170" y="32" text-anchor="middle" fill="#fbbf24" font-size="16">3</text>
+    <text x="170" y="-8" text-anchor="middle" fill="#666" font-size="10">2</text>
+
+    <rect x="210" y="0" width="60" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="240" y="32" text-anchor="middle" fill="#e0e0e0" font-size="16">5</text>
+    <text x="240" y="-8" text-anchor="middle" fill="#666" font-size="10">3</text>
+
+    <rect x="280" y="0" width="60" height="50" rx="6" fill="#34d399" stroke="#34d399" stroke-width="2"/>
+    <text x="310" y="32" text-anchor="middle" fill="#0a0a0a" font-size="16" font-weight="bold">9</text>
+    <text x="310" y="-8" text-anchor="middle" fill="#34d399" font-size="10">4</text>
+
+    <rect x="350" y="0" width="60" height="50" rx="6" fill="#111" stroke="#222" stroke-width="1.5"/>
+    <text x="380" y="32" text-anchor="middle" fill="#e0e0e0" font-size="16">12</text>
+    <text x="380" y="-8" text-anchor="middle" fill="#666" font-size="10">5</text>
+  </g>
+
+  <!-- Step 1 -->
+  <g transform="translate(130, 170)">
+    <text x="-60" y="25" fill="#fbbf24" font-size="13" font-weight="bold">Step 1</text>
+    <!-- lo bracket -->
+    <rect x="-3" y="0" width="416" height="40" rx="4" fill="none" stroke="#5b6abf" stroke-width="1.5"/>
+    <text x="30" y="55" text-anchor="middle" fill="#5b6abf" font-size="10">lo=0</text>
+    <text x="170" y="-8" text-anchor="middle" fill="#fbbf24" font-size="10">mid=2</text>
+    <text x="380" y="55" text-anchor="middle" fill="#5b6abf" font-size="10">hi=5</text>
+    <text x="500" y="25" fill="#888" font-size="12">nums[2]=3 &lt; 9 → go RIGHT</text>
+    <!-- Arrow showing eliminated half -->
+    <line x1="0" y1="65" x2="195" y2="65" stroke="#f87171" stroke-width="2"/>
+    <text x="97" y="80" text-anchor="middle" fill="#f87171" font-size="10">eliminated</text>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(130, 280)">
+    <text x="-60" y="25" fill="#34d399" font-size="13" font-weight="bold">Step 2</text>
+    <rect x="207" y="0" width="206" height="40" rx="4" fill="none" stroke="#34d399" stroke-width="2"/>
+    <text x="240" y="55" text-anchor="middle" fill="#5b6abf" font-size="10">lo=3</text>
+    <text x="310" y="-8" text-anchor="middle" fill="#34d399" font-size="10">mid=4</text>
+    <text x="380" y="55" text-anchor="middle" fill="#5b6abf" font-size="10">hi=5</text>
+    <text x="500" y="25" fill="#34d399" font-size="12" font-weight="bold">nums[4]=9 = target → FOUND!</text>
+  </g>
+
+  <!-- Key insight box -->
+  <rect x="60" y="350" width="780" height="130" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="450" y="378" text-anchor="middle" fill="#5b6abf" font-size="14" font-weight="bold">Binary Search = Finding a Boundary</text>
+
+  <text x="80" y="402" fill="#888" font-size="12">Think of any binary search as:</text>
+  <g transform="translate(80, 412)">
+    <rect x="0" y="0" width="35" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+    <text x="17" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+    <rect x="40" y="0" width="35" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+    <text x="57" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+    <rect x="80" y="0" width="35" height="22" rx="3" fill="#2a1a1a" stroke="#f87171" stroke-width="1"/>
+    <text x="97" y="16" text-anchor="middle" fill="#f87171" font-size="10">F</text>
+    <rect x="120" y="0" width="35" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="137" y="16" text-anchor="middle" fill="#34d399" font-size="10">T</text>
+    <rect x="160" y="0" width="35" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="177" y="16" text-anchor="middle" fill="#34d399" font-size="10">T</text>
+    <rect x="200" y="0" width="35" height="22" rx="3" fill="#1a2e1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="217" y="16" text-anchor="middle" fill="#34d399" font-size="10">T</text>
+    <text x="255" y="16" fill="#ccc" font-size="11">← find the boundary between F and T</text>
+  </g>
+
+  <text x="80" y="460" fill="#ccc" font-size="12">Every step eliminates half the search space → O(log n)</text>
+  <text x="80" y="478" fill="#888" font-size="11">Overflow guard: mid = lo + (hi - lo) / 2 instead of (lo + hi) / 2</text>
+
+  <!-- Legend -->
+  <g transform="translate(700, 90)">
+    <rect x="0" y="0" width="15" height="15" rx="3" fill="#34d399"/>
+    <text x="22" y="12" fill="#34d399" font-size="10">Found</text>
+    <rect x="0" y="22" width="15" height="15" rx="3" fill="none" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="22" y="34" fill="#fbbf24" font-size="10">Mid checked</text>
+    <line x1="0" y1="50" x2="15" y2="50" stroke="#f87171" stroke-width="2"/>
+    <text x="22" y="54" fill="#f87171" font-size="10">Eliminated</text>
+  </g>
+</svg>

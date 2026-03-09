@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500">
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <text x="450" y="32" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="16" font-weight="bold" text-anchor="middle">Gas Station — Circular Route with Greedy Skip</text>
+
+  <!-- Circular route visualization -->
+  <!-- Station circles arranged in a circle -->
+  <circle cx="450" cy="175" r="100" fill="none" stroke="#222" stroke-width="2" stroke-dasharray="8,4"/>
+
+  <!-- Station 0 (top) -->
+  <circle cx="450" cy="75" r="24" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="450" y="72" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">S0</text>
+  <text x="450" y="85" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">net:-2</text>
+
+  <!-- Station 1 (right-top) -->
+  <circle cx="545" cy="110" r="24" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="545" y="107" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">S1</text>
+  <text x="545" y="120" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">net:-2</text>
+
+  <!-- Station 2 (right-bottom) -->
+  <circle cx="545" cy="240" r="24" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="545" y="237" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">S2</text>
+  <text x="545" y="250" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">net:-2</text>
+
+  <!-- Station 3 (left-bottom) — the answer! -->
+  <circle cx="355" cy="240" r="28" fill="#1a1a2e" stroke="#34d399" stroke-width="3"/>
+  <text x="355" y="237" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">S3</text>
+  <text x="355" y="252" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">net:+3</text>
+  <text x="355" y="278" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">START</text>
+
+  <!-- Station 4 (left-top) -->
+  <circle cx="355" cy="110" r="24" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="355" y="107" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">S4</text>
+  <text x="355" y="120" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">net:+3</text>
+
+  <!-- Direction arrows (clockwise) -->
+  <text x="505" y="80" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="12">→</text>
+  <text x="560" y="180" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="12">↓</text>
+  <text x="450" y="270" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="12">←</text>
+  <text x="340" y="180" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="12">↑</text>
+  <text x="395" y="80" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="12">→</text>
+
+  <!-- Data table -->
+  <rect x="620" y="60" width="250" height="130" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="640" y="82" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Station Data</text>
+  <text x="640" y="100" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">  i   gas  cost   net</text>
+  <text x="640" y="115" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9">  0    1    3    -2</text>
+  <text x="640" y="130" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9">  1    2    4    -2</text>
+  <text x="640" y="145" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9">  2    3    5    -2</text>
+  <text x="640" y="160" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">  3    4    1    +3  ← START</text>
+  <text x="640" y="175" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9">  4    5    2    +3</text>
+
+  <!-- Tank simulation from station 3 -->
+  <rect x="620" y="200" width="250" height="100" rx="8" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+  <text x="640" y="222" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">Tank from S3:</text>
+  <text x="640" y="240" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">S3→S4: 0+4-1 = 3 ✓</text>
+  <text x="640" y="255" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">S4→S0: 3+5-2 = 6 ✓</text>
+  <text x="640" y="270" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">S0→S1: 6+1-3 = 4 ✓</text>
+  <text x="640" y="285" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">S1→S2: 4+2-4 = 2 ✓</text>
+  <text x="640" y="297" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9">S2→S3: 2+3-5 = 0 ✓</text>
+
+  <!-- Algorithm explanation -->
+  <line x1="30" y1="320" x2="870" y2="320" stroke="#222" stroke-width="1"/>
+
+  <text x="450" y="348" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" font-weight="bold" text-anchor="middle">Greedy Skip: If Tank Goes Negative, Skip to Next Station</text>
+
+  <!-- Scan visualization -->
+  <rect x="40" y="360" width="820" height="120" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+
+  <!-- Station boxes in a row -->
+  <rect x="70" y="380" width="60" height="30" rx="4" fill="#0a0a0a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="100" y="400" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">-2</text>
+  <text x="100" y="375" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">i=0</text>
+
+  <rect x="150" y="380" width="60" height="30" rx="4" fill="#0a0a0a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="180" y="400" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">-2</text>
+  <text x="180" y="375" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">i=1</text>
+
+  <rect x="230" y="380" width="60" height="30" rx="4" fill="#0a0a0a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="260" y="400" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">-2</text>
+  <text x="260" y="375" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">i=2</text>
+
+  <rect x="310" y="376" width="70" height="38" rx="4" fill="#1a1a2e" stroke="#34d399" stroke-width="2"/>
+  <text x="345" y="400" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">+3</text>
+  <text x="345" y="375" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">i=3 ★</text>
+
+  <rect x="400" y="380" width="60" height="30" rx="4" fill="#0a0a0a" stroke="#34d399" stroke-width="1.5"/>
+  <text x="430" y="400" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">+3</text>
+  <text x="430" y="375" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">i=4</text>
+
+  <!-- Skip arrows -->
+  <path d="M100,415 Q100,435 180,435 Q260,435 260,415" fill="none" stroke="#f87171" stroke-width="1.5" stroke-dasharray="3,2"/>
+  <text x="180" y="450" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="8" text-anchor="middle">tank&lt;0, skip to next</text>
+
+  <!-- Running tank -->
+  <text x="500" y="390" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">Scan: start=0, tank=-2&lt;0 → start=1</text>
+  <text x="500" y="405" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">      start=1, tank=-2&lt;0 → start=2</text>
+  <text x="500" y="420" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">      start=2, tank=-2&lt;0 → start=3</text>
+  <text x="500" y="435" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">      start=3, tank=+3,+6 → never &lt;0!</text>
+  <text x="500" y="455" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">      totalTank=0≥0 → answer: 3</text>
+
+  <!-- Key insight -->
+  <rect x="40" y="465" width="480" height="25" rx="4" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="280" y="482" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">If fail at j starting from i, all stations i..j fail → skip to j+1 (O(n))</text>
+</svg>

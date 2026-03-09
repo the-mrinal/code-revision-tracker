@@ -1,0 +1,128 @@
+<svg viewBox="0 0 900 480" xmlns="http://www.w3.org/2000/svg" font-family="SF Mono, Menlo, monospace">
+  <rect width="900" height="480" fill="#0a0a0a" rx="12"/>
+
+  <!-- Title -->
+  <text x="450" y="38" fill="#e2e8f0" font-size="17" font-weight="bold" text-anchor="middle">Spiral Matrix Traversal</text>
+  <text x="450" y="60" fill="#64748b" font-size="12" text-anchor="middle">Four boundary pointers shrink inward each pass: top, bottom, left, right</text>
+
+  <!-- ─── MATRIX with spiral path ─── -->
+  <rect x="30" y="80" width="400" height="310" fill="#111" rx="8" stroke="#222" stroke-width="1.5"/>
+  <text x="230" y="105" fill="#a78bfa" font-size="13" font-weight="bold" text-anchor="middle">3×3 Matrix  →  Spiral Order</text>
+
+  <!-- Cell grid: 3x3, cells 80x70 starting at x=55 y=115 -->
+  <!-- Row borders -->
+  <line x1="55" y1="185" x2="375" y2="185" stroke="#333" stroke-width="1"/>
+  <line x1="55" y1="255" x2="375" y2="255" stroke="#333" stroke-width="1"/>
+  <!-- Col borders -->
+  <line x1="162" y1="115" x2="162" y2="325" stroke="#333" stroke-width="1"/>
+  <line x1="268" y1="115" x2="268" y2="325" stroke="#333" stroke-width="1"/>
+
+  <!-- Cell backgrounds by direction -->
+  <!-- Top row → : cells (0,0),(0,1),(0,2) -->
+  <rect x="55"  y="115" width="107" height="70" fill="#5b6abf" fill-opacity="0.22" rx="3"/>
+  <rect x="162" y="115" width="106" height="70" fill="#5b6abf" fill-opacity="0.22" rx="3"/>
+  <rect x="268" y="115" width="107" height="70" fill="#5b6abf" fill-opacity="0.22" rx="3"/>
+  <!-- Right col ↓ : cells (1,2),(2,2) -->
+  <rect x="268" y="185" width="107" height="70" fill="#34d399" fill-opacity="0.22" rx="3"/>
+  <rect x="268" y="255" width="107" height="70" fill="#34d399" fill-opacity="0.22" rx="3"/>
+  <!-- Bottom row ← : cells (2,1),(2,0) -->
+  <rect x="162" y="255" width="106" height="70" fill="#fbbf24" fill-opacity="0.22" rx="3"/>
+  <rect x="55"  y="255" width="107" height="70" fill="#fbbf24" fill-opacity="0.22" rx="3"/>
+  <!-- Left col ↑ : cell (1,0) -->
+  <rect x="55"  y="185" width="107" height="70" fill="#f87171" fill-opacity="0.22" rx="3"/>
+  <!-- Center -->
+  <rect x="162" y="185" width="106" height="70" fill="#a78bfa" fill-opacity="0.22" rx="3"/>
+
+  <!-- Values -->
+  <text x="108"  y="158" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">1</text>
+  <text x="215"  y="158" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">2</text>
+  <text x="321"  y="158" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">3</text>
+  <text x="108"  y="228" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">4</text>
+  <text x="215"  y="228" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">5</text>
+  <text x="321"  y="228" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">6</text>
+  <text x="108"  y="298" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">7</text>
+  <text x="215"  y="298" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">8</text>
+  <text x="321"  y="298" fill="#e2e8f0" font-size="26" text-anchor="middle" font-weight="bold">9</text>
+
+  <!-- Spiral order numbers (small) -->
+  <text x="60"  y="125" fill="#5b6abf" font-size="10">①</text>
+  <text x="167" y="125" fill="#5b6abf" font-size="10">②</text>
+  <text x="273" y="125" fill="#5b6abf" font-size="10">③</text>
+  <text x="273" y="195" fill="#34d399" font-size="10">④</text>
+  <text x="273" y="265" fill="#34d399" font-size="10">⑤</text>
+  <text x="167" y="265" fill="#fbbf24" font-size="10">⑥</text>
+  <text x="60"  y="265" fill="#fbbf24" font-size="10">⑦</text>
+  <text x="60"  y="195" fill="#f87171" font-size="10">⑧</text>
+  <text x="167" y="195" fill="#a78bfa" font-size="10">⑨</text>
+
+  <!-- Spiral path arrows -->
+  <!-- → top row -->
+  <line x1="108" y1="150" x2="205" y2="150" stroke="#5b6abf" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="205,145 215,150 205,155" fill="#5b6abf"/>
+  <line x1="215" y1="150" x2="310" y2="150" stroke="#5b6abf" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="310,145 320,150 310,155" fill="#5b6abf"/>
+  <!-- ↓ right col -->
+  <line x1="321" y1="170" x2="321" y2="218" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="316,218 321,230 326,218" fill="#34d399"/>
+  <line x1="321" y1="240" x2="321" y2="285" stroke="#34d399" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="316,285 321,297 326,285" fill="#34d399"/>
+  <!-- ← bottom row -->
+  <line x1="300" y1="290" x2="230" y2="290" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="230,285 218,290 230,295" fill="#fbbf24"/>
+  <line x1="200" y1="290" x2="125" y2="290" stroke="#fbbf24" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="125,285 113,290 125,295" fill="#fbbf24"/>
+  <!-- ↑ left col -->
+  <line x1="108" y1="270" x2="108" y2="240" stroke="#f87171" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="103,240 108,228 113,240" fill="#f87171"/>
+  <!-- → center -->
+  <line x1="130" y1="220" x2="200" y2="220" stroke="#a78bfa" stroke-width="2" stroke-linecap="round"/>
+  <polygon points="200,215 212,220 200,225" fill="#a78bfa"/>
+
+  <!-- Output sequence -->
+  <text x="230" y="345" fill="#64748b" font-size="12" text-anchor="middle">Output: </text>
+  <text x="55"  y="362" fill="#5b6abf" font-size="13" font-weight="bold">1  2  3</text>
+  <text x="148" y="362" fill="#34d399" font-size="13" font-weight="bold">6  9</text>
+  <text x="205" y="362" fill="#fbbf24" font-size="13" font-weight="bold">8  7</text>
+  <text x="268" y="362" fill="#f87171" font-size="13" font-weight="bold">4</text>
+  <text x="305" y="362" fill="#a78bfa" font-size="13" font-weight="bold">5</text>
+
+  <!-- ─── Boundaries panel ─── -->
+  <rect x="450" y="80" width="420" height="310" fill="#111" rx="8" stroke="#222" stroke-width="1.5"/>
+  <text x="660" y="105" fill="#a78bfa" font-size="13" font-weight="bold" text-anchor="middle">Boundary Pointer Shrinking</text>
+
+  <!-- Pass 1 boundaries -->
+  <text x="470" y="132" fill="#5b6abf" font-size="12" font-weight="bold">Pass 1</text>
+  <text x="470" y="150" fill="#e2e8f0" font-size="11">top=0  bottom=2  left=0  right=2</text>
+  <text x="470" y="167" fill="#64748b" font-size="11">→ traverse top row, right col, bottom row (rev), left col (rev)</text>
+  <text x="470" y="184" fill="#64748b" font-size="11">   result: [1, 2, 3, 6, 9, 8, 7, 4]</text>
+  <text x="470" y="201" fill="#5b6abf" font-size="11">   top++, bottom--, left++, right--</text>
+
+  <line x1="460" y1="212" x2="860" y2="212" stroke="#222" stroke-width="1"/>
+
+  <!-- Pass 2 boundaries -->
+  <text x="470" y="230" fill="#34d399" font-size="12" font-weight="bold">Pass 2</text>
+  <text x="470" y="248" fill="#e2e8f0" font-size="11">top=1  bottom=1  left=1  right=1</text>
+  <text x="470" y="265" fill="#64748b" font-size="11">→ single cell remaining, top == bottom, left == right</text>
+  <text x="470" y="282" fill="#64748b" font-size="11">   result: [... 5]</text>
+  <text x="470" y="299" fill="#34d399" font-size="11">   loop exits (top &gt; bottom or left &gt; right)</text>
+
+  <line x1="460" y1="310" x2="860" y2="310" stroke="#222" stroke-width="1"/>
+
+  <!-- Direction legend -->
+  <text x="470" y="330" fill="#64748b" font-size="11" font-weight="bold">Direction color key:</text>
+  <rect x="470" y="338" width="12" height="12" fill="#5b6abf" fill-opacity="0.6" rx="2"/>
+  <text x="488" y="349" fill="#5b6abf" font-size="11">→ Left to Right (top row)</text>
+  <rect x="610" y="338" width="12" height="12" fill="#34d399" fill-opacity="0.6" rx="2"/>
+  <text x="628" y="349" fill="#34d399" font-size="11">↓ Top to Bottom (right col)</text>
+  <rect x="470" y="358" width="12" height="12" fill="#fbbf24" fill-opacity="0.6" rx="2"/>
+  <text x="488" y="369" fill="#fbbf24" font-size="11">← Right to Left (bottom row)</text>
+  <rect x="610" y="358" width="12" height="12" fill="#f87171" fill-opacity="0.6" rx="2"/>
+  <text x="628" y="369" fill="#f87171" font-size="11">↑ Bottom to Top (left col)</text>
+
+  <!-- Code box -->
+  <rect x="30" y="400" width="840" height="68" fill="#111" rx="8" stroke="#222" stroke-width="1.5"/>
+  <text x="50" y="420" fill="#5b6abf" font-size="12" font-weight="bold">while top &lt;= bottom and left &lt;= right:</text>
+  <text x="50" y="437" fill="#e2e8f0" font-size="12">    for c in range(left, right+1): res.append(matrix[top][c]);  top += 1</text>
+  <text x="50" y="454" fill="#e2e8f0" font-size="12">    for r in range(top, bottom+1): res.append(matrix[r][right]); right -= 1</text>
+  <text x="50" y="471" fill="#64748b" font-size="12">    (+ bottom row L←R if top&lt;=bottom, + left col B↑T if left&lt;=right)</text>
+</svg>

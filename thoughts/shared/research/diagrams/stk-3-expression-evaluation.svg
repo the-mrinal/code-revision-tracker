@@ -1,0 +1,209 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 500" font-family="'SF Mono', Menlo, monospace">
+  <defs>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#000" flood-opacity="0.4"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="500" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="28" text-anchor="middle" fill="#5b6abf" font-size="14" font-weight="bold">EXPRESSION EVALUATION — Stack Pattern</text>
+
+  <!-- ═══════════════ INPUT EXPRESSION ═══════════════ -->
+  <text x="30" y="56" fill="#666" font-size="10">INPUT</text>
+  <!-- 3 + 5 * 2 - 4 -->
+  <rect x="30" y="62" width="32" height="26" rx="4" fill="#0f1f17" stroke="#34d399" stroke-width="1"/>
+  <text x="46" y="80" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">3</text>
+
+  <rect x="72" y="62" width="32" height="26" rx="4" fill="#1a1530" stroke="#a78bfa" stroke-width="1"/>
+  <text x="88" y="80" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">+</text>
+
+  <rect x="114" y="62" width="32" height="26" rx="4" fill="#0f1f17" stroke="#34d399" stroke-width="1"/>
+  <text x="130" y="80" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">5</text>
+
+  <rect x="156" y="62" width="32" height="26" rx="4" fill="#1a1530" stroke="#a78bfa" stroke-width="1"/>
+  <text x="172" y="80" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">*</text>
+
+  <rect x="198" y="62" width="32" height="26" rx="4" fill="#0f1f17" stroke="#34d399" stroke-width="1"/>
+  <text x="214" y="80" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">2</text>
+
+  <rect x="240" y="62" width="32" height="26" rx="4" fill="#1a1530" stroke="#a78bfa" stroke-width="1"/>
+  <text x="256" y="80" text-anchor="middle" fill="#a78bfa" font-size="12" font-weight="bold">-</text>
+
+  <rect x="282" y="62" width="32" height="26" rx="4" fill="#0f1f17" stroke="#34d399" stroke-width="1"/>
+  <text x="298" y="80" text-anchor="middle" fill="#34d399" font-size="12" font-weight="bold">4</text>
+
+  <text x="330" y="80" fill="#666" font-size="12">=</text>
+
+  <rect x="350" y="62" width="38" height="26" rx="4" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="369" y="80" text-anchor="middle" fill="#fbbf24" font-size="13" font-weight="bold">9</text>
+
+  <!-- ═══════════════ STACK TIMELINE ═══════════════ -->
+  <text x="30" y="112" fill="#666" font-size="10">STACK TIMELINE</text>
+
+  <!-- Step 1: Process "3" -->
+  <g transform="translate(30, 120)">
+    <rect width="120" height="100" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="60" y="16" text-anchor="middle" fill="#555" font-size="9">Token: <tspan fill="#34d399">3</tspan></text>
+    <text x="60" y="30" text-anchor="middle" fill="#444" font-size="8">sign=+, num=3</text>
+    <line x1="10" y1="36" x2="110" y2="36" stroke="#222" stroke-width="0.5"/>
+    <text x="60" y="50" text-anchor="middle" fill="#555" font-size="8">push +3</text>
+    <!-- Stack visualization -->
+    <text x="10" y="68" fill="#666" font-size="8">stack:</text>
+    <rect x="50" y="58" width="30" height="18" rx="3" fill="#0f1f17" stroke="#34d399" stroke-width="0.8"/>
+    <text x="65" y="71" text-anchor="middle" fill="#34d399" font-size="10">3</text>
+    <text x="60" y="92" text-anchor="middle" fill="#333" font-size="8">defer (+)</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="155" y1="170" x2="170" y2="170" stroke="#333" stroke-width="1" marker-end="url(#arrowhead)"/>
+
+  <!-- Step 2: Process "+", then "5" — but * comes next so 5 is just noted -->
+  <g transform="translate(175, 120)">
+    <rect width="120" height="100" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="60" y="16" text-anchor="middle" fill="#555" font-size="9">Token: <tspan fill="#a78bfa">+</tspan> <tspan fill="#34d399">5</tspan></text>
+    <text x="60" y="30" text-anchor="middle" fill="#444" font-size="8">sign=+, num=5</text>
+    <line x1="10" y1="36" x2="110" y2="36" stroke="#222" stroke-width="0.5"/>
+    <text x="60" y="50" text-anchor="middle" fill="#555" font-size="8">+ is low prec</text>
+    <text x="10" y="68" fill="#666" font-size="8">stack:</text>
+    <rect x="50" y="58" width="30" height="18" rx="3" fill="#0f1f17" stroke="#34d399" stroke-width="0.8"/>
+    <text x="65" y="71" text-anchor="middle" fill="#34d399" font-size="10">3</text>
+    <text x="60" y="92" text-anchor="middle" fill="#333" font-size="8">5 pending...</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="300" y1="170" x2="315" y2="170" stroke="#333" stroke-width="1"/>
+
+  <!-- Step 3: Process "*", then "2" — high precedence, evaluate immediately -->
+  <g transform="translate(320, 120)">
+    <rect width="140" height="100" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+    <text x="70" y="16" text-anchor="middle" fill="#555" font-size="9">Token: <tspan fill="#a78bfa">*</tspan> <tspan fill="#34d399">2</tspan></text>
+    <text x="70" y="30" text-anchor="middle" fill="#fbbf24" font-size="8" font-weight="bold">* is HIGH prec!</text>
+    <line x1="10" y1="36" x2="130" y2="36" stroke="#222" stroke-width="0.5"/>
+    <text x="70" y="50" text-anchor="middle" fill="#fbbf24" font-size="8">5 * 2 = 10 (now!)</text>
+    <text x="70" y="62" text-anchor="middle" fill="#555" font-size="8">push +10</text>
+    <text x="10" y="78" fill="#666" font-size="8">stack:</text>
+    <rect x="50" y="68" width="30" height="18" rx="3" fill="#0f1f17" stroke="#34d399" stroke-width="0.8"/>
+    <text x="65" y="81" text-anchor="middle" fill="#34d399" font-size="10">3</text>
+    <rect x="85" y="68" width="36" height="18" rx="3" fill="#0f1f17" stroke="#fbbf24" stroke-width="0.8"/>
+    <text x="103" y="81" text-anchor="middle" fill="#fbbf24" font-size="10">10</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="465" y1="170" x2="480" y2="170" stroke="#333" stroke-width="1"/>
+
+  <!-- Step 4: Process "-", then "4" -->
+  <g transform="translate(485, 120)">
+    <rect width="120" height="100" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="60" y="16" text-anchor="middle" fill="#555" font-size="9">Token: <tspan fill="#a78bfa">-</tspan> <tspan fill="#34d399">4</tspan></text>
+    <text x="60" y="30" text-anchor="middle" fill="#444" font-size="8">sign=-, num=4</text>
+    <line x1="10" y1="36" x2="110" y2="36" stroke="#222" stroke-width="0.5"/>
+    <text x="60" y="50" text-anchor="middle" fill="#555" font-size="8">push -4</text>
+    <text x="10" y="68" fill="#666" font-size="8">stack:</text>
+    <rect x="50" y="58" width="24" height="18" rx="3" fill="#0f1f17" stroke="#34d399" stroke-width="0.8"/>
+    <text x="62" y="71" text-anchor="middle" fill="#34d399" font-size="9">3</text>
+    <rect x="78" y="58" width="28" height="18" rx="3" fill="#0f1f17" stroke="#34d399" stroke-width="0.8"/>
+    <text x="92" y="71" text-anchor="middle" fill="#34d399" font-size="9">10</text>
+    <rect x="50" y="80" width="28" height="18" rx="3" fill="#1a0f0f" stroke="#f87171" stroke-width="0.8"/>
+    <text x="64" y="93" text-anchor="middle" fill="#f87171" font-size="9">-4</text>
+  </g>
+
+  <!-- Arrow -->
+  <line x1="610" y1="170" x2="625" y2="170" stroke="#333" stroke-width="1"/>
+
+  <!-- Step 5: Final sum -->
+  <g transform="translate(630, 120)">
+    <rect width="140" height="100" rx="6" fill="#111" stroke="#34d399" stroke-width="1.5"/>
+    <text x="70" y="16" text-anchor="middle" fill="#34d399" font-size="9" font-weight="bold">SUM STACK</text>
+    <line x1="10" y1="24" x2="130" y2="24" stroke="#222" stroke-width="0.5"/>
+    <text x="70" y="42" text-anchor="middle" fill="#888" font-size="10">3 + 10 + (-4)</text>
+    <text x="70" y="62" text-anchor="middle" fill="#fbbf24" font-size="9">= 3 + 10 - 4</text>
+    <rect x="40" y="70" width="60" height="22" rx="4" fill="#1a2a1a" stroke="#34d399" stroke-width="1.5"/>
+    <text x="70" y="86" text-anchor="middle" fill="#34d399" font-size="14" font-weight="bold">= 9</text>
+  </g>
+
+  <!-- ═══════════════ KEY INSIGHT BOX ═══════════════ -->
+  <g transform="translate(30, 235)">
+    <rect width="530" height="60" rx="6" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+    <text x="265" y="18" text-anchor="middle" fill="#5b6abf" font-size="10" font-weight="bold">KEY INSIGHT — Precedence Handling</text>
+    <line x1="10" y1="24" x2="520" y2="24" stroke="#222" stroke-width="0.5"/>
+    <text x="20" y="40" fill="#a78bfa" font-size="10">When we see * or / :</text>
+    <text x="200" y="40" fill="#fbbf24" font-size="10">evaluate immediately</text>
+    <text x="380" y="40" fill="#555" font-size="9">(pop last, compute, push result)</text>
+    <text x="20" y="54" fill="#a78bfa" font-size="10">When we see + or - :</text>
+    <text x="200" y="54" fill="#34d399" font-size="10">defer to stack</text>
+    <text x="330" y="54" fill="#555" font-size="9">(just push signed number)</text>
+  </g>
+
+  <!-- ═══════════════ PARENTHESES SECTION ═══════════════ -->
+  <g transform="translate(30, 310)">
+    <rect width="840" height="175" rx="8" fill="#0e0e0e" stroke="#222" stroke-width="1"/>
+    <text x="420" y="20" text-anchor="middle" fill="#5b6abf" font-size="11" font-weight="bold">PARENTHESES — Save &amp; Restore Context</text>
+    <line x1="20" y1="28" x2="820" y2="28" stroke="#222" stroke-width="0.5"/>
+
+    <!-- Example: 2 * (3 + 4) -->
+    <text x="30" y="48" fill="#666" font-size="9">Example:</text>
+    <text x="100" y="48" fill="#888" font-size="11">2 * ( 3 + 4 )</text>
+
+    <!-- On "(" -->
+    <g transform="translate(30, 58)">
+      <rect width="240" height="100" rx="6" fill="#111" stroke="#a78bfa" stroke-width="1"/>
+      <text x="120" y="16" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="bold">On "(" — Save Context</text>
+      <line x1="10" y1="22" x2="230" y2="22" stroke="#222" stroke-width="0.5"/>
+      <text x="15" y="38" fill="#555" font-size="9">1. Push current result to stack</text>
+      <text x="15" y="52" fill="#555" font-size="9">2. Push current sign to stack</text>
+      <text x="15" y="66" fill="#555" font-size="9">3. Reset: result=0, sign=+</text>
+      <text x="15" y="84" fill="#444" font-size="8">stack: [ 0, +1, 2, * ]</text>
+      <text x="15" y="94" fill="#333" font-size="8">(outer context saved)</text>
+    </g>
+
+    <!-- Arrow -->
+    <line x1="280" y1="108" x2="310" y2="108" stroke="#333" stroke-width="1"/>
+    <polygon points="308,105 315,108 308,111" fill="#333"/>
+
+    <!-- Evaluate inner -->
+    <g transform="translate(320, 58)">
+      <rect width="200" height="100" rx="6" fill="#111" stroke="#34d399" stroke-width="1"/>
+      <text x="100" y="16" text-anchor="middle" fill="#34d399" font-size="10" font-weight="bold">Evaluate Inner</text>
+      <line x1="10" y1="22" x2="190" y2="22" stroke="#222" stroke-width="0.5"/>
+      <text x="15" y="40" fill="#555" font-size="9">Process 3 + 4 normally</text>
+      <text x="15" y="56" fill="#555" font-size="9">inner stack: [3, 4]</text>
+      <text x="15" y="72" fill="#555" font-size="9">inner result = sum = 7</text>
+      <text x="100" y="92" text-anchor="middle" fill="#fbbf24" font-size="10">inner = 7</text>
+    </g>
+
+    <!-- Arrow -->
+    <line x1="530" y1="108" x2="560" y2="108" stroke="#333" stroke-width="1"/>
+    <polygon points="558,105 565,108 558,111" fill="#333"/>
+
+    <!-- On ")" -->
+    <g transform="translate(570, 58)">
+      <rect width="250" height="100" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1"/>
+      <text x="125" y="16" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="bold">On ")" — Restore Context</text>
+      <line x1="10" y1="22" x2="240" y2="22" stroke="#222" stroke-width="0.5"/>
+      <text x="15" y="38" fill="#555" font-size="9">1. Pop sign from stack → *</text>
+      <text x="15" y="52" fill="#555" font-size="9">2. Pop prev result from stack → 2</text>
+      <text x="15" y="66" fill="#555" font-size="9">3. result = prev + sign * inner</text>
+      <text x="15" y="84" fill="#34d399" font-size="10">result = 0 + 2 * 7 = </text>
+      <text x="195" y="84" fill="#34d399" font-size="12" font-weight="bold">14</text>
+    </g>
+  </g>
+
+  <!-- ═══════════════ LEGEND ═══════════════ -->
+  <g transform="translate(580, 238)">
+    <rect width="290" height="55" rx="6" fill="#111" stroke="#222" stroke-width="1"/>
+    <text x="145" y="16" text-anchor="middle" fill="#666" font-size="9" font-weight="bold">LEGEND</text>
+    <line x1="10" y1="22" x2="280" y2="22" stroke="#222" stroke-width="0.5"/>
+    <rect x="12" y="28" width="10" height="10" rx="2" fill="#0f1f17" stroke="#34d399" stroke-width="0.8"/>
+    <text x="28" y="37" fill="#555" font-size="8">Number</text>
+    <rect x="75" y="28" width="10" height="10" rx="2" fill="#1a1530" stroke="#a78bfa" stroke-width="0.8"/>
+    <text x="91" y="37" fill="#555" font-size="8">Operator</text>
+    <rect x="145" y="28" width="10" height="10" rx="2" fill="#1a2a1a" stroke="#fbbf24" stroke-width="0.8"/>
+    <text x="161" y="37" fill="#555" font-size="8">Result</text>
+    <rect x="205" y="28" width="10" height="10" rx="2" fill="#1a0f0f" stroke="#f87171" stroke-width="0.8"/>
+    <text x="221" y="37" fill="#555" font-size="8">Negative</text>
+    <text x="145" y="50" text-anchor="middle" fill="#444" font-size="7">High prec (x/) -> eval now | Low prec (+-) -> defer</text>
+  </g>
+</svg>

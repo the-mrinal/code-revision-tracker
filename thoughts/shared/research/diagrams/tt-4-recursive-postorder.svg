@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 580">
+  <defs>
+    <style>
+      text { font-family: 'SF Mono', Menlo, monospace; }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="580" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="36" text-anchor="middle" fill="#e2e8f0" font-size="18" font-weight="bold">Recursive Postorder — Diameter of Binary Tree</text>
+  <text x="450" y="56" text-anchor="middle" fill="#94a3b8" font-size="12">Process AFTER children — bottom-up with global side effect</text>
+
+  <!-- Tree — shifted left to make room for info boxes on right -->
+  <!-- Root 1 -->
+  <rect x="250" y="85" width="50" height="34" rx="6" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="275" y="107" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">1</text>
+
+  <line x1="265" y1="119" x2="155" y2="165" stroke="#34d399" stroke-width="2"/>
+  <line x1="285" y1="119" x2="395" y2="165" stroke="#fbbf24" stroke-width="2"/>
+
+  <!-- Node 2 -->
+  <rect x="130" y="165" width="50" height="34" rx="6" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="155" y="187" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">2</text>
+
+  <!-- Node 3 -->
+  <rect x="370" y="165" width="50" height="34" rx="6" fill="#111" stroke="#fbbf24" stroke-width="2"/>
+  <text x="395" y="187" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">3</text>
+
+  <line x1="145" y1="199" x2="85" y2="240" stroke="#34d399" stroke-width="2"/>
+  <line x1="165" y1="199" x2="225" y2="240" stroke="#34d399" stroke-width="2"/>
+
+  <!-- Node 4 -->
+  <rect x="60" y="240" width="50" height="34" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="85" y="262" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">4</text>
+
+  <!-- Node 5 -->
+  <rect x="200" y="240" width="50" height="34" rx="6" fill="#111" stroke="#fbbf24" stroke-width="1.5"/>
+  <text x="225" y="262" text-anchor="middle" fill="#e2e8f0" font-size="14" font-weight="bold">5</text>
+
+  <!-- Depth return values (arrows going UP) -->
+  <text x="65" y="292" fill="#34d399" font-size="11">↑ returns 1</text>
+  <text x="205" y="292" fill="#34d399" font-size="11">↑ returns 1</text>
+  <text x="425" y="190" fill="#fbbf24" font-size="11">↑ returns 1</text>
+
+  <!-- Node 2 return value -->
+  <text x="100" y="160" fill="#34d399" font-size="11">↑ returns 2</text>
+
+  <!-- Info boxes on the right — clear of tree -->
+  <!-- Node 1 computation -->
+  <rect x="530" y="75" width="330" height="55" rx="6" fill="#1e1b4b" stroke="#5b6abf" stroke-width="1" opacity="0.8"/>
+  <text x="545" y="95" fill="#5b6abf" font-size="11" font-weight="bold">At node 1 (root):</text>
+  <text x="545" y="112" fill="#e2e8f0" font-size="10">left=2, right=1 → diameter = 2+1 = 3 ★</text>
+  <text x="545" y="126" fill="#e2e8f0" font-size="10">returns max(2,1)+1 = 3</text>
+
+  <!-- Node 2 computation -->
+  <rect x="530" y="145" width="330" height="55" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1" opacity="0.8"/>
+  <text x="545" y="165" fill="#34d399" font-size="11" font-weight="bold">At node 2:</text>
+  <text x="545" y="182" fill="#e2e8f0" font-size="10">left=1, right=1 → diameter = 1+1 = 2</text>
+  <text x="545" y="196" fill="#e2e8f0" font-size="10">returns max(1,1)+1 = 2</text>
+
+  <!-- Diameter path highlight — below tree, clear of nodes -->
+  <rect x="530" y="215" width="330" height="30" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="1" opacity="0.7"/>
+  <text x="545" y="235" fill="#f87171" font-size="12" font-weight="bold">Diameter path: 4 → 2 → 1 → 3  (length 3)</text>
+
+  <!-- Process explanation -->
+  <rect x="60" y="320" width="780" height="140" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="80" y="348" fill="#a78bfa" font-size="14" font-weight="bold">Return Value vs Side Effect</text>
+
+  <!-- Two columns -->
+  <rect x="80" y="360" width="350" height="85" rx="6" fill="#0a0a0a" stroke="#34d399" stroke-width="1"/>
+  <text x="100" y="382" fill="#34d399" font-size="12" font-weight="bold">Return Value (to parent)</text>
+  <text x="100" y="402" fill="#e2e8f0" font-size="11">max(left, right) + 1</text>
+  <text x="100" y="420" fill="#94a3b8" font-size="10">= longest arm from this node down</text>
+  <text x="100" y="436" fill="#94a3b8" font-size="10">Parent needs this to compute ITS depth</text>
+
+  <rect x="450" y="360" width="370" height="85" rx="6" fill="#0a0a0a" stroke="#fbbf24" stroke-width="1"/>
+  <text x="470" y="382" fill="#fbbf24" font-size="12" font-weight="bold">Side Effect (global update)</text>
+  <text x="470" y="402" fill="#e2e8f0" font-size="11">max_diameter = max(max_diameter, L + R)</text>
+  <text x="470" y="420" fill="#94a3b8" font-size="10">= longest path THROUGH this node</text>
+  <text x="470" y="436" fill="#94a3b8" font-size="10">The actual answer — may not pass through root</text>
+
+  <!-- Key insight -->
+  <rect x="60" y="480" width="780" height="80" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="80" y="506" fill="#a78bfa" font-size="14" font-weight="bold">Same dual pattern applies to:</text>
+  <text x="80" y="530" fill="#e2e8f0" font-size="11">543 Diameter — return depth, update diameter globally</text>
+  <text x="80" y="548" fill="#e2e8f0" font-size="11">124 Max Path Sum — return best arm, update max sum globally (clamp negatives to 0)</text>
+</svg>

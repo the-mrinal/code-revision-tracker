@@ -1,0 +1,205 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 480">
+  <defs>
+    <marker id="arrow-blue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#5b6abf"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#34d399"/>
+    </marker>
+    <marker id="arrow-red" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#f87171"/>
+    </marker>
+    <marker id="arrow-yellow" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#fbbf24"/>
+    </marker>
+    <marker id="arrow-gray" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <path d="M0,0 L8,3 L0,6" fill="#555"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="900" height="480" rx="12" fill="#0a0a0a"/>
+
+  <!-- Title -->
+  <text x="450" y="32" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="15" font-weight="bold" text-anchor="middle">Fast &amp; Slow Pointers — Floyd's Cycle Detection</text>
+
+  <!-- ===== LINKED LIST WITH CYCLE (top, reference diagram) ===== -->
+  <!-- Label -->
+  <text x="30" y="60" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="11">LIST STRUCTURE</text>
+
+  <!-- Node 1 -->
+  <circle cx="100" cy="85" r="20" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="100" y="91" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="14" text-anchor="middle">1</text>
+  <!-- Arrow 1→2 -->
+  <line x1="120" y1="85" x2="158" y2="85" stroke="#5b6abf" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Node 2 -->
+  <circle cx="185" cy="85" r="20" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="185" y="91" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="14" text-anchor="middle">2</text>
+  <!-- Arrow 2→3 -->
+  <line x1="205" y1="85" x2="243" y2="85" stroke="#5b6abf" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Node 3 -->
+  <circle cx="270" cy="85" r="20" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="270" y="91" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="14" text-anchor="middle">3</text>
+  <!-- Arrow 3→4 -->
+  <line x1="290" y1="85" x2="328" y2="85" stroke="#5b6abf" stroke-width="2" marker-end="url(#arrow-blue)"/>
+
+  <!-- Node 4 -->
+  <circle cx="355" cy="85" r="20" fill="#111" stroke="#5b6abf" stroke-width="2"/>
+  <text x="355" y="91" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="14" text-anchor="middle">4</text>
+
+  <!-- Cycle arrow: 4 → 2 (arc going below) -->
+  <path d="M 355 105 Q 270 145 185 105" fill="none" stroke="#f87171" stroke-width="2" stroke-dasharray="5,3" marker-end="url(#arrow-red)"/>
+  <text x="270" y="158" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10" text-anchor="middle">cycle back to 2</text>
+
+  <!-- ===== STEP GRID ===== -->
+  <!-- Step columns: Step 0, Step 1, Step 2, Step 3 -->
+  <!-- Each step card: x positions at 30, 240, 450, 660 -->
+  <!-- Step rows start at y=185 -->
+
+  <!-- Step 0 card -->
+  <rect x="30" y="178" width="190" height="168" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="125" y="198" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">Step 0 — Start</text>
+
+  <!-- Step 0 nodes -->
+  <!-- Node 1: slow+fast both here -->
+  <circle cx="68" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="68" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">1</text>
+  <!-- Node 2 -->
+  <circle cx="125" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="125" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">2</text>
+  <!-- Node 3 -->
+  <circle cx="182" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="182" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">3</text>
+  <!-- Arrows -->
+  <line x1="86" y1="240" x2="104" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="143" y1="240" x2="161" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+
+  <!-- Slow label (green) at node 1 -->
+  <text x="68" y="218" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">slow</text>
+  <!-- Fast label (red) at node 1 -->
+  <text x="68" y="228" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">fast</text>
+  <!-- Slow dot ring -->
+  <circle cx="68" cy="240" r="18" fill="none" stroke="#34d399" stroke-width="2"/>
+
+  <!-- State line -->
+  <text x="50" y="285" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">slow = node 1</text>
+  <text x="50" y="300" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10">fast = node 1</text>
+  <text x="50" y="318" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9">both at head</text>
+  <text x="50" y="333" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9">no meet yet</text>
+
+  <!-- Step 1 card -->
+  <rect x="235" y="178" width="190" height="168" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="330" y="198" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">Step 1</text>
+
+  <!-- Step 1 nodes -->
+  <circle cx="273" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="273" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">1</text>
+  <!-- Node 2 — slow is here -->
+  <circle cx="330" cy="240" r="18" fill="#111" stroke="#34d399" stroke-width="2.5"/>
+  <text x="330" y="246" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">2</text>
+  <!-- Node 3 — fast is here -->
+  <circle cx="387" cy="240" r="18" fill="#111" stroke="#f87171" stroke-width="2.5"/>
+  <text x="387" y="246" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">3</text>
+  <!-- Arrows -->
+  <line x1="291" y1="240" x2="309" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="348" y1="240" x2="366" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+
+  <!-- Labels -->
+  <text x="330" y="223" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">slow</text>
+  <text x="387" y="223" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">fast</text>
+
+  <!-- State -->
+  <text x="255" y="285" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">slow = node 2</text>
+  <text x="255" y="300" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10">fast = node 3</text>
+  <text x="255" y="318" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9">slow +1, fast +2</text>
+  <text x="255" y="333" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9">no meet yet</text>
+
+  <!-- Step 2 card -->
+  <rect x="440" y="178" width="190" height="168" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="535" y="198" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">Step 2</text>
+
+  <!-- Step 2 nodes -->
+  <circle cx="478" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="478" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">1</text>
+  <!-- Node 2 — fast wrapped here -->
+  <circle cx="535" cy="240" r="18" fill="#111" stroke="#f87171" stroke-width="2.5"/>
+  <text x="535" y="246" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">2</text>
+  <!-- Node 3 — slow is here -->
+  <circle cx="592" cy="240" r="18" fill="#111" stroke="#34d399" stroke-width="2.5"/>
+  <text x="592" y="246" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">3</text>
+  <!-- Arrows -->
+  <line x1="496" y1="240" x2="514" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="553" y1="240" x2="571" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+
+  <!-- Labels -->
+  <text x="592" y="223" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">slow</text>
+  <text x="535" y="223" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">fast</text>
+
+  <!-- State -->
+  <text x="460" y="285" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">slow = node 3</text>
+  <text x="460" y="300" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10">fast = node 2</text>
+  <text x="460" y="318" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9">fast wrapped via</text>
+  <text x="460" y="333" fill="#555" font-family="SF Mono, Menlo, monospace" font-size="9">4→2 cycle edge</text>
+
+  <!-- Step 3 card — MEETING -->
+  <rect x="645" y="178" width="225" height="168" rx="8" fill="#1a1500" stroke="#fbbf24" stroke-width="2"/>
+  <text x="757" y="198" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">Step 3 — MEET!</text>
+
+  <!-- Step 3 nodes -->
+  <circle cx="683" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="683" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">1</text>
+  <!-- Node 2 -->
+  <circle cx="740" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="740" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">2</text>
+  <!-- Node 3 -->
+  <circle cx="797" cy="240" r="18" fill="#111" stroke="#5b6abf" stroke-width="1.5"/>
+  <text x="797" y="246" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">3</text>
+  <!-- Node 4 — both meet here, shown right below in larger view -->
+  <!-- Arrows -->
+  <line x1="701" y1="240" x2="719" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="758" y1="240" x2="776" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <line x1="815" y1="240" x2="833" y2="240" stroke="#444" stroke-width="1.5" marker-end="url(#arrow-gray)"/>
+  <!-- Node 4 -->
+  <circle cx="852" cy="240" r="18" fill="#1a1500" stroke="#fbbf24" stroke-width="3"/>
+  <text x="852" y="246" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="13" text-anchor="middle">4</text>
+
+  <!-- Both pointers label -->
+  <text x="852" y="218" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">slow</text>
+  <text x="852" y="228" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="9" text-anchor="middle">fast</text>
+
+  <!-- State -->
+  <text x="655" y="285" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">slow = node 4</text>
+  <text x="655" y="300" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10">fast = node 4</text>
+  <text x="655" y="318" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">slow == fast</text>
+  <text x="655" y="333" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10" font-weight="bold">CYCLE DETECTED!</text>
+
+  <!-- ===== LEGEND ===== -->
+  <rect x="30" y="365" width="530" height="90" rx="8" fill="#111" stroke="#222" stroke-width="1"/>
+  <text x="50" y="385" fill="#e2e8f0" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold">Legend</text>
+
+  <!-- Slow indicator -->
+  <circle cx="62" cy="407" r="10" fill="#111" stroke="#34d399" stroke-width="2"/>
+  <text x="80" y="411" fill="#34d399" font-family="SF Mono, Menlo, monospace" font-size="10">Slow — 1 step per round</text>
+
+  <!-- Fast indicator -->
+  <circle cx="62" cy="430" r="10" fill="#111" stroke="#f87171" stroke-width="2"/>
+  <text x="80" y="434" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10">Fast — 2 steps per round</text>
+
+  <!-- Meet indicator -->
+  <circle cx="290" cy="407" r="10" fill="#1a1500" stroke="#fbbf24" stroke-width="2.5"/>
+  <text x="308" y="411" fill="#fbbf24" font-family="SF Mono, Menlo, monospace" font-size="10">Meet — cycle detected (yellow glow)</text>
+
+  <!-- Cycle arrow indicator -->
+  <line x1="290" y1="430" x2="322" y2="430" stroke="#f87171" stroke-width="2" stroke-dasharray="4,2" marker-end="url(#arrow-red)"/>
+  <text x="330" y="434" fill="#f87171" font-family="SF Mono, Menlo, monospace" font-size="10">Cycle back-edge (dashed red)</text>
+
+  <!-- ===== SUMMARY BOX ===== -->
+  <rect x="570" y="365" width="300" height="90" rx="8" fill="#111" stroke="#5b6abf" stroke-width="1"/>
+  <text x="720" y="384" fill="#5b6abf" font-family="SF Mono, Menlo, monospace" font-size="11" font-weight="bold" text-anchor="middle">KEY INSIGHT</text>
+  <text x="586" y="403" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">In a cycle of length C, fast gains</text>
+  <text x="586" y="419" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">1 position per step relative to slow.</text>
+  <text x="586" y="435" fill="#888" font-family="SF Mono, Menlo, monospace" font-size="10">Guaranteed meeting within C steps.</text>
+  <text x="586" y="449" fill="#a78bfa" font-family="SF Mono, Menlo, monospace" font-size="10">No cycle → fast reaches NULL first.</text>
+</svg>

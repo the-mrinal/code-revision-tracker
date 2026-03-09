@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 550" font-family="SF Mono, Menlo, monospace">
+  <rect width="1100" height="550" rx="12" fill="#0a0a0a"/>
+  <text x="550" y="32" text-anchor="middle" fill="#c084fc" font-size="16" font-weight="700">Palindrome Partitioning — s = "aab"</text>
+  <text x="550" y="52" text-anchor="middle" fill="#777" font-size="11">Try every possible cut. Only recurse if the segment is a palindrome.</text>
+
+  <!-- The string with cut positions -->
+  <rect x="350" y="70" width="400" height="45" rx="8" fill="#111" stroke="#222"/>
+  <text x="450" y="97" text-anchor="middle" fill="#c084fc" font-size="24" font-weight="700">a</text>
+  <text x="530" y="97" text-anchor="middle" fill="#c084fc" font-size="24" font-weight="700">a</text>
+  <text x="610" y="97" text-anchor="middle" fill="#c084fc" font-size="24" font-weight="700">b</text>
+  <line x1="490" y1="78" x2="490" y2="108" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4"/>
+  <line x1="570" y1="78" x2="570" y2="108" stroke="#fbbf24" stroke-width="2" stroke-dasharray="4"/>
+  <text x="490" y="130" text-anchor="middle" fill="#fbbf24" font-size="10">cut 1?</text>
+  <text x="570" y="130" text-anchor="middle" fill="#fbbf24" font-size="10">cut 2?</text>
+
+  <!-- Root -->
+  <rect x="400" y="148" width="300" height="35" rx="6" fill="#1a1a2e" stroke="#c084fc" stroke-width="1.5"/>
+  <text x="550" y="170" text-anchor="middle" fill="#c084fc" font-size="13">start = 0, partition "aab"</text>
+
+  <!-- Level 1: 3 possible first segments -->
+  <rect x="60" y="240" width="250" height="50" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.2"/>
+  <text x="185" y="260" text-anchor="middle" fill="#34d399" font-size="13">take "a" (index 0 to 0)</text>
+  <text x="185" y="278" text-anchor="middle" fill="#34d399" font-size="11">palindrome? ✓  recurse →</text>
+
+  <rect x="425" y="240" width="250" height="50" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1.2"/>
+  <text x="550" y="260" text-anchor="middle" fill="#34d399" font-size="13">take "aa" (index 0 to 1)</text>
+  <text x="550" y="278" text-anchor="middle" fill="#34d399" font-size="11">palindrome? ✓  recurse →</text>
+
+  <rect x="790" y="240" width="250" height="50" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="1.5"/>
+  <text x="915" y="260" text-anchor="middle" fill="#f87171" font-size="13">take "aab" (index 0 to 2)</text>
+  <text x="915" y="278" text-anchor="middle" fill="#f87171" font-size="11">palindrome? ✗  PRUNE</text>
+
+  <line x1="480" y1="183" x2="220" y2="240" stroke="#34d399" stroke-width="1.2"/>
+  <line x1="550" y1="183" x2="550" y2="240" stroke="#34d399" stroke-width="1.2"/>
+  <line x1="620" y1="183" x2="880" y2="240" stroke="#f87171" stroke-width="1" stroke-dasharray="5"/>
+
+  <!-- Level 2 from "a": try segments of remaining "ab" -->
+  <rect x="30" y="345" width="220" height="45" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="140" y="363" text-anchor="middle" fill="#34d399" font-size="12">take "a" (index 1 to 1)</text>
+  <text x="140" y="380" text-anchor="middle" fill="#34d399" font-size="10">palindrome? ✓</text>
+
+  <rect x="280" y="345" width="220" height="45" rx="6" fill="#2e1a1a" stroke="#f87171" stroke-width="1.2"/>
+  <text x="390" y="363" text-anchor="middle" fill="#f87171" font-size="12">take "ab" (index 1 to 2)</text>
+  <text x="390" y="380" text-anchor="middle" fill="#f87171" font-size="10">palindrome? ✗  PRUNE</text>
+
+  <line x1="150" y1="290" x2="140" y2="345" stroke="#34d399" stroke-width="1"/>
+  <line x1="220" y1="290" x2="370" y2="345" stroke="#f87171" stroke-width="1" stroke-dasharray="5"/>
+
+  <!-- Level 2 from "aa": try segments of remaining "b" -->
+  <rect x="530" y="345" width="220" height="45" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="640" y="363" text-anchor="middle" fill="#34d399" font-size="12">take "b" (index 2 to 2)</text>
+  <text x="640" y="380" text-anchor="middle" fill="#34d399" font-size="10">palindrome? ✓</text>
+
+  <line x1="550" y1="290" x2="640" y2="345" stroke="#34d399" stroke-width="1"/>
+
+  <!-- Level 3 from ["a","a"]: take remaining "b" -->
+  <rect x="30" y="430" width="220" height="45" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="1"/>
+  <text x="140" y="448" text-anchor="middle" fill="#34d399" font-size="12">take "b" (index 2 to 2)</text>
+  <text x="140" y="465" text-anchor="middle" fill="#34d399" font-size="10">palindrome? ✓</text>
+
+  <line x1="140" y1="390" x2="140" y2="430" stroke="#34d399" stroke-width="1"/>
+
+  <!-- Final results -->
+  <rect x="30" y="498" width="220" height="35" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+  <text x="140" y="521" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700">["a", "a", "b"]</text>
+  <line x1="140" y1="475" x2="140" y2="498" stroke="#34d399" stroke-width="1.5"/>
+
+  <rect x="530" y="413" width="220" height="35" rx="6" fill="#1a2e1a" stroke="#34d399" stroke-width="2"/>
+  <text x="640" y="436" text-anchor="middle" fill="#34d399" font-size="14" font-weight="700">["aa", "b"]</text>
+  <line x1="640" y1="390" x2="640" y2="413" stroke="#34d399" stroke-width="1.5"/>
+
+  <!-- Legend box -->
+  <rect x="800" y="345" width="270" height="180" rx="8" fill="#111" stroke="#222"/>
+  <text x="935" y="375" text-anchor="middle" fill="#c084fc" font-size="13" font-weight="600">Key Insights</text>
+
+  <rect x="825" y="395" width="14" height="14" rx="3" fill="#1a2e1a" stroke="#34d399"/>
+  <text x="850" y="407" fill="#34d399" font-size="11">= palindrome → explore</text>
+
+  <rect x="825" y="420" width="14" height="14" rx="3" fill="#2e1a1a" stroke="#f87171"/>
+  <text x="850" y="432" fill="#f87171" font-size="11">= not palindrome → PRUNE</text>
+
+  <text x="825" y="465" fill="#777" font-size="11">The palindrome check IS</text>
+  <text x="825" y="482" fill="#777" font-size="11">the pruning. Without it</text>
+  <text x="825" y="499" fill="#777" font-size="11">you'd explore all 2^(n-1)</text>
+  <text x="825" y="516" fill="#777" font-size="11">possible partitions.</text>
+</svg>
