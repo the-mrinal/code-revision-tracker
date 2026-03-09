@@ -475,12 +475,16 @@ def flex_stats(user_id: str):
 
 
 # Static file serving for research docs (markdown + SVG diagrams)
-_research_dir = os.path.join(
-    os.path.dirname(__file__), "..", "thoughts", "shared", "research"
-)
-if os.path.isdir(_research_dir):
-    app.mount(
-        "/research-assets",
-        StaticFiles(directory=_research_dir),
-        name="research-assets",
-    )
+# Check Docker path first (research-data/ copied in during build), then local dev path
+_research_candidates = [
+    os.path.join(os.path.dirname(__file__), "research-data"),
+    os.path.join(os.path.dirname(__file__), "..", "thoughts", "shared", "research"),
+]
+for _candidate in _research_candidates:
+    if os.path.isdir(_candidate):
+        app.mount(
+            "/research-assets",
+            StaticFiles(directory=_candidate),
+            name="research-assets",
+        )
+        break

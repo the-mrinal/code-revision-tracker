@@ -2,10 +2,14 @@ FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
+COPY server/requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY . .
+COPY server/ .
+
+# Copy research docs (markdown + SVG diagrams) for /research page
+COPY thoughts/shared/research/*.md ./research-data/
+COPY thoughts/shared/research/diagrams/ ./research-data/diagrams/
 
 EXPOSE 8765
 
