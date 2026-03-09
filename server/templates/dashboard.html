@@ -212,7 +212,7 @@
 <div class="header-row">
   <h1>Revise</h1>
   <div style="display:flex;align-items:center;gap:8px;">
-    <a href="/research" style="background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;display:inline-block;">Research</a>
+    <a id="researchLink" href="/research" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;">Research</a>
     <a href="/prep" style="background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;text-decoration:none;display:inline-block;">Interview Prep</a>
     <button id="flexBtn" onclick="openFlex()" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Flex</button>
     <button class="settings-btn" id="settingsBtn" style="display:none;background:none;border:1px solid var(--border);color:var(--muted);padding:4px 12px;border-radius:6px;font-size:12px;cursor:pointer;">Settings</button>
@@ -512,6 +512,9 @@ function hideLogin() {
         const el = document.getElementById("userEmail");
         el.textContent = payload.email;
         el.style.display = "inline";
+        if (payload.email === 'dmrinal626@gmail.com') {
+          document.getElementById("researchLink").style.display = "inline-block";
+        }
       }
     } catch {}
   }
