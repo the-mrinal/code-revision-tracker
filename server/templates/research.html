@@ -1177,8 +1177,10 @@ function handleDrawerCheck(cb, num, title, diff) {
 // ─── Init ───
 buildSidebar();
 
-// Auto-open first category
-toggleCat(LEARNING_ORDER[0].key);
+// Auto-open from URL param or first category
+const urlCat = new URLSearchParams(window.location.search).get('cat');
+const initCat = urlCat && LEARNING_ORDER.find(c => c.key === urlCat) ? urlCat : LEARNING_ORDER[0].key;
+toggleCat(initCat);
 
 // ─── Access gate: only allow specific email ───
 const ALLOWED_EMAIL = 'dmrinal626@gmail.com';
