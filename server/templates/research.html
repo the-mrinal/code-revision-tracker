@@ -1177,6 +1177,25 @@ buildSidebar();
 // Auto-open first category
 toggleCat(LEARNING_ORDER[0].key);
 
+// ─── Access gate: only allow specific email ───
+const ALLOWED_EMAIL = 'dmrinal626@gmail.com';
+function getEmailFromToken() {
+  const auth = getAuth();
+  if (!auth) return null;
+  try { return JSON.parse(atob(auth.access_token.split('.')[1])).email || null; } catch { return null; }
+}
+(function checkAccess() {
+  const email = getEmailFromToken();
+  if (!email || email !== ALLOWED_EMAIL) {
+    document.body.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100vh;flex-direction:column;gap:12px;font-family:var(--font-sans);color:#888">
+      <h2 style="color:#e0e0e0">Access Restricted</h2>
+      <p>This page is only available to authorized users.</p>
+      <a href="/dashboard" style="color:#5b6abf">Go to Dashboard</a>
+    </div>`;
+    return;
+  }
+})();
+
 // Auto-connect if auth exists
 if (getAuth()) connectRevise();
 </script>
