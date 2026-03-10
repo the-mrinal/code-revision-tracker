@@ -1086,11 +1086,61 @@
     }
   }
 
-  // --- Speech-to-text ---
-  let activeRecognition = null;
+  // --- Speech-to-text (runs in page main world via injected script) ---
+  let activeMicTarget = null;
+  let activeMicBtn = null;
+  let speechInjected = false;
+
+  function injectSpeechScript() {
+    if (speechInjected) return;
+    speechInjected = true;
+    const script = document.createElement("script");
+    script.textContent = `
+      (function() {
+        let recognition = null;
+        window.addEventListener("message", function(e) {
+          if (e.source !== window) return;
+          if (e.data && e.data.type === "revise-speech-start") {
+            if (recognition) { try { recognition.stop(); } catch {} }
+            const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+            if (!SR) {
+              window.postMessage({ type: "revise-speech-error", error: "not-supported", id: e.data.id }, "*");
+              return;
+            }
+            recognition = new SR();
+            recognition.continuous = true;
+            recognition.interimResults = true;
+            recognition.lang = "en-US";
+            recognition.onresult = function(evt) {
+              let interim = "", final = "";
+              for (let i = 0; i < evt.results.length; i++) {
+                if (evt.results[i].isFinal) final += evt.results[i][0].transcript;
+                else interim += evt.results[i][0].transcript;
+              }
+              window.postMessage({ type: "revise-speech-result", final: final, interim: interim, id: e.data.id }, "*");
+            };
+            recognition.onend = function() {
+              window.postMessage({ type: "revise-speech-end", id: e.data.id }, "*");
+              recognition = null;
+            };
+            recognition.onerror = function(evt) {
+              window.postMessage({ type: "revise-speech-error", error: evt.error, id: e.data.id }, "*");
+            };
+            recognition.start();
+          } else if (e.data && e.data.type === "revise-speech-stop") {
+            if (recognition) { try { recognition.stop(); } catch {} }
+          }
+        });
+      })();
+    `;
+    document.documentElement.appendChild(script);
+    script.remove();
+  }
 
   function initMicButtons() {
     if (!shadow) return;
+    injectSpeechScript();
+
     shadow.querySelectorAll(".mic-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
         e.preventDefault();
@@ -1098,65 +1148,45 @@
         const textarea = shadow.getElementById(targetId);
         if (!textarea) return;
 
-        // If already recording on this button, stop
         if (btn.classList.contains("recording")) {
-          if (activeRecognition) activeRecognition.stop();
+          window.postMessage({ type: "revise-speech-stop" }, "*");
           return;
         }
 
-        // Stop any other active recognition
-        if (activeRecognition) {
-          activeRecognition.stop();
+        // Stop any other active recording
+        if (activeMicBtn) {
+          activeMicBtn.classList.remove("recording");
+          window.postMessage({ type: "revise-speech-stop" }, "*");
         }
 
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-          showToast("Speech recognition not supported in this browser", "error");
-          return;
-        }
-
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = "en-US";
-
-        const startText = textarea.value;
-        activeRecognition = recognition;
+        activeMicTarget = targetId;
+        activeMicBtn = btn;
         btn.classList.add("recording");
 
-        // Clear other mic buttons' recording state
-        shadow.querySelectorAll(".mic-btn").forEach((b) => {
-          if (b !== btn) b.classList.remove("recording");
-        });
+        const startText = textarea.value;
+        const sessionId = Date.now().toString();
 
-        recognition.onresult = (event) => {
-          let interim = "";
-          let final = "";
-          for (let i = 0; i < event.results.length; i++) {
-            if (event.results[i].isFinal) {
-              final += event.results[i][0].transcript;
-            } else {
-              interim += event.results[i][0].transcript;
+        const handler = (evt) => {
+          if (!evt.data || evt.data.id !== sessionId) return;
+          if (evt.data.type === "revise-speech-result") {
+            const separator = startText && !startText.endsWith("\\n") && !startText.endsWith(" ") ? " " : "";
+            textarea.value = startText + separator + evt.data.final + evt.data.interim;
+          } else if (evt.data.type === "revise-speech-end") {
+            btn.classList.remove("recording");
+            if (activeMicBtn === btn) { activeMicBtn = null; activeMicTarget = null; }
+            window.removeEventListener("message", handler);
+          } else if (evt.data.type === "revise-speech-error") {
+            btn.classList.remove("recording");
+            if (activeMicBtn === btn) { activeMicBtn = null; activeMicTarget = null; }
+            window.removeEventListener("message", handler);
+            if (evt.data.error !== "aborted") {
+              showToast("Mic error: " + evt.data.error, "error");
             }
           }
-          const separator = startText && !startText.endsWith("\n") && !startText.endsWith(" ") ? " " : "";
-          textarea.value = startText + separator + final + interim;
         };
+        window.addEventListener("message", handler);
 
-        recognition.onend = () => {
-          btn.classList.remove("recording");
-          if (activeRecognition === recognition) activeRecognition = null;
-        };
-
-        recognition.onerror = (event) => {
-          btn.classList.remove("recording");
-          if (activeRecognition === recognition) activeRecognition = null;
-          if (event.error !== "aborted") {
-            showToast("Mic error: " + event.error, "error");
-          }
-        };
-
-        recognition.start();
+        window.postMessage({ type: "revise-speech-start", id: sessionId }, "*");
       });
     });
   }
