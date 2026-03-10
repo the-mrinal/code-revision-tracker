@@ -337,6 +337,111 @@
   /* ─── Drawer card solved state ─── */
   .q-card.solved { border-color:var(--green)33; background:#0a2e1f22; }
 
+  /* ─── Mode Toggle ─── */
+  .mode-toggle {
+    display:flex; gap:2px; margin-top:10px; padding:3px;
+    background:var(--bg); border-radius:8px; border:1px solid var(--border);
+  }
+  .mode-toggle button {
+    flex:1; padding:5px 12px; border-radius:6px; border:none;
+    background:transparent; color:var(--text-dim); font-size:11px; font-weight:600;
+    cursor:pointer; transition:all 0.15s; font-family:var(--font-sans);
+  }
+  .mode-toggle button.active {
+    background:var(--accent); color:#fff;
+  }
+  .mode-toggle button:hover:not(.active) { color:var(--text); background:var(--bg-hover); }
+
+  /* ─── Company sidebar items ─── */
+  .company-list { padding:8px 0; }
+  .company-header {
+    display:flex; align-items:center; gap:8px; padding:10px 16px;
+    cursor:pointer; user-select:none; transition:background 0.15s;
+  }
+  .company-header:hover { background:var(--bg-hover); }
+  .company-header .company-icon {
+    width:22px; height:22px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    font-size:12px; background:var(--orange)22; color:var(--orange); border:1.5px solid var(--orange); flex-shrink:0;
+  }
+  .company-header .company-name { font-size:13px; font-weight:500; flex:1; }
+  .company-header .company-badge {
+    font-size:10px; font-family:var(--font); color:var(--text-dim);
+    background:var(--bg); padding:2px 6px; border-radius:10px; border:1px solid var(--border);
+  }
+
+  /* ─── Random Question Button ─── */
+  .btn-random {
+    display:flex; align-items:center; gap:6px; margin:8px 12px;
+    padding:8px 14px; border-radius:8px; border:1px dashed var(--purple);
+    background:var(--purple)0a; color:var(--purple); font-size:12px; font-weight:500;
+    cursor:pointer; transition:all 0.2s; font-family:var(--font-sans); width:calc(100% - 24px);
+  }
+  .btn-random:hover { background:var(--purple)1a; border-style:solid; }
+  .btn-random .icon { font-size:14px; }
+
+  /* ─── Random Question Card ─── */
+  .random-card {
+    max-width:560px; margin:60px auto; padding:40px; text-align:center;
+    background:var(--bg-card); border:1px solid var(--border); border-radius:16px;
+  }
+  .random-card .q-number { font-family:var(--font); font-size:13px; color:var(--text-muted); margin-bottom:8px; }
+  .random-card .q-name {
+    font-size:22px; font-weight:700; margin-bottom:12px; letter-spacing:-0.3px;
+  }
+  .random-card .q-name a { color:var(--text); text-decoration:none; }
+  .random-card .q-name a:hover { color:var(--accent); }
+  .random-card .q-difficulty {
+    display:inline-block; font-size:11px; font-family:var(--font); padding:3px 10px;
+    border-radius:12px; font-weight:600; margin-bottom:20px;
+  }
+  .random-card .q-difficulty.easy { background:#0a2e1f; color:var(--green); }
+  .random-card .q-difficulty.medium { background:#2e2a0a; color:var(--yellow); }
+  .random-card .q-difficulty.hard { background:#2e0a0a; color:var(--red); }
+
+  .pattern-hidden {
+    display:inline-flex; align-items:center; gap:8px; margin-top:16px;
+    padding:8px 16px; border-radius:8px; background:var(--bg); border:1px solid var(--border);
+    font-size:13px; color:var(--text-muted); cursor:pointer; transition:all 0.2s;
+  }
+  .pattern-hidden:hover { border-color:var(--accent); color:var(--text-dim); }
+  .pattern-hidden.revealed { color:var(--accent); border-color:var(--accent)44; cursor:default; }
+  .pattern-hidden .blur-text {
+    filter:blur(6px); transition:filter 0.3s; user-select:none;
+  }
+  .pattern-hidden.revealed .blur-text { filter:none; user-select:auto; }
+
+  .random-card .actions { display:flex; gap:10px; justify-content:center; margin-top:24px; }
+  .random-card .actions button {
+    padding:8px 18px; border-radius:8px; font-size:12px; font-weight:500;
+    cursor:pointer; transition:all 0.15s; font-family:var(--font-sans); border:1px solid var(--border);
+  }
+  .random-card .btn-solve { background:var(--green)22; color:var(--green); border-color:var(--green)44; }
+  .random-card .btn-solve:hover { background:var(--green)33; }
+  .random-card .btn-skip { background:var(--bg); color:var(--text-dim); }
+  .random-card .btn-skip:hover { background:var(--bg-hover); color:var(--text); }
+  .random-card .q-meta { justify-content:center; margin-top:12px; }
+
+  /* ─── Company Pattern Table ─── */
+  .company-table { width:100%; border-collapse:collapse; font-size:13px; }
+  .company-table th {
+    text-align:left; padding:8px 12px; border-bottom:2px solid var(--border-light);
+    font-weight:600; font-size:11px; color:var(--text-dim); text-transform:uppercase; letter-spacing:0.3px;
+  }
+  .company-table td { padding:8px 12px; border-bottom:1px solid var(--border); vertical-align:middle; }
+  .company-table tr:hover td { background:var(--bg-hover); }
+  .company-table tr.solved td { opacity:0.6; }
+  .company-table tr.solved td:first-child { opacity:1; }
+  .company-table .q-link { color:var(--cyan); font-weight:500; text-decoration:none; }
+  .company-table .q-link:hover { color:var(--accent); text-decoration:underline; }
+  .company-table tr { cursor:pointer; }
+
+  .company-view-header {
+    display:flex; align-items:center; gap:12px; margin-bottom:24px;
+    padding-bottom:16px; border-bottom:1px solid var(--border);
+  }
+  .company-view-header h2 { font-size:20px; font-weight:700; letter-spacing:-0.3px; }
+  .company-view-header .count { font-size:12px; color:var(--text-dim); font-family:var(--font); }
+
   /* responsive */
   @media (max-width:900px) {
     .sidebar { width:240px; min-width:240px; }
@@ -355,7 +460,11 @@
       <a href="/dashboard" style="font-size:11px;color:var(--text-dim);text-decoration:none;border:1px solid var(--border);padding:3px 8px;border-radius:4px;">Dashboard</a>
     </div>
     <p>Deep-dives & practice</p>
-    <div class="sidebar-stats">
+    <div class="mode-toggle">
+      <button class="active" onclick="switchMode('patterns')" id="mode-patterns">Patterns</button>
+      <button onclick="switchMode('company')" id="mode-company">Company</button>
+    </div>
+    <div class="sidebar-stats" id="sidebar-stats">
       <div class="stat"><div class="stat-num" id="stat-patterns">94</div><div class="stat-label">Patterns</div></div>
       <div class="stat"><div class="stat-num" id="stat-problems">436</div><div class="stat-label">Problems</div></div>
       <div class="stat"><div class="stat-num" id="stat-progress">0%</div><div class="stat-label">Read</div></div>
@@ -368,9 +477,12 @@
   <div class="sidebar-search">
     <input type="text" id="search" placeholder="Search patterns, problems..." autocomplete="off">
   </div>
-  <div class="learning-path">
+  <div class="learning-path" id="patterns-sidebar">
     <div class="lp-label">Recommended Learning Order</div>
     <div id="cat-list"></div>
+  </div>
+  <div class="company-list" id="company-sidebar" style="display:none">
+    <div id="company-list"></div>
   </div>
 </aside>
 
@@ -565,11 +677,48 @@ const PROBLEM_SLUGS = {
   1:"two-sum",2:"add-two-numbers",3:"longest-substring-without-repeating-characters",4:"median-of-two-sorted-arrays",5:"longest-palindromic-substring",8:"string-to-integer-atoi",9:"palindrome-number",11:"container-with-most-water",12:"integer-to-roman",13:"roman-to-integer",15:"3sum",16:"3sum-closest",17:"letter-combinations-of-a-phone-number",18:"4sum",19:"remove-nth-node-from-end-of-list",20:"valid-parentheses",21:"merge-two-sorted-lists",22:"generate-parentheses",23:"merge-k-sorted-lists",24:"swap-nodes-in-pairs",25:"reverse-nodes-in-k-group",26:"remove-duplicates-from-sorted-array",27:"remove-element",28:"find-the-index-of-the-first-occurrence-in-a-string",31:"next-permutation",32:"longest-valid-parentheses",33:"search-in-rotated-sorted-array",34:"find-first-and-last-position-of-element-in-sorted-array",35:"search-insert-position",37:"sudoku-solver",39:"combination-sum",40:"combination-sum-ii",41:"first-missing-positive",43:"multiply-strings",45:"jump-game-ii",46:"permutations",48:"rotate-image",49:"group-anagrams",51:"n-queens",53:"maximum-subarray",54:"spiral-matrix",55:"jump-game",56:"merge-intervals",57:"insert-interval",59:"spiral-matrix-ii",60:"permutation-sequence",61:"rotate-list",62:"unique-paths",63:"unique-paths-ii",64:"minimum-path-sum",65:"valid-number",66:"plus-one",67:"add-binary",69:"sqrtx",70:"climbing-stairs",71:"simplify-path",72:"edit-distance",73:"set-matrix-zeroes",74:"search-a-2d-matrix",75:"sort-colors",76:"minimum-window-substring",77:"combinations",78:"subsets",79:"word-search",80:"remove-duplicates-from-sorted-array-ii",81:"search-in-rotated-sorted-array-ii",82:"remove-duplicates-from-sorted-list-ii",83:"remove-duplicates-from-sorted-list",84:"largest-rectangle-in-histogram",85:"maximal-rectangle",86:"partition-list",88:"merge-sorted-array",90:"subsets-ii",91:"decode-ways",92:"reverse-linked-list-ii",94:"binary-tree-inorder-traversal",95:"unique-binary-search-trees-ii",96:"unique-binary-search-trees",98:"validate-binary-search-tree",100:"same-tree",101:"symmetric-tree",102:"binary-tree-level-order-traversal",103:"binary-tree-zigzag-level-order-traversal",104:"maximum-depth-of-binary-tree",105:"construct-binary-tree-from-preorder-and-inorder-traversal",110:"balanced-binary-tree",114:"flatten-binary-tree-to-linked-list",120:"triangle",121:"best-time-to-buy-and-sell-stock",122:"best-time-to-buy-and-sell-stock-ii",123:"best-time-to-buy-and-sell-stock-iii",124:"binary-tree-maximum-path-sum",125:"valid-palindrome",126:"word-ladder-ii",127:"word-ladder",130:"surrounded-regions",131:"palindrome-partitioning",132:"palindrome-partitioning-ii",133:"clone-graph",134:"gas-station",135:"candy",136:"single-number",137:"single-number-ii",138:"copy-list-with-random-pointer",139:"word-break",140:"word-break-ii",141:"linked-list-cycle",143:"reorder-list",145:"binary-tree-postorder-traversal",146:"lru-cache",150:"evaluate-reverse-polish-notation",151:"reverse-words-in-a-string",152:"maximum-product-subarray",153:"find-minimum-in-rotated-sorted-array",155:"min-stack",160:"intersection-of-two-linked-lists",162:"find-peak-element",167:"two-sum-ii-input-array-is-sorted",173:"binary-search-tree-iterator",188:"best-time-to-buy-and-sell-stock-iv",189:"rotate-array",191:"number-of-1-bits",198:"house-robber",199:"binary-tree-right-side-view",200:"number-of-islands",202:"happy-number",206:"reverse-linked-list",207:"course-schedule",208:"implement-trie-prefix-tree",209:"minimum-size-subarray-sum",210:"course-schedule-ii",211:"design-add-and-search-words-data-structure",212:"word-search-ii",213:"house-robber-ii",214:"shortest-palindrome",215:"kth-largest-element-in-an-array",219:"contains-duplicate-ii",221:"maximal-square",224:"basic-calculator",225:"implement-stack-using-queues",226:"invert-binary-tree",227:"basic-calculator-ii",230:"kth-smallest-element-in-a-bst",231:"power-of-two",232:"implement-queue-using-stacks",234:"palindrome-linked-list",235:"lowest-common-ancestor-of-a-binary-search-tree",236:"lowest-common-ancestor-of-a-binary-tree",238:"product-of-array-except-self",239:"sliding-window-maximum",241:"different-ways-to-add-parentheses",242:"valid-anagram",253:"meeting-rooms-ii",257:"binary-tree-paths",268:"missing-number",278:"first-bad-version",283:"move-zeroes",287:"find-the-duplicate-number",289:"game-of-life",295:"find-median-from-data-stream",297:"serialize-and-deserialize-binary-tree",300:"longest-increasing-subsequence",301:"remove-invalid-parentheses",309:"best-time-to-buy-and-sell-stock-with-cooldown",312:"burst-balloons",322:"coin-change",328:"odd-even-linked-list",337:"house-robber-iii",338:"counting-bits",341:"flatten-nested-list-iterator",342:"power-of-four",344:"reverse-string",345:"reverse-vowels-of-a-string",347:"top-k-frequent-elements",349:"intersection-of-two-arrays",354:"russian-doll-envelopes",373:"find-k-pairs-with-smallest-sums",374:"guess-number-higher-or-lower",377:"combination-sum-iv",378:"kth-smallest-element-in-a-sorted-matrix",380:"insert-delete-getrandom-o1",389:"find-the-difference",392:"is-subsequence",394:"decode-string",402:"remove-k-digits",406:"queue-reconstruction-by-height",410:"split-array-largest-sum",415:"add-strings",416:"partition-equal-subset-sum",417:"pacific-atlantic-water-flow",424:"longest-repeating-character-replacement",438:"find-all-anagrams-in-a-string",442:"find-all-duplicates-in-an-array",443:"string-compression",448:"find-all-numbers-disappeared-in-an-array",451:"sort-characters-by-frequency",455:"assign-cookies",459:"repeated-substring-pattern",460:"lfu-cache",477:"total-hamming-distance",494:"target-sum",496:"next-greater-element-i",498:"diagonal-traverse",501:"find-mode-in-binary-search-tree",503:"next-greater-element-ii",509:"fibonacci-number",518:"coin-change-ii",530:"minimum-absolute-difference-in-bst",540:"single-element-in-a-sorted-array",541:"reverse-string-ii",542:"01-matrix",543:"diameter-of-binary-tree",546:"remove-boxes",547:"number-of-provinces",567:"permutation-in-string",572:"subtree-of-another-tree",583:"delete-operation-for-two-strings",599:"minimum-index-sum-of-two-lists",604:"design-compressed-string-iterator",621:"task-scheduler",622:"design-circular-queue",632:"smallest-range-covering-elements-from-k-lists",641:"design-circular-deque",643:"maximum-average-subarray-i",647:"palindromic-substrings",648:"replace-words",652:"find-duplicate-subtrees",658:"find-k-closest-elements",680:"valid-palindrome-ii",684:"redundant-connection",686:"repeated-string-match",695:"max-area-of-island",703:"kth-largest-element-in-a-stream",704:"binary-search",706:"design-hashmap",712:"minimum-ascii-delete-sum-for-two-strings",713:"subarray-product-less-than-k",719:"find-k-th-smallest-pair-distance",720:"longest-word-in-dictionary",721:"accounts-merge",733:"flood-fill",735:"asteroid-collision",739:"daily-temperatures",740:"delete-and-earn",743:"network-delay-time",745:"prefix-and-suffix-search",746:"min-cost-climbing-stairs",767:"reorganize-string",778:"swim-in-rising-water",787:"cheapest-flights-within-k-stops",796:"rotate-string",802:"find-eventual-safe-states",815:"bus-routes",841:"keys-and-rooms",844:"backspace-string-compare",845:"longest-mountain-in-array",852:"peak-index-in-a-mountain-array",857:"minimum-cost-to-hire-k-workers",862:"shortest-subarray-with-sum-at-least-k",863:"all-nodes-distance-k-in-binary-tree",867:"transpose-matrix",875:"koko-eating-bananas",876:"middle-of-the-linked-list",881:"boats-to-save-people",885:"spiral-matrix-iii",895:"maximum-frequency-stack",900:"rle-iterator",901:"online-stock-span",904:"fruit-into-baskets",905:"sort-array-by-parity",907:"sum-of-subarray-minimums",918:"maximum-sum-circular-subarray",921:"minimum-add-to-make-parentheses-valid",931:"minimum-falling-path-sum",947:"most-stones-removed-with-same-row-or-column",962:"maximum-width-ramp",973:"k-closest-points-to-origin",977:"squares-of-a-sorted-array",981:"time-based-key-value-store",986:"interval-list-intersections",988:"smallest-string-starting-from-leaf",989:"add-to-array-form-of-integer",994:"rotting-oranges",1004:"max-consecutive-ones-iii",1011:"capacity-to-ship-packages-within-d-days",1020:"number-of-enclaves",1029:"two-city-scheduling",1046:"last-stone-weight",1091:"shortest-path-in-binary-matrix",1092:"shortest-common-supersequence",1095:"find-in-mountain-array",1110:"delete-nodes-and-return-forest",1129:"shortest-path-with-alternating-colors",1143:"longest-common-subsequence",1146:"snapshot-array",1161:"maximum-level-sum-of-a-binary-tree",1192:"critical-connections-in-a-network",1249:"minimum-remove-to-make-valid-parentheses",1254:"number-of-closed-islands",1277:"count-square-submatrices-with-all-ones",1312:"minimum-insertion-steps-to-make-a-string-palindrome",1348:"tweet-counts-per-frequency",1352:"product-of-the-last-k-numbers",1381:"design-a-stack-with-increment-operation",1438:"longest-continuous-subarray-with-absolute-diff-less-than-or-equal-to-limit",1442:"count-triplets-that-can-form-two-arrays-of-equal-xor",1457:"pseudo-palindromic-paths-in-a-binary-tree",1475:"final-prices-with-a-special-discount-in-a-shop",1482:"minimum-number-of-days-to-make-m-bouquets",1489:"find-critical-and-pseudo-critical-edges-in-minimum-spanning-tree",1493:"longest-subarray-of-1s-after-deleting-one-element",1514:"path-with-maximum-probability",1539:"kth-missing-positive-number",1584:"min-cost-to-connect-all-points",1631:"path-with-minimum-effort",1642:"furthest-building-you-can-reach",1658:"minimum-operations-to-reduce-x-to-zero",1671:"minimum-number-of-removals-to-make-mountain-array",1673:"find-the-most-competitive-subsequence",1696:"jump-game-vi",1749:"maximum-absolute-sum-of-any-subarray",1760:"minimum-limit-of-balls-in-a-bag",1792:"maximum-average-pass-ratio",1834:"single-threaded-cpu",1838:"frequency-of-the-most-frequent-element",1905:"count-sub-islands",1942:"the-number-of-the-smallest-unoccupied-chair",1963:"minimum-number-of-swaps-to-make-the-string-balanced",1976:"number-of-ways-to-arrive-at-destination",2013:"detect-squares",2045:"second-minimum-time-to-reach-destination",2050:"parallel-courses-iii",2064:"minimized-maximum-of-products-distributed-to-any-store",2095:"delete-the-middle-node-of-a-linked-list",2101:"detonate-the-maximum-bombs",2202:"maximize-the-topmost-element-after-k-moves",2226:"maximum-candies-allocated-to-k-children",2290:"minimum-obstacle-removal-to-reach-corner",2296:"design-a-text-editor",2321:"maximum-score-of-a-good-subarray",2326:"spiral-matrix-iv",2337:"move-pieces-to-obtain-a-string",2390:"removing-stars-from-a-string",2402:"meeting-rooms-iii",2406:"divide-intervals-into-minimum-number-of-groups",2407:"longest-increasing-subsequence-ii",2461:"maximum-sum-of-distinct-subarrays-with-length-k",2483:"minimum-penalty-for-a-shop",2516:"take-k-of-each-character-from-left-and-right",2558:"take-gifts-from-the-richest-pile",2577:"minimum-time-to-visit-a-cell-in-a-grid",2762:"continuous-subarrays",2779:"maximum-beauty-of-an-array-after-applying-operation",2812:"find-the-safest-path-in-a-grid",2938:"separate-black-and-white-balls",2981:"find-longest-special-substring-that-occurs-thrice-i",3008:"find-beautiful-indices-in-the-given-array-ii",3026:"maximum-good-subarray-sum",3254:"find-the-power-of-k-size-subarrays-i",3318:"find-x-sum-of-all-k-long-subarrays-i",3346:"maximum-frequency-of-an-element-after-performing-operations-i",3347:"maximum-frequency-of-an-element-after-performing-operations-ii",
 };
 
+const COMPANY_PROBLEMS = {
+  "Amazon": {
+    "Two Pointers": [1, 11, 15, 42, 75, 283],
+    "Sliding Window": [3, 76, 239, 424],
+    "Binary Search": [33, 34, 69, 875, 1011],
+    "Array/Matrix": [48, 54, 73, 238],
+    "String Manipulation": [8, 12, 13, 49, 242],
+    "Linked List": [2, 21, 23, 25, 138, 206],
+    "Stack": [20, 84, 150, 155, 394, 496, 739],
+    "Tree Traversal": [98, 102, 103, 124, 199, 226, 236, 297],
+    "Heap (Priority Queue)": [23, 215, 253, 295, 347, 767, 973],
+    "Greedy": [45, 55, 56, 121, 122, 134, 135, 621],
+    "Backtracking": [17, 22, 39, 46, 79, 212],
+    "Dynamic Programming": [53, 62, 70, 72, 91, 121, 139, 152, 198, 300, 322],
+    "Graph Traversal": [127, 200, 207, 210, 547, 695, 994],
+    "Design": [146, 155, 208, 380, 460],
+  }
+};
+
+const PROBLEM_DIFFICULTY = {
+  1:"Easy",2:"Medium",3:"Medium",8:"Medium",11:"Medium",12:"Medium",13:"Easy",15:"Medium",17:"Medium",
+  20:"Easy",21:"Easy",22:"Medium",23:"Hard",25:"Hard",33:"Medium",34:"Medium",39:"Medium",42:"Hard",
+  45:"Medium",46:"Medium",48:"Medium",49:"Medium",53:"Medium",54:"Medium",55:"Medium",56:"Medium",
+  62:"Medium",69:"Easy",70:"Easy",72:"Medium",73:"Medium",75:"Medium",76:"Hard",79:"Medium",84:"Hard",
+  91:"Medium",98:"Medium",102:"Medium",103:"Medium",121:"Easy",122:"Medium",124:"Hard",127:"Hard",
+  134:"Medium",135:"Hard",138:"Medium",139:"Medium",146:"Medium",150:"Medium",152:"Medium",155:"Medium",
+  198:"Medium",199:"Medium",200:"Medium",206:"Easy",207:"Medium",208:"Medium",210:"Medium",212:"Hard",
+  215:"Medium",226:"Easy",236:"Medium",238:"Medium",239:"Hard",242:"Easy",253:"Medium",283:"Easy",
+  295:"Hard",297:"Hard",300:"Medium",322:"Medium",347:"Medium",380:"Medium",394:"Medium",424:"Medium",
+  460:"Hard",496:"Easy",547:"Medium",621:"Medium",695:"Medium",739:"Medium",767:"Medium",875:"Medium",
+  973:"Medium",994:"Medium",1011:"Medium",
+};
+
 // ─── State ───
 let currentCat = null;
 let drawerOpen = false;
 let loadedDocs = {};    // cache: filename → markdown string
 let parsedQuestions = {}; // cache: filename → {subpattern: [{num, title, diff, twist}]}
+let currentMode = 'patterns';
+let currentCompany = null;
+let currentCompanyPattern = null;
+let randomRevealed = false;
 
 // ─── Build sidebar ───
 function buildSidebar() {
@@ -1007,7 +1156,7 @@ document.getElementById('search').addEventListener('input', function(e) {
   // Also search problem numbers
   if (/^\d+$/.test(q)) {
     const num = parseInt(q);
-    document.querySelectorAll('.cat-item').forEach(cat => {
+    document.querySelectorAll('#cat-list .cat-item').forEach(cat => {
       const catKey = cat.dataset.cat;
       const subs = PATTERNS[catKey];
       let found = false;
@@ -1019,6 +1168,26 @@ document.getElementById('search').addEventListener('input', function(e) {
         }
       });
       if (found) { cat.style.display = ''; cat.classList.add('open'); }
+    });
+  }
+
+  // Company mode search
+  if (currentMode === 'company') {
+    document.querySelectorAll('#company-list .cat-item').forEach(item => {
+      const company = item.dataset.company;
+      const companyMatch = company.toLowerCase().includes(q);
+      const subs = item.querySelectorAll('.sub-item');
+      let anyMatch = false;
+
+      subs.forEach(sub => {
+        const name = sub.querySelector('span').textContent.toLowerCase();
+        const match = name.includes(q) || companyMatch || q === '';
+        sub.style.display = match ? '' : 'none';
+        if (match && q) anyMatch = true;
+      });
+
+      item.style.display = (companyMatch || anyMatch || !q) ? '' : 'none';
+      if (anyMatch && q) item.classList.add('open');
     });
   }
 });
@@ -1091,10 +1260,16 @@ async function connectRevise() {
     document.getElementById('auth-status').className = 'auth-status';
     document.getElementById('auth-btn').textContent = 'Refresh';
     // Re-render current view to show checkboxes + metadata
-    if (currentCat) {
+    if (currentMode === 'patterns' && currentCat) {
       const catInfo = LEARNING_ORDER.find(c => c.key === currentCat);
       await loadAndRender(catInfo.file, null);
       await loadQuestionsDrawer(catInfo.file, currentCat);
+    } else if (currentMode === 'company') {
+      buildCompanySidebar();
+      updateCompanyStats();
+      if (currentCompany && currentCompanyPattern) {
+        renderCompanyPatternView(currentCompany, currentCompanyPattern);
+      }
     }
   } catch (e) {
     document.getElementById('auth-status').textContent = e.message;
@@ -1172,6 +1347,280 @@ function handleDrawerCheck(cb, num, title, diff) {
     // Also check in content table if visible
     document.querySelectorAll(`.q-solved-check[data-num="${num}"]`).forEach(c => c.checked = true);
   }
+}
+
+// ─── Mode Switching ───
+function switchMode(mode) {
+  currentMode = mode;
+  document.getElementById('mode-patterns').classList.toggle('active', mode === 'patterns');
+  document.getElementById('mode-company').classList.toggle('active', mode === 'company');
+  document.getElementById('patterns-sidebar').style.display = mode === 'patterns' ? '' : 'none';
+  document.getElementById('company-sidebar').style.display = mode === 'company' ? '' : 'none';
+
+  if (mode === 'company') {
+    buildCompanySidebar();
+    updateCompanyStats();
+    document.getElementById('content').innerHTML = `<div class="welcome">
+      <h2>Company Problems</h2>
+      <p>Select a company and pattern from the sidebar to see targeted problems, or try a random question to simulate OA conditions.</p>
+      <div class="start-hint">Tip: Use <kbd>Random Question</kbd> to practice with hidden patterns</div>
+    </div>`;
+    document.getElementById('breadcrumb').innerHTML = '';
+    document.getElementById('topbar-title').textContent = 'Company Problems';
+    document.getElementById('btn-practice').style.display = 'none';
+  } else {
+    updatePatternsStats();
+    if (!currentCat) {
+      document.getElementById('content').innerHTML = `<div class="welcome">
+        <h2>Start Learning</h2>
+        <p>Pick a pattern category from the sidebar to read the research deep-dive. Categories are ordered from foundational to advanced — start from the top.</p>
+        <div class="start-hint">Tip: Press <kbd>P</kbd> to toggle the practice questions panel</div>
+      </div>`;
+      document.getElementById('breadcrumb').innerHTML = '';
+      document.getElementById('topbar-title').textContent = 'Select a pattern to begin';
+    }
+  }
+}
+
+function updatePatternsStats() {
+  const statsEl = document.getElementById('sidebar-stats');
+  const totalPatterns = Object.values(PATTERNS).reduce((s, p) => s + Object.keys(p).length, 0);
+  const totalProblems = Object.values(PATTERNS).reduce((s, p) => s + Object.values(p).reduce((ss, arr) => ss + arr.length, 0), 0);
+  statsEl.innerHTML = `
+    <div class="stat"><div class="stat-num" id="stat-patterns">${totalPatterns}</div><div class="stat-label">Patterns</div></div>
+    <div class="stat"><div class="stat-num" id="stat-problems">${totalProblems}</div><div class="stat-label">Problems</div></div>
+    <div class="stat"><div class="stat-num" id="stat-progress">0%</div><div class="stat-label">Read</div></div>
+  `;
+  updateProgressStat();
+}
+
+function updateCompanyStats() {
+  const statsEl = document.getElementById('sidebar-stats');
+  const companies = Object.keys(COMPANY_PROBLEMS).length;
+  const allNums = new Set();
+  for (const company of Object.values(COMPANY_PROBLEMS)) {
+    for (const nums of Object.values(company)) {
+      nums.forEach(n => allNums.add(n));
+    }
+  }
+  const solvedCount = [...allNums].filter(n => !!getReviseData(n)).length;
+  statsEl.innerHTML = `
+    <div class="stat"><div class="stat-num">${companies}</div><div class="stat-label">Companies</div></div>
+    <div class="stat"><div class="stat-num">${allNums.size}</div><div class="stat-label">Problems</div></div>
+    <div class="stat"><div class="stat-num">${solvedCount}/${allNums.size}</div><div class="stat-label">Solved</div></div>
+  `;
+}
+
+// ─── Company Sidebar ───
+function buildCompanySidebar() {
+  const list = document.getElementById('company-list');
+  list.innerHTML = '';
+
+  for (const [company, patterns] of Object.entries(COMPANY_PROBLEMS)) {
+    const totalProblems = new Set(Object.values(patterns).flat()).size;
+    const patternCount = Object.keys(patterns).length;
+
+    const div = document.createElement('div');
+    div.className = 'cat-item';
+    div.dataset.company = company;
+
+    div.innerHTML = `
+      <div class="company-header" onclick="toggleCompany('${company}')">
+        <div class="company-icon">${company[0]}</div>
+        <div class="company-name">${company}</div>
+        <div class="company-badge">${patternCount}p · ${totalProblems}q</div>
+        <div class="cat-arrow">&#9654;</div>
+      </div>
+      <div class="sub-list">
+        <button class="btn-random" onclick="event.stopPropagation(); randomQuestion('${company}')">
+          <span class="icon">🎲</span> Random Question
+        </button>
+        ${Object.entries(patterns).map(([pattern, nums]) => {
+          const solvedCount = nums.filter(n => !!getReviseData(n)).length;
+          return `
+            <div class="sub-item" onclick="selectCompanyPattern('${company}', '${pattern.replace(/'/g, "\\'")}')">
+              <div class="sub-dot"></div>
+              <span>${pattern}</span>
+              <span class="sub-count">${solvedCount}/${nums.length}</span>
+            </div>
+          `;
+        }).join('')}
+      </div>
+    `;
+    list.appendChild(div);
+  }
+}
+
+function toggleCompany(company) {
+  const el = document.querySelector(`.cat-item[data-company="${company}"]`);
+  el.classList.toggle('open');
+}
+
+// ─── Company Pattern View (Flow 1) ───
+function selectCompanyPattern(company, pattern) {
+  currentCompany = company;
+  currentCompanyPattern = pattern;
+
+  document.querySelectorAll('#company-list .sub-item').forEach(s => s.classList.remove('active'));
+  const companyEl = document.querySelector(`.cat-item[data-company="${company}"]`);
+  companyEl.classList.add('open');
+  companyEl.querySelectorAll('.sub-item').forEach(s => {
+    if (s.querySelector('span').textContent === pattern) s.classList.add('active');
+  });
+
+  document.getElementById('breadcrumb').innerHTML = `<span>${company}</span>`;
+  document.getElementById('topbar-title').textContent = pattern;
+  document.getElementById('btn-practice').style.display = 'none';
+
+  renderCompanyPatternView(company, pattern);
+}
+
+function renderCompanyPatternView(company, pattern) {
+  const content = document.getElementById('content');
+  const nums = COMPANY_PROBLEMS[company][pattern];
+  if (!nums) return;
+
+  const solvedCount = nums.filter(n => !!getReviseData(n)).length;
+
+  let html = `
+    <div class="company-view-header">
+      <h2>${pattern}</h2>
+      <span class="count">${solvedCount}/${nums.length} solved · ${company}</span>
+    </div>
+    <table class="company-table">
+      <thead>
+        <tr>
+          <th style="width:30px"></th>
+          <th style="width:50px">#</th>
+          <th>Title</th>
+          <th style="width:90px">Difficulty</th>
+          <th style="width:120px">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  for (const num of nums) {
+    const slug = PROBLEM_SLUGS[num];
+    if (!slug) continue;
+    const url = `https://leetcode.com/problems/${slug}/`;
+    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const diff = PROBLEM_DIFFICULTY[num] || 'Medium';
+    const diffClass = diff.toLowerCase();
+    const reviseData = getReviseData(num);
+    const isSolved = !!reviseData;
+
+    html += `
+      <tr class="${isSolved ? 'solved' : ''}" onclick="if(event.target.tagName!=='INPUT'&&event.target.tagName!=='A')window.open('${url}','_blank')">
+        <td style="text-align:center">
+          <input type="checkbox" class="q-solved-check" data-num="${num}" ${isSolved ? 'checked' : ''}
+            onclick="event.stopPropagation(); handleCompanyCheck(this, ${num}, '${title.replace(/'/g,"\\'")}', '${diff}')">
+        </td>
+        <td><a href="${url}" target="_blank" rel="noopener" class="q-link">${num}</a></td>
+        <td><a href="${url}" target="_blank" rel="noopener" class="q-link">${title}</a></td>
+        <td><span class="q-diff ${diffClass}">${diff}</span></td>
+        <td><div class="q-meta" data-num="${num}">${buildMetaHtml(reviseData)}</div></td>
+      </tr>
+    `;
+  }
+
+  html += '</tbody></table>';
+  content.innerHTML = html;
+  content.scrollTop = 0;
+}
+
+function handleCompanyCheck(cb, num, title, diff) {
+  if (!isConnected) { cb.checked = false; alert('Connect to Revise first'); return; }
+  if (cb.checked) {
+    syncToRevise(num, title, diff, cb);
+    cb.closest('tr').classList.add('solved');
+  }
+}
+
+// ─── Random Question (Flow 2) ───
+function randomQuestion(company) {
+  const patterns = COMPANY_PROBLEMS[company];
+  if (!patterns) return;
+
+  const pool = [];
+  for (const [pattern, nums] of Object.entries(patterns)) {
+    for (const num of nums) {
+      if (!getReviseData(num)) {
+        pool.push({ num, pattern });
+      }
+    }
+  }
+
+  if (pool.length === 0) {
+    for (const [pattern, nums] of Object.entries(patterns)) {
+      for (const num of nums) pool.push({ num, pattern });
+    }
+  }
+
+  const pick = pool[Math.floor(Math.random() * pool.length)];
+  renderRandomCard(company, pick.num, pick.pattern);
+}
+
+function renderRandomCard(company, num, pattern) {
+  randomRevealed = false;
+  const content = document.getElementById('content');
+  const slug = PROBLEM_SLUGS[num];
+  if (!slug) return;
+
+  const url = `https://leetcode.com/problems/${slug}/`;
+  const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+  const diff = PROBLEM_DIFFICULTY[num] || 'Medium';
+  const diffClass = diff.toLowerCase();
+  const reviseData = getReviseData(num);
+  const isSolved = !!reviseData;
+
+  document.getElementById('breadcrumb').innerHTML = `<span>${company}</span> · Random`;
+  document.getElementById('topbar-title').textContent = 'Random Question';
+  document.getElementById('btn-practice').style.display = 'none';
+
+  content.innerHTML = `
+    <div class="random-card">
+      <div class="q-number">#${num}</div>
+      <div class="q-name"><a href="${url}" target="_blank" rel="noopener">${title}</a></div>
+      <div class="q-difficulty ${diffClass}">${diff}</div>
+      <br>
+      <div class="pattern-hidden" id="pattern-reveal" onclick="revealPattern()">
+        <span style="color:var(--text-muted)">Pattern:</span>
+        <span class="blur-text" id="pattern-text">${pattern}</span>
+      </div>
+      <div class="q-meta" data-num="${num}" style="justify-content:center;margin-top:12px">${buildMetaHtml(reviseData)}</div>
+      <div class="actions">
+        <button class="btn-solve" onclick="solveRandom(${num}, '${title.replace(/'/g,"\\'")}', '${diff}')">
+          ${isSolved ? '✓ Already Solved' : '✓ Mark Solved'}
+        </button>
+        <button class="btn-skip" onclick="randomQuestion('${company}')">
+          Skip → Next
+        </button>
+      </div>
+    </div>
+  `;
+  content.scrollTop = 0;
+}
+
+function revealPattern() {
+  const el = document.getElementById('pattern-reveal');
+  if (el) el.classList.add('revealed');
+  randomRevealed = true;
+}
+
+function solveRandom(num, title, diff) {
+  if (!isConnected) { alert('Connect to Revise first'); return; }
+  const reviseData = getReviseData(num);
+  if (reviseData) { revealPattern(); return; }
+
+  const fakeCb = { classList: { add(){}, remove(){} }, checked: false };
+  syncToRevise(num, title, diff, fakeCb).then(() => {
+    revealPattern();
+    const solveBtn = document.querySelector('.random-card .btn-solve');
+    if (solveBtn) solveBtn.textContent = '✓ Solved!';
+    const metaEl = document.querySelector(`.random-card .q-meta[data-num="${num}"]`);
+    if (metaEl) metaEl.innerHTML = buildMetaHtml(getReviseData(num));
+  });
 }
 
 // ─── Init ───
