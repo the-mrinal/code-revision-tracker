@@ -14,13 +14,23 @@
   // --- Auth helpers ---
   function getAuth() {
     return new Promise((resolve) => {
-      chrome.storage.local.get("auth", (data) => resolve(data.auth || null));
+      try {
+        chrome.storage.local.get("auth", (data) => {
+          if (chrome.runtime.lastError) { resolve(null); return; }
+          resolve(data.auth || null);
+        });
+      } catch { resolve(null); }
     });
   }
 
   function getTimer() {
     return new Promise((resolve) => {
-      chrome.storage.local.get("timer", (data) => resolve(data.timer || null));
+      try {
+        chrome.storage.local.get("timer", (data) => {
+          if (chrome.runtime.lastError) { resolve(null); return; }
+          resolve(data.timer || null);
+        });
+      } catch { resolve(null); }
     });
   }
 
@@ -200,19 +210,22 @@
 
   function updateWidget() {
     if (!widgetShadow) return;
-    chrome.storage.local.get("timer", (data) => {
-      const timer = data.timer;
-      if (!timer || !timer.questionId) {
-        destroyWidget();
-        return;
-      }
-      const timeEl = widgetShadow.getElementById("revise-widget-time");
-      const widgetEl = widgetShadow.getElementById("revise-widget");
-      if (timeEl) timeEl.textContent = formatTime(getElapsedSeconds(timer));
-      if (widgetEl) {
-        widgetEl.classList.toggle("paused", !timer.running);
-      }
-    });
+    try {
+      chrome.storage.local.get("timer", (data) => {
+        if (chrome.runtime.lastError) { destroyWidget(); return; }
+        const timer = data.timer;
+        if (!timer || !timer.questionId) {
+          destroyWidget();
+          return;
+        }
+        const timeEl = widgetShadow.getElementById("revise-widget-time");
+        const widgetEl = widgetShadow.getElementById("revise-widget");
+        if (timeEl) timeEl.textContent = formatTime(getElapsedSeconds(timer));
+        if (widgetEl) {
+          widgetEl.classList.toggle("paused", !timer.running);
+        }
+      });
+    } catch { destroyWidget(); }
   }
 
   function startWidget() {
@@ -514,7 +527,8 @@
     const banner = shadow.getElementById("revise-timer-banner");
     if (!banner) return;
 
-    chrome.storage.local.get("timer", (data) => {
+    try { chrome.storage.local.get("timer", (data) => {
+      if (chrome.runtime.lastError) return;
       const timer = data.timer;
       if (!timer || !timer.questionId) {
         banner.innerHTML = "";
@@ -545,7 +559,7 @@
       const stopBtn = shadow.getElementById("revise-panel-stop");
       if (pauseBtn) pauseBtn.addEventListener("click", toggleTimerPause);
       if (stopBtn) stopBtn.addEventListener("click", stopTimer);
-    });
+    }); } catch { /* extension context invalidated */ }
   }
 
   function renderForm() {
