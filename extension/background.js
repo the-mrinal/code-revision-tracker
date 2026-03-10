@@ -96,62 +96,58 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-// --- Speech-to-text via offscreen document ---
-let creatingOffscreen = null;
-
-async function ensureOffscreen() {
-  const offscreenUrl = chrome.runtime.getURL("offscreen.html");
-  try {
-    const contexts = await chrome.runtime.getContexts({
-      contextTypes: ["OFFSCREEN_DOCUMENT"],
-      documentUrls: [offscreenUrl],
-    });
-    if (contexts.length > 0) return;
-  } catch {
-    // Fallback for older Chrome versions without getContexts
-    try {
-      const hasDoc = await chrome.offscreen.hasDocument();
-      if (hasDoc) return;
-    } catch {}
-  }
-
-  if (!creatingOffscreen) {
-    creatingOffscreen = chrome.offscreen.createDocument({
-      url: "offscreen.html",
-      reasons: ["USER_MEDIA"],
-      justification: "Speech recognition for notes overlay",
-    });
-    await creatingOffscreen;
-    creatingOffscreen = null;
-  }
-}
+// --- Speech-to-text via popup window ---
+let speechWindowId = null;
+let speechTabId = null; // the content script tab that requested speech
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
   // Content script requests to start speech
   if (msg.type === "start-listening") {
-    const tabId = sender.tab?.id;
-    ensureOffscreen().then(() => {
-      chrome.runtime.sendMessage({ type: "start-speech", tabId });
+    speechTabId = sender.tab?.id;
+    // Open a small popup window with speech recognition
+    chrome.windows.create({
+      url: chrome.runtime.getURL("speech-window.html"),
+      type: "popup",
+      width: 320,
+      height: 220,
+      focused: true,
+    }, (win) => {
+      if (win) speechWindowId = win.id;
     });
     return false;
   }
 
   // Content script requests to stop speech
   if (msg.type === "stop-listening") {
-    chrome.runtime.sendMessage({ type: "stop-speech" });
+    if (speechWindowId) {
+      try { chrome.windows.remove(speechWindowId); } catch {}
+      speechWindowId = null;
+    }
     return false;
   }
 
-  // Offscreen doc sends results/errors/end — forward to content script tab
+  // Speech window sends results/errors/end — forward to content script tab
   if (msg.type === "speech-result" || msg.type === "speech-end" || msg.type === "speech-error") {
-    if (msg.tabId) {
-      try { chrome.tabs.sendMessage(msg.tabId, msg); } catch {}
-    }
-    // If it's a not-allowed error, open the mic permission page
-    if (msg.type === "speech-error" && msg.error === "not-allowed") {
-      chrome.tabs.create({ url: chrome.runtime.getURL("request-mic.html") });
+    if (speechTabId) {
+      try { chrome.tabs.sendMessage(speechTabId, msg); } catch {}
     }
     return false;
+  }
+
+  // Speech window closed
+  if (msg.type === "speech-window-ready") {
+    // Window is ready, speech recognition started automatically
+    return false;
+  }
+});
+
+// Clean up when speech window is closed by user
+chrome.windows.onRemoved.addListener((windowId) => {
+  if (windowId === speechWindowId) {
+    speechWindowId = null;
+    if (speechTabId) {
+      try { chrome.tabs.sendMessage(speechTabId, { type: "speech-end" }); } catch {}
+    }
   }
 });
 
