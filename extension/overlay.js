@@ -75,11 +75,15 @@
     style.textContent = `
       :host {
         all: initial;
-        position: fixed;
-        bottom: 20px;
-        right: 20px;
-        z-index: 2147483646;
+        display: block !important;
+        position: fixed !important;
+        bottom: 20px !important;
+        right: 20px !important;
+        z-index: 2147483646 !important;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        visibility: visible !important;
+        opacity: 1 !important;
+        pointer-events: auto !important;
       }
       .widget {
         display: flex;
