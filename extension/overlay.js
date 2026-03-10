@@ -430,6 +430,59 @@
         height: 90px;
         resize: vertical;
       }
+      .row {
+        display: flex;
+        gap: 10px;
+      }
+      .row .field {
+        flex: 1;
+      }
+      .field select {
+        width: 100%;
+        padding: 8px 10px;
+        background: #1a1a1a;
+        border: 1px solid #333;
+        border-radius: 6px;
+        color: #e0e0e0;
+        font-size: 13px;
+        font-family: inherit;
+        outline: none;
+        transition: border-color 0.2s;
+        box-sizing: border-box;
+        appearance: none;
+        -webkit-appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23888'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 10px center;
+        padding-right: 28px;
+      }
+      .field select:focus {
+        border-color: #5b6abf;
+      }
+      .stars {
+        display: flex;
+        gap: 4px;
+      }
+      .stars .star {
+        width: 28px;
+        height: 28px;
+        border: 1px solid #333;
+        border-radius: 6px;
+        background: #1a1a1a;
+        color: #555;
+        font-size: 15px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.15s;
+      }
+      .stars .star:hover,
+      .stars .star.active {
+        background: #2a2a4a;
+        border-color: #5b6abf;
+        color: #f4c542;
+      }
       .complexity-row {
         display: flex;
         gap: 10px;
@@ -565,10 +618,32 @@
   function renderForm() {
     const body = shadow.getElementById("revise-body");
     const q = currentQuestion;
+    const rating = q.self_rating || 0;
+
+    const diffOptions = ["", "easy", "medium", "hard"].map(d => {
+      const label = d ? d.charAt(0).toUpperCase() + d.slice(1) : "Select";
+      const selected = (q.difficulty || "") === d ? "selected" : "";
+      return `<option value="${d}" ${selected}>${label}</option>`;
+    }).join("");
+
+    const starButtons = [1,2,3,4,5].map(v => {
+      const active = v <= rating ? "active" : "";
+      return `<button class="star ${active}" data-value="${v}">★</button>`;
+    }).join("");
 
     body.innerHTML = `
       <div class="question-title">${q.title || q.url}</div>
       <div class="toast" id="revise-toast"></div>
+      <div class="row">
+        <div class="field">
+          <label>Difficulty</label>
+          <select id="revise-difficulty">${diffOptions}</select>
+        </div>
+        <div class="field">
+          <label>Self Rating</label>
+          <div class="stars" id="revise-stars">${starButtons}</div>
+        </div>
+      </div>
       <div class="field">
         <label>Approach / Thought Process</label>
         <textarea id="revise-approach" placeholder="How did you think about this problem?">${q.approach || ""}</textarea>
@@ -587,11 +662,28 @@
           <input type="text" id="revise-space-complexity" placeholder="O(n)" value="${q.space_complexity || ""}">
         </div>
       </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="revise-notes" placeholder="Key insights, things to remember...">${q.notes || ""}</textarea>
+      </div>
       <button class="btn" id="revise-save">Save Notes</button>
       <div class="shortcut-hint">Press Ctrl+Shift+R to toggle this panel</div>
     `;
 
-    shadow.getElementById("revise-save").addEventListener("click", saveNotes);
+    // Star rating click handlers
+    let selectedRating = rating;
+    shadow.querySelectorAll("#revise-stars .star").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        selectedRating = parseInt(btn.dataset.value);
+        shadow.querySelectorAll("#revise-stars .star").forEach((s, i) => {
+          s.classList.toggle("active", i < selectedRating);
+        });
+      });
+    });
+
+    shadow.getElementById("revise-save").addEventListener("click", () => {
+      saveNotes(selectedRating);
+    });
   }
 
   function renderNotTracked() {
@@ -693,13 +785,16 @@
   }
 
   // --- Save ---
-  async function saveNotes() {
+  async function saveNotes(selectedRating) {
     if (!currentQuestion) return;
     const btn = shadow.getElementById("revise-save");
     btn.disabled = true;
     btn.textContent = "Saving...";
 
     const payload = {
+      difficulty: shadow.getElementById("revise-difficulty").value || null,
+      self_rating: selectedRating || null,
+      notes: shadow.getElementById("revise-notes").value || null,
       approach: shadow.getElementById("revise-approach").value || null,
       mistakes: shadow.getElementById("revise-mistakes").value || null,
       time_complexity: shadow.getElementById("revise-time-complexity").value || null,
