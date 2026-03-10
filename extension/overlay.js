@@ -1086,9 +1086,38 @@
     }
   }
 
-  // --- Speech-to-text (direct Web Speech API) ---
-  let activeRecognition = null;
+  // --- Speech-to-text (via offscreen document) ---
   let activeMicBtn = null;
+  let isListening = false;
+  let speechStartText = "";
+
+  // Receive speech results from offscreen via background
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (!shadow) return;
+
+    if (msg.type === "speech-result" && activeMicBtn) {
+      const textarea = shadow.getElementById(activeMicBtn.dataset.target);
+      if (textarea && msg.isFinal) {
+        const sep = textarea.value && !textarea.value.endsWith("\n") && !textarea.value.endsWith(" ") ? " " : "";
+        textarea.value += sep + msg.transcript;
+      }
+    }
+
+    if (msg.type === "speech-end") {
+      if (activeMicBtn) activeMicBtn.classList.remove("recording");
+      activeMicBtn = null;
+      isListening = false;
+    }
+
+    if (msg.type === "speech-error") {
+      if (activeMicBtn) activeMicBtn.classList.remove("recording");
+      activeMicBtn = null;
+      isListening = false;
+      if (msg.error !== "aborted" && msg.error !== "no-speech" && msg.error !== "not-allowed") {
+        showToast("Mic error: " + msg.error, "error");
+      }
+    }
+  });
 
   function initMicButtons() {
     if (!shadow) return;
@@ -1100,66 +1129,33 @@
         const textarea = shadow.getElementById(targetId);
         if (!textarea) return;
 
-        // Toggle off if already recording
+        // Toggle off
         if (btn.classList.contains("recording")) {
-          if (activeRecognition) { try { activeRecognition.stop(); } catch {} }
+          try { chrome.runtime.sendMessage({ type: "stop-listening" }); } catch {}
+          btn.classList.remove("recording");
+          activeMicBtn = null;
+          isListening = false;
           return;
         }
 
         // Stop any other active recording
-        if (activeRecognition) { try { activeRecognition.stop(); } catch {} }
-        if (activeMicBtn) activeMicBtn.classList.remove("recording");
-
-        const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
-        if (!SpeechRecognition) {
-          showToast("Speech recognition not supported", "error");
-          return;
+        if (activeMicBtn) {
+          activeMicBtn.classList.remove("recording");
+          try { chrome.runtime.sendMessage({ type: "stop-listening" }); } catch {}
         }
 
-        const recognition = new SpeechRecognition();
-        recognition.continuous = true;
-        recognition.interimResults = true;
-        recognition.lang = "en-US";
-
-        const startText = textarea.value;
-        activeRecognition = recognition;
         activeMicBtn = btn;
+        isListening = true;
         btn.classList.add("recording");
 
-        recognition.onresult = (event) => {
-          let interim = "", final = "";
-          for (let i = 0; i < event.results.length; i++) {
-            if (event.results[i].isFinal) final += event.results[i][0].transcript;
-            else interim += event.results[i][0].transcript;
-          }
-          const sep = startText && !startText.endsWith("\n") && !startText.endsWith(" ") ? " " : "";
-          textarea.value = startText + sep + final + interim;
-        };
-
-        recognition.onend = () => {
+        try {
+          chrome.runtime.sendMessage({ type: "start-listening" });
+        } catch {
           btn.classList.remove("recording");
-          if (activeRecognition === recognition) activeRecognition = null;
-          if (activeMicBtn === btn) activeMicBtn = null;
-        };
-
-        recognition.onerror = (event) => {
-          // Retry once on network error
-          if (event.error === "network") {
-            btn.classList.remove("recording");
-            if (activeRecognition === recognition) activeRecognition = null;
-            if (activeMicBtn === btn) activeMicBtn = null;
-            setTimeout(() => { if (!activeRecognition) btn.click(); }, 500);
-            return;
-          }
-          btn.classList.remove("recording");
-          if (activeRecognition === recognition) activeRecognition = null;
-          if (activeMicBtn === btn) activeMicBtn = null;
-          if (event.error !== "aborted" && event.error !== "no-speech") {
-            showToast("Mic error: " + event.error, "error");
-          }
-        };
-
-        recognition.start();
+          activeMicBtn = null;
+          isListening = false;
+          showToast("Speech recognition unavailable", "error");
+        }
       });
     });
   }

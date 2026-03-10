@@ -60,35 +60,6 @@
       "description": "Toggle Revise notes overlay"
     }
   },
-  "web_accessible_resources": [
-    {
-      "resources": ["speech.js"],
-      "matches": [
-        "https://leetcode.com/*",
-        "https://*.leetcode.com/*",
-        "https://codechef.com/*",
-        "https://*.codechef.com/*",
-        "https://hackerrank.com/*",
-        "https://*.hackerrank.com/*",
-        "https://codeforces.com/*",
-        "https://*.codeforces.com/*",
-        "https://geeksforgeeks.org/*",
-        "https://*.geeksforgeeks.org/*",
-        "https://interviewbit.com/*",
-        "https://*.interviewbit.com/*",
-        "https://atcoder.jp/*",
-        "https://*.atcoder.jp/*",
-        "https://neetcode.io/*",
-        "https://*.neetcode.io/*",
-        "https://algo.monster/*",
-        "https://*.algo.monster/*",
-        "https://algomonster.com/*",
-        "https://*.algomonster.com/*",
-        "https://designgurus.io/*",
-        "https://*.designgurus.io/*"
-      ]
-    }
-  ],
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

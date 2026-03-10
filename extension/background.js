@@ -96,45 +96,62 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
-// --- Speech-to-text offscreen document ---
-let offscreenCreated = false;
+// --- Speech-to-text via offscreen document ---
+let creatingOffscreen = null;
 
 async function ensureOffscreen() {
-  if (offscreenCreated) return;
+  const offscreenUrl = chrome.runtime.getURL("offscreen.html");
   try {
-    const existing = await chrome.offscreen.hasDocument();
-    if (existing) { offscreenCreated = true; return; }
-  } catch {}
-  try {
-    await chrome.offscreen.createDocument({
+    const contexts = await chrome.runtime.getContexts({
+      contextTypes: ["OFFSCREEN_DOCUMENT"],
+      documentUrls: [offscreenUrl],
+    });
+    if (contexts.length > 0) return;
+  } catch {
+    // Fallback for older Chrome versions without getContexts
+    try {
+      const hasDoc = await chrome.offscreen.hasDocument();
+      if (hasDoc) return;
+    } catch {}
+  }
+
+  if (!creatingOffscreen) {
+    creatingOffscreen = chrome.offscreen.createDocument({
       url: "offscreen.html",
       reasons: ["USER_MEDIA"],
       justification: "Speech recognition for notes overlay",
     });
-    offscreenCreated = true;
-  } catch {}
+    await creatingOffscreen;
+    creatingOffscreen = null;
+  }
 }
 
-// Relay speech messages between content script and offscreen document
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  if (msg.type === "speech-start-relay") {
+  // Content script requests to start speech
+  if (msg.type === "start-listening") {
+    const tabId = sender.tab?.id;
     ensureOffscreen().then(() => {
-      chrome.runtime.sendMessage({ type: "speech-start", id: msg.id });
+      chrome.runtime.sendMessage({ type: "start-speech", tabId });
     });
-  } else if (msg.type === "speech-stop-relay") {
-    chrome.runtime.sendMessage({ type: "speech-stop" });
-  } else if (msg.type === "speech-result" || msg.type === "speech-end" || msg.type === "speech-error") {
-    // Forward from offscreen to the content script tab
+    return false;
+  }
+
+  // Content script requests to stop speech
+  if (msg.type === "stop-listening") {
+    chrome.runtime.sendMessage({ type: "stop-speech" });
+    return false;
+  }
+
+  // Offscreen doc sends results/errors/end — forward to content script tab
+  if (msg.type === "speech-result" || msg.type === "speech-end" || msg.type === "speech-error") {
     if (msg.tabId) {
-      chrome.tabs.sendMessage(msg.tabId, msg);
-    } else {
-      // Broadcast to all tabs (offscreen doesn't know the tab)
-      chrome.tabs.query({}, (tabs) => {
-        for (const tab of tabs) {
-          try { chrome.tabs.sendMessage(tab.id, msg); } catch {}
-        }
-      });
+      try { chrome.tabs.sendMessage(msg.tabId, msg); } catch {}
     }
+    // If it's a not-allowed error, open the mic permission page
+    if (msg.type === "speech-error" && msg.error === "not-allowed") {
+      chrome.tabs.create({ url: chrome.runtime.getURL("request-mic.html") });
+    }
+    return false;
   }
 });
 
