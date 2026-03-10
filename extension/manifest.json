@@ -21,8 +21,33 @@
       "matches": ["https://revise.mrinal.dev/*"],
       "js": ["capture-tokens.js"],
       "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://leetcode.com/*",
+        "https://www.codechef.com/*",
+        "https://www.hackerrank.com/*",
+        "https://codeforces.com/*",
+        "https://www.geeksforgeeks.org/*",
+        "https://www.interviewbit.com/*",
+        "https://atcoder.jp/*",
+        "https://neetcode.io/*",
+        "https://algo.monster/*",
+        "https://www.designgurus.io/*"
+      ],
+      "js": ["overlay.js"],
+      "run_at": "document_idle"
     }
   ],
+  "commands": {
+    "toggle-overlay": {
+      "suggested_key": {
+        "default": "Alt+Shift+R",
+        "mac": "MacCtrl+Shift+R"
+      },
+      "description": "Toggle Revise notes overlay"
+    }
+  },
   "icons": {
     "16": "icons/icon16.png",
     "48": "icons/icon48.png",

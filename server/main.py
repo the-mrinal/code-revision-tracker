@@ -114,6 +114,10 @@ class QuestionUpdate(BaseModel):
     notes: Optional[str] = None
     pattern: Optional[str] = None
     question_type: Optional[str] = None
+    approach: Optional[str] = None
+    mistakes: Optional[str] = None
+    time_complexity: Optional[str] = None
+    space_complexity: Optional[str] = None
 
 
 class ReviewIn(BaseModel):
@@ -246,7 +250,7 @@ def edit_question(qid: int, q: QuestionUpdate, user_id: str = Depends(get_curren
     if not existing:
         raise HTTPException(404, "Question not found")
     updates = {}
-    for field in ["url", "title", "difficulty", "self_rating", "time_taken", "notes", "pattern", "question_type"]:
+    for field in ["url", "title", "difficulty", "self_rating", "time_taken", "notes", "pattern", "question_type", "approach", "mistakes", "time_complexity", "space_complexity"]:
         val = getattr(q, field)
         if val is not None:
             updates[field] = val

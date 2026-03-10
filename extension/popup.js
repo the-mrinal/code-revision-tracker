@@ -594,5 +594,16 @@ async function loadRevisions() {
 document.getElementById("pauseBtn").addEventListener("click", togglePause);
 document.getElementById("stopBtn").addEventListener("click", showFinishForm);
 
+// --- Open overlay on active tab ---
+document.getElementById("openOverlayLink").addEventListener("click", (e) => {
+  e.preventDefault();
+  chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+    if (tabs[0]?.id) {
+      chrome.tabs.sendMessage(tabs[0].id, { action: "toggleOverlay" });
+      window.close();
+    }
+  });
+});
+
 // --- Init ---
 initAuth();
