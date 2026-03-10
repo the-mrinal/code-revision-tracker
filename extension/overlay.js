@@ -1086,22 +1086,38 @@
     }
   }
 
-  // --- Speech-to-text (runs in page main world via injected script) ---
-  let activeMicTarget = null;
+  // --- Speech-to-text (via offscreen document) ---
   let activeMicBtn = null;
-  let speechInjected = false;
+  let activeSpeechId = null;
 
-  function injectSpeechScript() {
-    if (speechInjected) return;
-    speechInjected = true;
-    const script = document.createElement("script");
-    script.src = chrome.runtime.getURL("speech.js");
-    document.documentElement.appendChild(script);
-  }
+  // Listen for speech results from background/offscreen
+  chrome.runtime.onMessage.addListener((msg) => {
+    if (!msg || !msg.id || msg.id !== activeSpeechId) return;
+    if (!shadow || !activeMicBtn) return;
+
+    const targetId = activeMicBtn.dataset.target;
+    const textarea = shadow.getElementById(targetId);
+
+    if (msg.type === "speech-result" && textarea) {
+      const startText = textarea.dataset.speechStart || "";
+      const separator = startText && !startText.endsWith("\n") && !startText.endsWith(" ") ? " " : "";
+      textarea.value = startText + separator + msg.final + msg.interim;
+    } else if (msg.type === "speech-end") {
+      if (activeMicBtn) activeMicBtn.classList.remove("recording");
+      activeMicBtn = null;
+      activeSpeechId = null;
+    } else if (msg.type === "speech-error") {
+      if (activeMicBtn) activeMicBtn.classList.remove("recording");
+      activeMicBtn = null;
+      activeSpeechId = null;
+      if (msg.error !== "aborted") {
+        showToast("Mic error: " + msg.error, "error");
+      }
+    }
+  });
 
   function initMicButtons() {
     if (!shadow) return;
-    injectSpeechScript();
 
     shadow.querySelectorAll(".mic-btn").forEach((btn) => {
       btn.addEventListener("click", (e) => {
@@ -1111,44 +1127,32 @@
         if (!textarea) return;
 
         if (btn.classList.contains("recording")) {
-          window.postMessage({ type: "revise-speech-stop" }, "*");
+          try { chrome.runtime.sendMessage({ type: "speech-stop-relay" }); } catch {}
+          btn.classList.remove("recording");
+          activeMicBtn = null;
+          activeSpeechId = null;
           return;
         }
 
         // Stop any other active recording
         if (activeMicBtn) {
           activeMicBtn.classList.remove("recording");
-          window.postMessage({ type: "revise-speech-stop" }, "*");
+          try { chrome.runtime.sendMessage({ type: "speech-stop-relay" }); } catch {}
         }
 
-        activeMicTarget = targetId;
         activeMicBtn = btn;
+        activeSpeechId = Date.now().toString();
         btn.classList.add("recording");
+        textarea.dataset.speechStart = textarea.value;
 
-        const startText = textarea.value;
-        const sessionId = Date.now().toString();
-
-        const handler = (evt) => {
-          if (!evt.data || evt.data.id !== sessionId) return;
-          if (evt.data.type === "revise-speech-result") {
-            const separator = startText && !startText.endsWith("\\n") && !startText.endsWith(" ") ? " " : "";
-            textarea.value = startText + separator + evt.data.final + evt.data.interim;
-          } else if (evt.data.type === "revise-speech-end") {
-            btn.classList.remove("recording");
-            if (activeMicBtn === btn) { activeMicBtn = null; activeMicTarget = null; }
-            window.removeEventListener("message", handler);
-          } else if (evt.data.type === "revise-speech-error") {
-            btn.classList.remove("recording");
-            if (activeMicBtn === btn) { activeMicBtn = null; activeMicTarget = null; }
-            window.removeEventListener("message", handler);
-            if (evt.data.error !== "aborted") {
-              showToast("Mic error: " + evt.data.error, "error");
-            }
-          }
-        };
-        window.addEventListener("message", handler);
-
-        window.postMessage({ type: "revise-speech-start", id: sessionId }, "*");
+        try {
+          chrome.runtime.sendMessage({ type: "speech-start-relay", id: activeSpeechId });
+        } catch {
+          btn.classList.remove("recording");
+          activeMicBtn = null;
+          activeSpeechId = null;
+          showToast("Speech recognition unavailable", "error");
+        }
       });
     });
   }

@@ -96,6 +96,48 @@ chrome.storage.onChanged.addListener((changes, area) => {
   }
 });
 
+// --- Speech-to-text offscreen document ---
+let offscreenCreated = false;
+
+async function ensureOffscreen() {
+  if (offscreenCreated) return;
+  try {
+    const existing = await chrome.offscreen.hasDocument();
+    if (existing) { offscreenCreated = true; return; }
+  } catch {}
+  try {
+    await chrome.offscreen.createDocument({
+      url: "offscreen.html",
+      reasons: ["USER_MEDIA"],
+      justification: "Speech recognition for notes overlay",
+    });
+    offscreenCreated = true;
+  } catch {}
+}
+
+// Relay speech messages between content script and offscreen document
+chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  if (msg.type === "speech-start-relay") {
+    ensureOffscreen().then(() => {
+      chrome.runtime.sendMessage({ type: "speech-start", id: msg.id });
+    });
+  } else if (msg.type === "speech-stop-relay") {
+    chrome.runtime.sendMessage({ type: "speech-stop" });
+  } else if (msg.type === "speech-result" || msg.type === "speech-end" || msg.type === "speech-error") {
+    // Forward from offscreen to the content script tab
+    if (msg.tabId) {
+      chrome.tabs.sendMessage(msg.tabId, msg);
+    } else {
+      // Broadcast to all tabs (offscreen doesn't know the tab)
+      chrome.tabs.query({}, (tabs) => {
+        for (const tab of tabs) {
+          try { chrome.tabs.sendMessage(tab.id, msg); } catch {}
+        }
+      });
+    }
+  }
+});
+
 // --- Toggle overlay command ---
 chrome.commands.onCommand.addListener((command) => {
   if (command === "toggle-overlay") {
