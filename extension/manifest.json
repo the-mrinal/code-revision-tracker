@@ -25,15 +25,27 @@
     {
       "matches": [
         "https://leetcode.com/*",
-        "https://www.codechef.com/*",
-        "https://www.hackerrank.com/*",
+        "https://*.leetcode.com/*",
+        "https://codechef.com/*",
+        "https://*.codechef.com/*",
+        "https://hackerrank.com/*",
+        "https://*.hackerrank.com/*",
         "https://codeforces.com/*",
-        "https://www.geeksforgeeks.org/*",
-        "https://www.interviewbit.com/*",
+        "https://*.codeforces.com/*",
+        "https://geeksforgeeks.org/*",
+        "https://*.geeksforgeeks.org/*",
+        "https://interviewbit.com/*",
+        "https://*.interviewbit.com/*",
         "https://atcoder.jp/*",
+        "https://*.atcoder.jp/*",
         "https://neetcode.io/*",
+        "https://*.neetcode.io/*",
         "https://algo.monster/*",
-        "https://www.designgurus.io/*"
+        "https://*.algo.monster/*",
+        "https://algomonster.com/*",
+        "https://*.algomonster.com/*",
+        "https://designgurus.io/*",
+        "https://*.designgurus.io/*"
       ],
       "js": ["overlay.js"],
       "run_at": "document_idle"

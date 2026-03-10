@@ -504,6 +504,35 @@
       }
       .btn:hover { opacity: 0.85; }
       .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+      .btn-finish {
+        background: linear-gradient(135deg, #064e3b, #047857);
+        color: #6ee7b7;
+      }
+      .finish-header {
+        background: #1a1a2e;
+        border: 1px solid #2a2a4a;
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-bottom: 14px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .finish-title {
+        font-weight: 600;
+        font-size: 13px;
+        color: #fff;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        max-width: 180px;
+      }
+      .finish-time {
+        font-variant-numeric: tabular-nums;
+        font-size: 13px;
+        font-weight: 600;
+        color: #6ee7b7;
+      }
       .toast {
         display: none;
         padding: 10px 16px;
@@ -851,9 +880,150 @@
         timer.running = false;
         chrome.storage.local.set({ timer });
       }
-      // Close the panel — user should finish via popup
-      closePanel();
+      // Show finish form in the overlay
+      stopTimerDisplay();
+      renderFinishForm(timer);
     });
+  }
+
+  function renderFinishForm(timer) {
+    if (!shadow) return;
+    const banner = shadow.getElementById("revise-timer-banner");
+    if (banner) banner.innerHTML = "";
+
+    const body = shadow.getElementById("revise-body");
+    const totalSeconds = timer.accumulated || 0;
+    const totalMinutes = Math.max(1, Math.round(totalSeconds / 60));
+    const q = currentQuestion || {};
+    const rating = q.self_rating || 0;
+
+    const diffOptions = ["", "easy", "medium", "hard"].map(d => {
+      const label = d ? d.charAt(0).toUpperCase() + d.slice(1) : "Select";
+      const selected = (q.difficulty || "") === d ? "selected" : "";
+      return `<option value="${d}" ${selected}>${label}</option>`;
+    }).join("");
+
+    const starButtons = [1,2,3,4,5].map(v => {
+      const active = v <= rating ? "active" : "";
+      return `<button class="star ${active}" data-value="${v}">★</button>`;
+    }).join("");
+
+    body.innerHTML = `
+      <div class="finish-header">
+        <span class="finish-title">${timer.title || "Untitled"}</span>
+        <span class="finish-time">${formatTime(totalSeconds)} (${totalMinutes} min)</span>
+      </div>
+      <div class="toast" id="revise-toast"></div>
+      <div class="row">
+        <div class="field">
+          <label>Difficulty</label>
+          <select id="revise-difficulty">${diffOptions}</select>
+        </div>
+        <div class="field">
+          <label>Self Rating</label>
+          <div class="stars" id="revise-stars">${starButtons}</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Approach / Thought Process</label>
+        <textarea id="revise-approach" placeholder="How did you think about this problem?">${q.approach || ""}</textarea>
+      </div>
+      <div class="field">
+        <label>Mistakes / What Went Wrong</label>
+        <textarea id="revise-mistakes" placeholder="Edge cases missed, wrong assumptions...">${q.mistakes || ""}</textarea>
+      </div>
+      <div class="complexity-row">
+        <div class="field">
+          <label>Time Complexity</label>
+          <input type="text" id="revise-time-complexity" placeholder="O(n log n)" value="${q.time_complexity || ""}">
+        </div>
+        <div class="field">
+          <label>Space Complexity</label>
+          <input type="text" id="revise-space-complexity" placeholder="O(n)" value="${q.space_complexity || ""}">
+        </div>
+      </div>
+      <div class="field">
+        <label>Notes</label>
+        <textarea id="revise-notes" placeholder="Key insights, things to remember...">${q.notes || ""}</textarea>
+      </div>
+      <button class="btn btn-finish" id="revise-finish" disabled>Save & Finish</button>
+    `;
+
+    let selectedRating = rating;
+    const updateFinishBtn = () => {
+      const btn = shadow.getElementById("revise-finish");
+      if (btn) btn.disabled = selectedRating === 0;
+    };
+    updateFinishBtn();
+
+    shadow.querySelectorAll("#revise-stars .star").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        selectedRating = parseInt(btn.dataset.value);
+        shadow.querySelectorAll("#revise-stars .star").forEach((s, i) => {
+          s.classList.toggle("active", i < selectedRating);
+        });
+        updateFinishBtn();
+      });
+    });
+
+    shadow.getElementById("revise-finish").addEventListener("click", () => {
+      saveAndFinish(timer, selectedRating, totalMinutes);
+    });
+  }
+
+  async function saveAndFinish(timer, selectedRating, totalMinutes) {
+    const qid = timer.questionId;
+    if (!qid || !selectedRating) return;
+    const btn = shadow.getElementById("revise-finish");
+    btn.disabled = true;
+    btn.textContent = "Saving...";
+
+    try {
+      // Run SM2 review
+      const reviewRes = await apiFetch(`/questions/${qid}/review`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ self_rating: selectedRating }),
+      });
+
+      if (!reviewRes.ok) {
+        let msg = "Failed to save review";
+        try { const err = await reviewRes.json(); msg = err.detail || msg; } catch {}
+        showToast(msg, "error");
+        btn.disabled = false;
+        btn.textContent = "Save & Finish";
+        return;
+      }
+
+      // Update metadata
+      const payload = {
+        self_rating: selectedRating,
+        difficulty: shadow.getElementById("revise-difficulty").value || null,
+        time_taken: totalMinutes,
+        notes: shadow.getElementById("revise-notes").value || null,
+        approach: shadow.getElementById("revise-approach").value || null,
+        mistakes: shadow.getElementById("revise-mistakes").value || null,
+        time_complexity: shadow.getElementById("revise-time-complexity").value || null,
+        space_complexity: shadow.getElementById("revise-space-complexity").value || null,
+      };
+
+      await apiFetch(`/questions/${qid}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+
+      // Clear timer
+      chrome.storage.local.remove("timer");
+      showToast(`Saved! ${totalMinutes} min recorded.`, "success");
+
+      // Close panel after brief delay
+      setTimeout(() => closePanel(), 1500);
+    } catch {
+      showToast("Cannot reach server", "error");
+      btn.disabled = false;
+      btn.textContent = "Save & Finish";
+    }
   }
 
   // --- Listen for messages from popup/background ---
