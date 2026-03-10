@@ -622,7 +622,13 @@
     const body = shadow.getElementById("revise-body");
     body.innerHTML = '<div class="message">Loading...</div>';
 
-    const auth = await getAuth();
+    let auth;
+    try {
+      auth = await getAuth();
+    } catch {
+      renderNoAuth();
+      return;
+    }
     if (!auth || !auth.access_token) {
       renderNoAuth();
       return;
@@ -630,18 +636,26 @@
 
     try {
       const r = await apiFetch(`/questions/lookup?url=${encodeURIComponent(window.location.href)}`);
+      if (!shadow) return; // panel was closed while loading
       if (r.ok) {
-        const data = await r.json();
-        if (data && data.id) {
-          currentQuestion = data;
-          renderForm();
-        } else {
+        const text = await r.text();
+        if (!text || text === "null") {
           renderNotTracked();
+        } else {
+          const data = JSON.parse(text);
+          if (data && data.id) {
+            currentQuestion = data;
+            renderForm();
+          } else {
+            renderNotTracked();
+          }
         }
       } else {
         renderNotTracked();
       }
-    } catch {
+    } catch (e) {
+      if (!shadow) return;
+      console.error("[Revise] Overlay lookup error:", e);
       renderNoAuth();
     }
   }
