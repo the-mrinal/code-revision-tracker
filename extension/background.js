@@ -1,5 +1,63 @@
 const API_BASE = "https://revise.mrinal.dev/api";
 
+// --- Proactive token refresh ---
+let refreshInProgress = null; // Promise lock to prevent concurrent refreshes
+
+function decodeJwtPayload(token) {
+  try {
+    const payload = token.split(".")[1];
+    return JSON.parse(atob(payload.replace(/-/g, "+").replace(/_/g, "/")));
+  } catch { return null; }
+}
+
+function tokenExpiresWithin(token, seconds) {
+  const payload = decodeJwtPayload(token);
+  if (!payload || !payload.exp) return true; // treat as expired if unreadable
+  return (payload.exp - Date.now() / 1000) < seconds;
+}
+
+async function refreshAuthToken() {
+  // If a refresh is already in progress, wait for it
+  if (refreshInProgress) return refreshInProgress;
+
+  refreshInProgress = (async () => {
+    try {
+      const authData = await chrome.storage.local.get("auth");
+      const auth = authData.auth;
+      if (!auth?.refresh_token) return null;
+
+      // Skip if token still has >5 minutes left
+      if (auth.access_token && !tokenExpiresWithin(auth.access_token, 300)) {
+        return auth;
+      }
+
+      console.log("[Revise] Proactively refreshing token");
+      const resp = await fetch(`${API_BASE}/auth/refresh`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ refresh_token: auth.refresh_token }),
+      });
+
+      if (resp.ok) {
+        const tokens = await resp.json();
+        await chrome.storage.local.set({ auth: tokens });
+        console.log("[Revise] Token refreshed successfully");
+        return tokens;
+      } else {
+        console.warn("[Revise] Token refresh failed:", resp.status);
+        return null;
+      }
+    } catch (e) {
+      console.error("[Revise] Token refresh error:", e);
+      return null;
+    } finally {
+      refreshInProgress = null;
+    }
+  })();
+
+  return refreshInProgress;
+}
+
 // --- Token capture from dashboard callback URL ---
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
   if (changeInfo.url && changeInfo.url.includes("/dashboard#access_token=")) {
@@ -43,29 +101,17 @@ async function updateBadge() {
       chrome.action.setBadgeText({ text: count > 0 ? String(count) : "" });
       chrome.action.setBadgeBackgroundColor({ color: "#e74c3c" });
     } else if (resp.status === 401) {
-      // Try refresh
-      if (auth.refresh_token) {
-        try {
-          const refreshResp = await fetch(`${API_BASE}/auth/refresh`, {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ refresh_token: auth.refresh_token }),
-          });
-          if (refreshResp.ok) {
-            const tokens = await refreshResp.json();
-            await chrome.storage.local.set({ auth: tokens });
-            // Retry with new token
-            const retry = await fetch(`${API_BASE}/revisions/today`, {
-              headers: { Authorization: `Bearer ${tokens.access_token}` },
-            });
-            if (retry.ok) {
-              const data = await retry.json();
-              const count = data.length;
-              chrome.action.setBadgeText({ text: count > 0 ? String(count) : "" });
-              chrome.action.setBadgeBackgroundColor({ color: "#e74c3c" });
-            }
-          }
-        } catch {}
+      const refreshed = await refreshAuthToken();
+      if (refreshed?.access_token) {
+        const retry = await fetch(`${API_BASE}/revisions/today`, {
+          headers: { Authorization: `Bearer ${refreshed.access_token}` },
+        });
+        if (retry.ok) {
+          const data = await retry.json();
+          const count = data.length;
+          chrome.action.setBadgeText({ text: count > 0 ? String(count) : "" });
+          chrome.action.setBadgeBackgroundColor({ color: "#e74c3c" });
+        }
       }
     }
   } catch {
@@ -79,75 +125,25 @@ chrome.alarms.create("checkRevisions", { periodInMinutes: 30 });
 // Also update badge every minute when timer might be active
 chrome.alarms.create("checkTimer", { periodInMinutes: 1 });
 
+// Proactive token refresh every 5 minutes
+chrome.alarms.create("refreshToken", { periodInMinutes: 5 });
+
 chrome.alarms.onAlarm.addListener((alarm) => {
-  if (alarm.name === "checkRevisions" || alarm.name === "checkTimer") {
+  if (alarm.name === "refreshToken") {
+    refreshAuthToken();
+  } else if (alarm.name === "checkRevisions" || alarm.name === "checkTimer") {
     updateBadge();
   }
 });
 
-// Update on install/startup
-chrome.runtime.onInstalled.addListener(updateBadge);
-chrome.runtime.onStartup.addListener(updateBadge);
+// Update on install/startup — refresh token first, then update badge
+chrome.runtime.onInstalled.addListener(() => { refreshAuthToken().then(updateBadge); });
+chrome.runtime.onStartup.addListener(() => { refreshAuthToken().then(updateBadge); });
 
 // Update badge when storage changes (timer start/stop or auth change)
 chrome.storage.onChanged.addListener((changes, area) => {
   if (area === "local" && (changes.timer || changes.auth)) {
     updateBadge();
-  }
-});
-
-// --- Speech-to-text via popup window ---
-let speechWindowId = null;
-let speechTabId = null; // the content script tab that requested speech
-
-chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
-  // Content script requests to start speech
-  if (msg.type === "start-listening") {
-    speechTabId = sender.tab?.id;
-    // Open a small popup window with speech recognition
-    chrome.windows.create({
-      url: chrome.runtime.getURL("speech-window.html"),
-      type: "popup",
-      width: 320,
-      height: 220,
-      focused: true,
-    }, (win) => {
-      if (win) speechWindowId = win.id;
-    });
-    return false;
-  }
-
-  // Content script requests to stop speech
-  if (msg.type === "stop-listening") {
-    if (speechWindowId) {
-      try { chrome.windows.remove(speechWindowId); } catch {}
-      speechWindowId = null;
-    }
-    return false;
-  }
-
-  // Speech window sends results/errors/end — forward to content script tab
-  if (msg.type === "speech-result" || msg.type === "speech-end" || msg.type === "speech-error") {
-    if (speechTabId) {
-      try { chrome.tabs.sendMessage(speechTabId, msg); } catch {}
-    }
-    return false;
-  }
-
-  // Speech window closed
-  if (msg.type === "speech-window-ready") {
-    // Window is ready, speech recognition started automatically
-    return false;
-  }
-});
-
-// Clean up when speech window is closed by user
-chrome.windows.onRemoved.addListener((windowId) => {
-  if (windowId === speechWindowId) {
-    speechWindowId = null;
-    if (speechTabId) {
-      try { chrome.tabs.sendMessage(speechTabId, { type: "speech-end" }); } catch {}
-    }
   }
 });
 
