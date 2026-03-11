@@ -430,44 +430,6 @@
         height: 90px;
         resize: vertical;
       }
-      .textarea-wrap {
-        position: relative;
-      }
-      .textarea-wrap textarea {
-        padding-right: 36px;
-      }
-      .mic-btn {
-        position: absolute;
-        top: 6px;
-        right: 6px;
-        width: 26px;
-        height: 26px;
-        border: none;
-        border-radius: 5px;
-        background: #2a2a2a;
-        color: #888;
-        font-size: 14px;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        transition: all 0.2s;
-        padding: 0;
-        line-height: 1;
-      }
-      .mic-btn:hover {
-        background: #333;
-        color: #ccc;
-      }
-      .mic-btn.recording {
-        background: #4c1d1d;
-        color: #f87171;
-        animation: mic-pulse 1s ease-in-out infinite;
-      }
-      @keyframes mic-pulse {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.5; }
-      }
       .row {
         display: flex;
         gap: 10px;
@@ -713,17 +675,11 @@
       </div>
       <div class="field">
         <label>Approach / Thought Process</label>
-        <div class="textarea-wrap">
-          <textarea id="revise-approach" placeholder="How did you think about this problem?">${q.approach || ""}</textarea>
-          <button class="mic-btn" data-target="revise-approach" title="Speak to type">🎤</button>
-        </div>
+        <textarea id="revise-approach" placeholder="How did you think about this problem?">${q.approach || ""}</textarea>
       </div>
       <div class="field">
         <label>Mistakes / What Went Wrong</label>
-        <div class="textarea-wrap">
-          <textarea id="revise-mistakes" placeholder="Edge cases missed, wrong assumptions...">${q.mistakes || ""}</textarea>
-          <button class="mic-btn" data-target="revise-mistakes" title="Speak to type">🎤</button>
-        </div>
+        <textarea id="revise-mistakes" placeholder="Edge cases missed, wrong assumptions...">${q.mistakes || ""}</textarea>
       </div>
       <div class="complexity-row">
         <div class="field">
@@ -737,10 +693,7 @@
       </div>
       <div class="field">
         <label>Notes</label>
-        <div class="textarea-wrap">
-          <textarea id="revise-notes" placeholder="Key insights, things to remember...">${q.notes || ""}</textarea>
-          <button class="mic-btn" data-target="revise-notes" title="Speak to type">🎤</button>
-        </div>
+        <textarea id="revise-notes" placeholder="Key insights, things to remember...">${q.notes || ""}</textarea>
       </div>
       <button class="btn" id="revise-save">Save Notes</button>
       <div class="shortcut-hint">Press Ctrl+Shift+R to toggle this panel</div>
@@ -760,8 +713,6 @@
     shadow.getElementById("revise-save").addEventListener("click", () => {
       saveNotes(selectedRating);
     });
-
-    initMicButtons();
   }
 
   function renderNotTracked() {
@@ -975,17 +926,11 @@
       </div>
       <div class="field">
         <label>Approach / Thought Process</label>
-        <div class="textarea-wrap">
-          <textarea id="revise-approach" placeholder="How did you think about this problem?">${q.approach || ""}</textarea>
-          <button class="mic-btn" data-target="revise-approach" title="Speak to type">🎤</button>
-        </div>
+        <textarea id="revise-approach" placeholder="How did you think about this problem?">${q.approach || ""}</textarea>
       </div>
       <div class="field">
         <label>Mistakes / What Went Wrong</label>
-        <div class="textarea-wrap">
-          <textarea id="revise-mistakes" placeholder="Edge cases missed, wrong assumptions...">${q.mistakes || ""}</textarea>
-          <button class="mic-btn" data-target="revise-mistakes" title="Speak to type">🎤</button>
-        </div>
+        <textarea id="revise-mistakes" placeholder="Edge cases missed, wrong assumptions...">${q.mistakes || ""}</textarea>
       </div>
       <div class="complexity-row">
         <div class="field">
@@ -999,10 +944,7 @@
       </div>
       <div class="field">
         <label>Notes</label>
-        <div class="textarea-wrap">
-          <textarea id="revise-notes" placeholder="Key insights, things to remember...">${q.notes || ""}</textarea>
-          <button class="mic-btn" data-target="revise-notes" title="Speak to type">🎤</button>
-        </div>
+        <textarea id="revise-notes" placeholder="Key insights, things to remember...">${q.notes || ""}</textarea>
       </div>
       <button class="btn btn-finish" id="revise-finish" disabled>Save & Finish</button>
     `;
@@ -1027,8 +969,6 @@
     shadow.getElementById("revise-finish").addEventListener("click", () => {
       saveAndFinish(timer, selectedRating, totalMinutes);
     });
-
-    initMicButtons();
   }
 
   async function saveAndFinish(timer, selectedRating, totalMinutes) {
@@ -1084,80 +1024,6 @@
       btn.disabled = false;
       btn.textContent = "Save & Finish";
     }
-  }
-
-  // --- Speech-to-text (via offscreen document) ---
-  let activeMicBtn = null;
-  let isListening = false;
-  let speechStartText = "";
-
-  // Receive speech results from offscreen via background
-  chrome.runtime.onMessage.addListener((msg) => {
-    if (!shadow) return;
-
-    if (msg.type === "speech-result" && activeMicBtn) {
-      const textarea = shadow.getElementById(activeMicBtn.dataset.target);
-      if (textarea && msg.isFinal) {
-        const sep = textarea.value && !textarea.value.endsWith("\n") && !textarea.value.endsWith(" ") ? " " : "";
-        textarea.value += sep + msg.transcript;
-      }
-    }
-
-    if (msg.type === "speech-end") {
-      if (activeMicBtn) activeMicBtn.classList.remove("recording");
-      activeMicBtn = null;
-      isListening = false;
-    }
-
-    if (msg.type === "speech-error") {
-      if (activeMicBtn) activeMicBtn.classList.remove("recording");
-      activeMicBtn = null;
-      isListening = false;
-      if (msg.error !== "aborted" && msg.error !== "no-speech" && msg.error !== "not-allowed") {
-        showToast("Mic error: " + msg.error, "error");
-      }
-    }
-  });
-
-  function initMicButtons() {
-    if (!shadow) return;
-
-    shadow.querySelectorAll(".mic-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        const targetId = btn.dataset.target;
-        const textarea = shadow.getElementById(targetId);
-        if (!textarea) return;
-
-        // Toggle off
-        if (btn.classList.contains("recording")) {
-          try { chrome.runtime.sendMessage({ type: "stop-listening" }); } catch {}
-          btn.classList.remove("recording");
-          activeMicBtn = null;
-          isListening = false;
-          return;
-        }
-
-        // Stop any other active recording
-        if (activeMicBtn) {
-          activeMicBtn.classList.remove("recording");
-          try { chrome.runtime.sendMessage({ type: "stop-listening" }); } catch {}
-        }
-
-        activeMicBtn = btn;
-        isListening = true;
-        btn.classList.add("recording");
-
-        try {
-          chrome.runtime.sendMessage({ type: "start-listening" });
-        } catch {
-          btn.classList.remove("recording");
-          activeMicBtn = null;
-          isListening = false;
-          showToast("Speech recognition unavailable", "error");
-        }
-      });
-    });
   }
 
   // --- Listen for messages from popup/background ---
