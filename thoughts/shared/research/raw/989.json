@@ -1,0 +1,29 @@
+{
+  "title": "989. Add to Array-Form of Integer",
+  "difficulty": "Easy",
+  "description": "The array-form of an integer num is an array representing its digits in left to right order.\nFor example, for num = 1321 , the array form is [1,3,2,1] .\nGiven num , the array-form of an integer, and an integer k , return the array-form of the integer num + k .",
+  "examples": [
+    {
+      "input": "num = [1,2,0,0], k = 34",
+      "output": "[1,2,3,4]",
+      "explanation": "1200 + 34 = 1234 "
+    },
+    {
+      "input": "num = [2,7,4], k = 181",
+      "output": "[4,5,5]",
+      "explanation": "274 + 181 = 455 "
+    },
+    {
+      "input": "num = [2,1,5], k = 806",
+      "output": "[1,0,2,1]",
+      "explanation": "215 + 806 = 1021 "
+    }
+  ],
+  "constraints": [
+    "1 <= num.length <= 10 4",
+    "0 <= num[i] <= 9",
+    "num does not contain any leading zeros except for the zero itself.",
+    "1 <= k <= 10 4"
+  ],
+  "url": "https://leetcode.com/problems/add-to-array-form-of-integer/description/"
+}

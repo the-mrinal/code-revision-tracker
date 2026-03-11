@@ -1,0 +1,26 @@
+{
+  "title": "959. Regions Cut By Slashes",
+  "difficulty": "Medium",
+  "description": "An n x n grid is composed of 1 x 1 squares where each 1 x 1 square consists of a '/' , '\\' , or blank space ' ' . These characters divide the square into contiguous regions.\nGiven the grid grid represented as a string array, return the number of regions .\nNote that backslash characters are escaped, so a '\\' is represented as '\\\\' .",
+  "examples": [
+    {
+      "input": "grid = [\" /\",\"/ \"]",
+      "output": "2"
+    },
+    {
+      "input": "grid = [\" /\",\"  \"]",
+      "output": "1"
+    },
+    {
+      "input": "grid = [\"/\\\\\",\"\\\\/\"]",
+      "output": "5",
+      "explanation": "Recall that because \\ characters are escaped, \"\\\\/\" refers to \\/, and \"/\\\\\" refers to /\\. "
+    }
+  ],
+  "constraints": [
+    "n == grid.length == grid[i].length",
+    "1 <= n <= 30",
+    "grid[i][j] is either '/' , '\\' , or ' ' ."
+  ],
+  "url": "https://leetcode.com/problems/regions-cut-by-slashes/description/"
+}

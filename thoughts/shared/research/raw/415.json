@@ -1,0 +1,25 @@
+{
+  "title": "415. Add Strings",
+  "difficulty": "Easy",
+  "description": "Given two non-negative integers, num1 and num2 represented as string, return the sum of num1 and num2 as a string .\nYou must solve the problem without using any built-in library for handling large integers (such as BigInteger ). You must also not convert the inputs to integers directly.",
+  "examples": [
+    {
+      "input": "num1 = \"11\", num2 = \"123\"",
+      "output": "\"134\""
+    },
+    {
+      "input": "num1 = \"456\", num2 = \"77\"",
+      "output": "\"533\""
+    },
+    {
+      "input": "num1 = \"0\", num2 = \"0\"",
+      "output": "\"0\""
+    }
+  ],
+  "constraints": [
+    "1 <= num1.length, num2.length <= 10 4",
+    "num1 and num2 consist of only digits.",
+    "num1 and num2 don't have any leading zeros except for the zero itself."
+  ],
+  "url": "https://leetcode.com/problems/add-strings/description/"
+}

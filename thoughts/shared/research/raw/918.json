@@ -1,0 +1,28 @@
+{
+  "title": "918. Maximum Sum Circular Subarray",
+  "difficulty": "Medium",
+  "description": "Given a circular integer array nums of length n , return the maximum possible sum of a non-empty subarray of nums .\nA circular array means the end of the array connects to the beginning of the array. Formally, the next element of nums[i] is nums[(i + 1) % n] and the previous element of nums[i] is nums[(i - 1 + n) % n] .\nA subarray may only include each element of the fixed buffer nums at most once. Formally, for a subarray nums[i], nums[i + 1], ..., nums[j] , there does not exist i <= k1 , k2 <= j with k1 % n == k2 % n .",
+  "examples": [
+    {
+      "input": "nums = [1,-2,3,-2]",
+      "output": "3",
+      "explanation": "Subarray [3] has maximum sum 3. "
+    },
+    {
+      "input": "nums = [5,-3,5]",
+      "output": "10",
+      "explanation": "Subarray [5,5] has maximum sum 5 + 5 = 10. "
+    },
+    {
+      "input": "nums = [-3,-2,-3]",
+      "output": "-2",
+      "explanation": "Subarray [-2] has maximum sum -2. "
+    }
+  ],
+  "constraints": [
+    "n == nums.length",
+    "1 <= n <= 3 * 10 4",
+    "-3 * 10 4 <= nums[i] <= 3 * 10 4"
+  ],
+  "url": "https://leetcode.com/problems/maximum-sum-circular-subarray/description/"
+}

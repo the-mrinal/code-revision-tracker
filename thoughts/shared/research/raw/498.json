@@ -1,0 +1,23 @@
+{
+  "title": "498. Diagonal Traverse",
+  "difficulty": "Medium",
+  "description": "Given an m x n matrix mat , return an array of all the elements of the array in a diagonal order .",
+  "examples": [
+    {
+      "input": "mat = [[1,2,3],[4,5,6],[7,8,9]]",
+      "output": "[1,2,4,7,5,3,6,8,9]"
+    },
+    {
+      "input": "mat = [[1,2],[3,4]]",
+      "output": "[1,2,3,4]"
+    }
+  ],
+  "constraints": [
+    "m == mat.length",
+    "n == mat[i].length",
+    "1 <= m, n <= 10 4",
+    "1 <= m * n <= 10 4",
+    "-10 5 <= mat[i][j] <= 10 5"
+  ],
+  "url": "https://leetcode.com/problems/diagonal-traverse/description/"
+}

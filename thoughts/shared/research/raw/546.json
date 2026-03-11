@@ -1,0 +1,25 @@
+{
+  "title": "546. Remove Boxes",
+  "difficulty": "Hard",
+  "description": "You are given several boxes with different colors represented by different positive numbers.\nYou may experience several rounds to remove boxes until there is no box left. Each time you can choose some continuous boxes with the same color (i.e., composed of k boxes, k >= 1 ), remove them and get k * k points.\nReturn the maximum points you can get .",
+  "examples": [
+    {
+      "input": "boxes = [1,3,2,2,2,3,4,3,1]",
+      "output": "23",
+      "explanation": " [1, 3, 2, 2, 2, 3, 4, 3, 1] ----> [1, 3, 3, 4, 3, 1] (3*3=9 points) ----> [1, 3, 3, 3, 1] (1*1=1 points) ----> [1, 1] (3*3=9 points) ----> [] (2*2=4 points) "
+    },
+    {
+      "input": "boxes = [1,1,1]",
+      "output": "9"
+    },
+    {
+      "input": "boxes = [1]",
+      "output": "1"
+    }
+  ],
+  "constraints": [
+    "1 <= boxes.length <= 100",
+    "1 <= boxes[i] <= 100"
+  ],
+  "url": "https://leetcode.com/problems/remove-boxes/description/"
+}

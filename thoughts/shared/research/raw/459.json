@@ -1,0 +1,26 @@
+{
+  "title": "459. Repeated Substring Pattern",
+  "difficulty": "Easy",
+  "description": "Given a string s , check if it can be constructed by taking a substring of it and appending multiple copies of the substring together.",
+  "examples": [
+    {
+      "input": "s = \"abab\"",
+      "output": "true",
+      "explanation": "It is the substring \"ab\" twice. "
+    },
+    {
+      "input": "s = \"aba\"",
+      "output": "false"
+    },
+    {
+      "input": "s = \"abcabcabcabc\"",
+      "output": "true",
+      "explanation": "It is the substring \"abc\" four times or the substring \"abcabc\" twice. "
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 10 4",
+    "s consists of lowercase English letters."
+  ],
+  "url": "https://leetcode.com/problems/repeated-substring-pattern/description/"
+}

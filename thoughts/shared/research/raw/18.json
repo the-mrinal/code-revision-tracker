@@ -1,0 +1,21 @@
+{
+  "title": "18. 4Sum",
+  "difficulty": "Medium",
+  "description": "Given an array nums of n integers, return an array of all the unique quadruplets [nums[a], nums[b], nums[c], nums[d]] such that:\n0 <= a, b, c, d < n a , b , c , and d are distinct . nums[a] + nums[b] + nums[c] + nums[d] == target\nYou may return the answer in any order .",
+  "examples": [
+    {
+      "input": "nums = [1,0,-1,0,-2,2], target = 0",
+      "output": "[[-2,-1,1,2],[-2,0,0,2],[-1,0,0,1]]"
+    },
+    {
+      "input": "nums = [2,2,2,2,2], target = 8",
+      "output": "[[2,2,2,2]]"
+    }
+  ],
+  "constraints": [
+    "1 <= nums.length <= 200",
+    "-10 9 <= nums[i] <= 10 9",
+    "-10 9 <= target <= 10 9"
+  ],
+  "url": "https://leetcode.com/problems/4sum/description/"
+}

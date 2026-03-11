@@ -1,0 +1,20 @@
+{
+  "title": "214. Shortest Palindrome",
+  "difficulty": "Hard",
+  "description": "You are given a string s . You can convert s to a palindrome by adding characters in front of it.\nReturn the shortest palindrome you can find by performing this transformation .",
+  "examples": [
+    {
+      "input": "s = \"aacecaaa\"",
+      "output": "\"aaacecaaa\""
+    },
+    {
+      "input": "s = \"abcd\"",
+      "output": "\"dcbabcd\""
+    }
+  ],
+  "constraints": [
+    "0 <= s.length <= 5 * 10 4",
+    "s consists of lowercase English letters only."
+  ],
+  "url": "https://leetcode.com/problems/shortest-palindrome/description/"
+}

@@ -1,0 +1,21 @@
+{
+  "title": "686. Repeated String Match",
+  "difficulty": "Medium",
+  "description": "Given two strings a and b , return the minimum number of times you should repeat string a so that string b is a substring of it . If it is impossible for b ​​​​​​ to be a substring of a after repeating it, return -1 .\nNotice: string \"abc\" repeated 0 times is \"\" , repeated 1 time is \"abc\" and repeated 2 times is \"abcabc\" .",
+  "examples": [
+    {
+      "input": "a = \"abcd\", b = \"cdabcdab\"",
+      "output": "3",
+      "explanation": "We return 3 because by repeating a three times \"abcdabcdabcd\", b is a substring of it. "
+    },
+    {
+      "input": "a = \"a\", b = \"aa\"",
+      "output": "2"
+    }
+  ],
+  "constraints": [
+    "1 <= a.length, b.length <= 10 4",
+    "a and b consist of lowercase English letters."
+  ],
+  "url": "https://leetcode.com/problems/repeated-string-match/description/"
+}

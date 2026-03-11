@@ -1,0 +1,22 @@
+{
+  "title": "354. Russian Doll Envelopes",
+  "difficulty": "Hard",
+  "description": "You are given a 2D array of integers envelopes where envelopes[i] = [w i , h i ] represents the width and the height of an envelope.\nOne envelope can fit into another if and only if both the width and height of one envelope are greater than the other envelope's width and height.\nReturn the maximum number of envelopes you can Russian doll (i.e., put one inside the other) .\nNote: You cannot rotate an envelope.",
+  "examples": [
+    {
+      "input": "envelopes = [[5,4],[6,4],[6,7],[2,3]]",
+      "output": "3",
+      "explanation": "The maximum number of envelopes you can Russian doll is 3 ([2,3] => [5,4] => [6,7]). "
+    },
+    {
+      "input": "envelopes = [[1,1],[1,1],[1,1]]",
+      "output": "1"
+    }
+  ],
+  "constraints": [
+    "1 <= envelopes.length <= 10 5",
+    "envelopes[i].length == 2",
+    "1 <= w i , h i <= 10 5"
+  ],
+  "url": "https://leetcode.com/problems/russian-doll-envelopes/description/"
+}

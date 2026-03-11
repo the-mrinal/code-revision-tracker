@@ -1,0 +1,27 @@
+{
+  "title": "1312. Minimum Insertion Steps to Make a String Palindrome",
+  "difficulty": "Hard",
+  "description": "Given a string s . In one step you can insert any character at any index of the string.\nReturn the minimum number of steps to make s palindrome.\nA Palindrome String is one that reads the same backward as well as forward.",
+  "examples": [
+    {
+      "input": "s = \"zzazz\"",
+      "output": "0",
+      "explanation": "The string \"zzazz\" is already palindrome we do not need any insertions. "
+    },
+    {
+      "input": "s = \"mbadm\"",
+      "output": "2",
+      "explanation": "String can be \"mbdadbm\" or \"mdbabdm\". "
+    },
+    {
+      "input": "s = \"leetcode\"",
+      "output": "5",
+      "explanation": "Inserting 5 characters the string becomes \"leetcodocteel\". "
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 500",
+    "s consists of lowercase English letters."
+  ],
+  "url": "https://leetcode.com/problems/minimum-insertion-steps-to-make-a-string-palindrome/description/"
+}

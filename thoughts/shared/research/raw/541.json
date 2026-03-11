@@ -1,0 +1,21 @@
+{
+  "title": "541. Reverse String II",
+  "difficulty": "Easy",
+  "description": "Given a string s and an integer k , reverse the first k characters for every 2k characters counting from the start of the string.\nIf there are fewer than k characters left, reverse all of them. If there are less than 2k but greater than or equal to k characters, then reverse the first k characters and leave the other as original.",
+  "examples": [
+    {
+      "input": "s = \"abcdefg\", k = 2",
+      "output": "\"bacdfeg\""
+    },
+    {
+      "input": "s = \"abcd\", k = 2",
+      "output": "\"bacd\""
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 10 4",
+    "s consists of only lowercase English letters.",
+    "1 <= k <= 10 4"
+  ],
+  "url": "https://leetcode.com/problems/reverse-string-ii/description/"
+}

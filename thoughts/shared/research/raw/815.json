@@ -1,0 +1,25 @@
+{
+  "title": "815. Bus Routes",
+  "difficulty": "Hard",
+  "description": "You are given an array routes representing bus routes where routes[i] is a bus route that the i th bus repeats forever.\nFor example, if routes[0] = [1, 5, 7] , this means that the 0 th bus travels in the sequence 1 -> 5 -> 7 -> 1 -> 5 -> 7 -> 1 -> ... forever.\nYou will start at the bus stop source (You are not on any bus initially), and you want to go to the bus stop target . You can travel between bus stops by buses only.\nReturn the least number of buses you must take to travel from source to target . Return -1 if it is not possible.",
+  "examples": [
+    {
+      "input": "routes = [[1,2,7],[3,6,7]], source = 1, target = 6",
+      "output": "2",
+      "explanation": "The best strategy is take the first bus to the bus stop 7, then take the second bus to the bus stop 6. "
+    },
+    {
+      "input": "routes = [[7,12],[4,5,15],[6],[15,19],[9,12,13]], source = 15, target = 12",
+      "output": "-1"
+    }
+  ],
+  "constraints": [
+    "1 <= routes.length <= 500 .",
+    "1 <= routes[i].length <= 10 5",
+    "All the values of routes[i] are unique .",
+    "sum(routes[i].length) <= 10 5",
+    "0 <= routes[i][j] < 10 6",
+    "0 <= source, target < 10 6"
+  ],
+  "url": "https://leetcode.com/problems/bus-routes/description/"
+}

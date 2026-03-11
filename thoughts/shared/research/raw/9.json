@@ -1,0 +1,26 @@
+{
+  "title": "9. Palindrome Number",
+  "difficulty": "Easy",
+  "description": "Given an integer x , return true if x is a palindrome , and false otherwise .",
+  "examples": [
+    {
+      "input": "x = 121",
+      "output": "true",
+      "explanation": "121 reads as 121 from left to right and from right to left. "
+    },
+    {
+      "input": "x = -121",
+      "output": "false",
+      "explanation": "From left to right, it reads -121. From right to left, it becomes 121-. Therefore it is not a palindrome. "
+    },
+    {
+      "input": "x = 10",
+      "output": "false",
+      "explanation": "Reads 01 from right to left. Therefore it is not a palindrome. "
+    }
+  ],
+  "constraints": [
+    "-2 31 <= x <= 2 31 - 1"
+  ],
+  "url": "https://leetcode.com/problems/palindrome-number/description/"
+}

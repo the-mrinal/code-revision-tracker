@@ -1,0 +1,27 @@
+{
+  "title": "844. Backspace String Compare",
+  "difficulty": "Easy",
+  "description": "Given two strings s and t , return true if they are equal when both are typed into empty text editors . '#' means a backspace character.\nNote that after backspacing an empty text, the text will continue empty.",
+  "examples": [
+    {
+      "input": "s = \"ab#c\", t = \"ad#c\"",
+      "output": "true",
+      "explanation": "Both s and t become \"ac\". "
+    },
+    {
+      "input": "s = \"ab##\", t = \"c#d#\"",
+      "output": "true",
+      "explanation": "Both s and t become \"\". "
+    },
+    {
+      "input": "s = \"a#c\", t = \"b\"",
+      "output": "false",
+      "explanation": "s becomes \"c\" while t becomes \"b\". "
+    }
+  ],
+  "constraints": [
+    "1 <= s.length, t.length <= 200",
+    "s and t only contain lowercase letters and '#' characters."
+  ],
+  "url": "https://leetcode.com/problems/backspace-string-compare/description/"
+}

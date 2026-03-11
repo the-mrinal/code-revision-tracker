@@ -1,0 +1,27 @@
+{
+  "title": "125. Valid Palindrome",
+  "difficulty": "Easy",
+  "description": "A phrase is a palindrome if, after converting all uppercase letters into lowercase letters and removing all non-alphanumeric characters, it reads the same forward and backward. Alphanumeric characters include letters and numbers.\nGiven a string s , return true if it is a palindrome , or false otherwise .",
+  "examples": [
+    {
+      "input": "s = \"A man, a plan, a canal: Panama\"",
+      "output": "true",
+      "explanation": "\"amanaplanacanalpanama\" is a palindrome. "
+    },
+    {
+      "input": "s = \"race a car\"",
+      "output": "false",
+      "explanation": "\"raceacar\" is not a palindrome. "
+    },
+    {
+      "input": "s = \" \"",
+      "output": "true",
+      "explanation": "s is an empty string \"\" after removing non-alphanumeric characters. Since an empty string reads the same forward and backward, it is a palindrome. "
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 2 * 10 5",
+    "s consists only of printable ASCII characters."
+  ],
+  "url": "https://leetcode.com/problems/valid-palindrome/description/"
+}

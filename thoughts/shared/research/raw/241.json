@@ -1,0 +1,24 @@
+{
+  "title": "241. Different Ways to Add Parentheses",
+  "difficulty": "Medium",
+  "description": "Given a string expression of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators . You may return the answer in any order .\nThe test cases are generated such that the output values fit in a 32-bit integer and the number of different results does not exceed 10 4 .",
+  "examples": [
+    {
+      "input": "expression = \"2-1-1\"",
+      "output": "[0,2]",
+      "explanation": " ((2-1)-1) = 0 (2-(1-1)) = 2 "
+    },
+    {
+      "input": "expression = \"2*3-4*5\"",
+      "output": "[-34,-14,-10,-10,10]",
+      "explanation": " (2*(3-(4*5))) = -34 ((2*3)-(4*5)) = -14 ((2*(3-4))*5) = -10 (2*((3-4)*5)) = -10 (((2*3)-4)*5) = 10 "
+    }
+  ],
+  "constraints": [
+    "1 <= expression.length <= 20",
+    "expression consists of digits and the operator '+' , '-' , and '*' .",
+    "All the integer values in the input expression are in the range [0, 99] .",
+    "The integer values in the input expression do not have a leading '-' or '+' denoting the sign."
+  ],
+  "url": "https://leetcode.com/problems/different-ways-to-add-parentheses/description/"
+}

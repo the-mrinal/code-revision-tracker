@@ -1,0 +1,27 @@
+{
+  "title": "2938. Separate Black and White Balls",
+  "difficulty": "Medium",
+  "description": "There are n balls on a table, each ball has a color black or white.\nYou are given a 0-indexed binary string s of length n , where 1 and 0 represent black and white balls, respectively.\nIn each step, you can choose two adjacent balls and swap them.\nReturn the minimum number of steps to group all the black balls to the right and all the white balls to the left .",
+  "examples": [
+    {
+      "input": "s = \"101\"",
+      "output": "1",
+      "explanation": "We can group all the black balls to the right in the following way: - Swap s[0] and s[1], s = \"011\". Initially, 1s are not grouped together, requiring at least 1 step to group them to the right."
+    },
+    {
+      "input": "s = \"100\"",
+      "output": "2",
+      "explanation": "We can group all the black balls to the right in the following way: - Swap s[0] and s[1], s = \"010\". - Swap s[1] and s[2], s = \"001\". It can be proven that the minimum number of steps needed is 2. "
+    },
+    {
+      "input": "s = \"0111\"",
+      "output": "0",
+      "explanation": "All the black balls are already grouped to the right. "
+    }
+  ],
+  "constraints": [
+    "1 <= n == s.length <= 10 5",
+    "s[i] is either '0' or '1' ."
+  ],
+  "url": "https://leetcode.com/problems/separate-black-and-white-balls/description/"
+}

@@ -1,0 +1,22 @@
+{
+  "title": "876. Middle of the Linked List",
+  "difficulty": "Easy",
+  "description": "Given the head of a singly linked list, return the middle node of the linked list .\nIf there are two middle nodes, return the second middle node.",
+  "examples": [
+    {
+      "input": "head = [1,2,3,4,5]",
+      "output": "[3,4,5]",
+      "explanation": "The middle node of the list is node 3. "
+    },
+    {
+      "input": "head = [1,2,3,4,5,6]",
+      "output": "[4,5,6]",
+      "explanation": "Since the list has two middle nodes with values 3 and 4, we return the second one. "
+    }
+  ],
+  "constraints": [
+    "The number of nodes in the list is in the range [1, 100] .",
+    "1 <= Node.val <= 100"
+  ],
+  "url": "https://leetcode.com/problems/middle-of-the-linked-list/description/"
+}

@@ -1,0 +1,32 @@
+{
+  "title": "2115. Find All Possible Recipes from Given Supplies",
+  "difficulty": "Medium",
+  "description": "You have information about n different recipes. You are given a string array recipes and a 2D string array ingredients . The i th recipe has the name recipes[i] , and you can create it if you have all the needed ingredients from ingredients[i] . A recipe can also be an ingredient for other recipes, i.e., ingredients[i] may contain a string that is in recipes .\nYou are also given a string array supplies containing all the ingredients that you initially have, and you have an infinite supply of all of them.\nReturn a list of all the recipes that you can create. You may return the answer in any order .\nNote that two recipes may contain each other in their ingredients.",
+  "examples": [
+    {
+      "input": "recipes = [\"bread\"], ingredients = [[\"yeast\",\"flour\"]], supplies = [\"yeast\",\"flour\",\"corn\"]",
+      "output": "[\"bread\"]",
+      "explanation": " We can create \"bread\" since we have the ingredients \"yeast\" and \"flour\". "
+    },
+    {
+      "input": "recipes = [\"bread\",\"sandwich\"], ingredients = [[\"yeast\",\"flour\"],[\"bread\",\"meat\"]], supplies = [\"yeast\",\"flour\",\"meat\"]",
+      "output": "[\"bread\",\"sandwich\"]",
+      "explanation": " We can create \"bread\" since we have the ingredients \"yeast\" and \"flour\". We can create \"sandwich\" since we have the ingredient \"meat\" and can create the ingredient \"bread\". "
+    },
+    {
+      "input": "recipes = [\"bread\",\"sandwich\",\"burger\"], ingredients = [[\"yeast\",\"flour\"],[\"bread\",\"meat\"],[\"sandwich\",\"meat\",\"bread\"]], supplies = [\"yeast\",\"flour\",\"meat\"]",
+      "output": "[\"bread\",\"sandwich\",\"burger\"]",
+      "explanation": " We can create \"bread\" since we have the ingredients \"yeast\" and \"flour\". We can create \"sandwich\" since we have the ingredient \"meat\" and can create the ingredient \"bread\". We can create \"burger\" since we have the ingredient \"meat\" and can create the ingredients \"bread\" and \"sandwich\". "
+    }
+  ],
+  "constraints": [
+    "n == recipes.length == ingredients.length",
+    "1 <= n <= 100",
+    "1 <= ingredients[i].length, supplies.length <= 100",
+    "1 <= recipes[i].length, ingredients[i][j].length, supplies[k].length <= 10",
+    "recipes[i], ingredients[i][j] , and supplies[k] consist only of lowercase English letters.",
+    "All the values of recipes and supplies combined are unique.",
+    "Each ingredients[i] does not contain any duplicate values."
+  ],
+  "url": "https://leetcode.com/problems/find-all-possible-recipes-from-given-supplies/description/"
+}

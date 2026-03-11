@@ -1,0 +1,29 @@
+{
+  "title": "743. Network Delay Time",
+  "difficulty": "Medium",
+  "description": "You are given a network of n nodes, labeled from 1 to n . You are also given times , a list of travel times as directed edges times[i] = (u i , v i , w i ) , where u i is the source node, v i is the target node, and w i is the time it takes for a signal to travel from source to target.\nWe will send a signal from a given node k . Return the minimum time it takes for all the n nodes to receive the signal . If it is impossible for all the n nodes to receive the signal, return -1 .",
+  "examples": [
+    {
+      "input": "times = [[2,1,1],[2,3,1],[3,4,1]], n = 4, k = 2",
+      "output": "2"
+    },
+    {
+      "input": "times = [[1,2,1]], n = 2, k = 1",
+      "output": "1"
+    },
+    {
+      "input": "times = [[1,2,1]], n = 2, k = 2",
+      "output": "-1"
+    }
+  ],
+  "constraints": [
+    "1 <= k <= n <= 100",
+    "1 <= times.length <= 6000",
+    "times[i].length == 3",
+    "1 <= u i , v i <= n",
+    "u i != v i",
+    "0 <= w i <= 100",
+    "All the pairs (u i , v i ) are unique . (i.e., no multiple edges.)"
+  ],
+  "url": "https://leetcode.com/problems/network-delay-time/description/"
+}

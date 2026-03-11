@@ -1,0 +1,22 @@
+{
+  "title": "647. Palindromic Substrings",
+  "difficulty": "Medium",
+  "description": "Given a string s , return the number of palindromic substrings in it .\nA string is a palindrome when it reads the same backward as forward.\nA substring is a contiguous sequence of characters within the string.",
+  "examples": [
+    {
+      "input": "s = \"abc\"",
+      "output": "3",
+      "explanation": "Three palindromic strings: \"a\", \"b\", \"c\". "
+    },
+    {
+      "input": "s = \"aaa\"",
+      "output": "6",
+      "explanation": "Six palindromic strings: \"a\", \"a\", \"a\", \"aa\", \"aa\", \"aaa\". "
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 1000",
+    "s consists of lowercase English letters."
+  ],
+  "url": "https://leetcode.com/problems/palindromic-substrings/description/"
+}

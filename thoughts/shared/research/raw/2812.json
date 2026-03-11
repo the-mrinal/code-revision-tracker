@@ -1,0 +1,29 @@
+{
+  "title": "2812. Find the Safest Path in a Grid",
+  "difficulty": "Medium",
+  "description": "You are given a 0-indexed 2D matrix grid of size n x n , where (r, c) represents:\nA cell containing a thief if grid[r][c] = 1 An empty cell if grid[r][c] = 0\nYou are initially positioned at cell (0, 0) . In one move, you can move to any adjacent cell in the grid, including cells containing thieves.\nThe safeness factor of a path on the grid is defined as the minimum manhattan distance from any cell in the path to any thief in the grid.\nReturn the maximum safeness factor of all paths leading to cell (n - 1, n - 1) .\nAn adjacent cell of cell (r, c) , is one of the cells (r, c + 1) , (r, c - 1) , (r + 1, c) and (r - 1, c) if it exists.\nThe Manhattan distance between two cells (a, b) and (x, y) is equal to |a - x| + |b - y| , where |val| denotes the absolute value of val.",
+  "examples": [
+    {
+      "input": "grid = [[1,0,0],[0,0,0],[0,0,1]]",
+      "output": "0",
+      "explanation": "All paths from (0, 0) to (n - 1, n - 1) go through the thieves in cells (0, 0) and (n - 1, n - 1). "
+    },
+    {
+      "input": "grid = [[0,0,1],[0,0,0],[0,0,0]]",
+      "output": "2",
+      "explanation": "The path depicted in the picture above has a safeness factor of 2 since: - The closest cell of the path to the thief at cell (0, 2) is cell (0, 0). The distance between them is | 0 - 0 | + | 0 - 2 | = 2. It can be shown that there are no other paths with a higher safeness factor. "
+    },
+    {
+      "input": "grid = [[0,0,0,1],[0,0,0,0],[0,0,0,0],[1,0,0,0]]",
+      "output": "2",
+      "explanation": "The path depicted in the picture above has a safeness factor of 2 since: - The closest cell of the path to the thief at cell (0, 3) is cell (1, 2). The distance between them is | 0 - 1 | + | 3 - 2 | = 2. - The closest cell of the path to the thief at cell (3, 0) is cell (3, 2). The distance between them is | 3 - 3 | + | 0 - 2 | = 2. It can be shown that there are no other paths with a higher safeness factor. "
+    }
+  ],
+  "constraints": [
+    "1 <= grid.length == n <= 400",
+    "grid[i].length == n",
+    "grid[i][j] is either 0 or 1 .",
+    "There is at least one thief in the grid ."
+  ],
+  "url": "https://leetcode.com/problems/find-the-safest-path-in-a-grid/description/"
+}

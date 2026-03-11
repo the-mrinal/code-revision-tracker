@@ -1,0 +1,19 @@
+{
+  "title": "59. Spiral Matrix II",
+  "difficulty": "Medium",
+  "description": "Given a positive integer n , generate an n x n matrix filled with elements from 1 to n 2 in spiral order.",
+  "examples": [
+    {
+      "input": "n = 3",
+      "output": "[[1,2,3],[8,9,4],[7,6,5]]"
+    },
+    {
+      "input": "n = 1",
+      "output": "[[1]]"
+    }
+  ],
+  "constraints": [
+    "1 <= n <= 20"
+  ],
+  "url": "https://leetcode.com/problems/spiral-matrix-ii/description/"
+}

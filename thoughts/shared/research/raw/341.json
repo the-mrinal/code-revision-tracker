@@ -1,0 +1,22 @@
+{
+  "title": "341. Flatten Nested List Iterator",
+  "difficulty": "Medium",
+  "description": "You are given a nested list of integers nestedList . Each element is either an integer or a list whose elements may also be integers or other lists. Implement an iterator to flatten it.\nImplement the NestedIterator class:\nNestedIterator(List<NestedInteger> nestedList) Initializes the iterator with the nested list nestedList . int next() Returns the next integer in the nested list. boolean hasNext() Returns true if there are still some integers in the nested list and false otherwise.\nYour code will be tested with the following pseudocode:\ninitialize iterator with nestedList\nres = []\nwhile iterator.hasNext()\n    append iterator.next() to the end of res\nreturn res\nIf res matches the expected flattened list, then your code will be judged as correct.",
+  "examples": [
+    {
+      "input": "nestedList = [[1,1],2,[1,1]]",
+      "output": "[1,1,2,1,1]",
+      "explanation": "By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,1,2,1,1]. "
+    },
+    {
+      "input": "nestedList = [1,[4,[6]]]",
+      "output": "[1,4,6]",
+      "explanation": "By calling next repeatedly until hasNext returns false, the order of elements returned by next should be: [1,4,6]. "
+    }
+  ],
+  "constraints": [
+    "1 <= nestedList.length <= 500",
+    "The values of the integers in the nested list is in the range [-10 6 , 10 6 ] ."
+  ],
+  "url": "https://leetcode.com/problems/flatten-nested-list-iterator/description/"
+}

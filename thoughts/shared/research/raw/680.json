@@ -1,0 +1,25 @@
+{
+  "title": "680. Valid Palindrome II",
+  "difficulty": "Easy",
+  "description": "Given a string s , return true if the s can be palindrome after deleting at most one character from it .",
+  "examples": [
+    {
+      "input": "s = \"aba\"",
+      "output": "true"
+    },
+    {
+      "input": "s = \"abca\"",
+      "output": "true",
+      "explanation": "You could delete the character 'c'. "
+    },
+    {
+      "input": "s = \"abc\"",
+      "output": "false"
+    }
+  ],
+  "constraints": [
+    "1 <= s.length <= 10 5",
+    "s consists of lowercase English letters."
+  ],
+  "url": "https://leetcode.com/problems/valid-palindrome-ii/description/"
+}
